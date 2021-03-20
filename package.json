@@ -50,7 +50,7 @@
     "@babel/preset-typescript": "~7.10.0",
     "@babel/runtime-corejs3": "~7.10.0",
     "@commitlint/cli": "8.3.5",
-    "@omni-door/cli": "~2.3.2",
+    "@omni-door/cli": "^2.3.3",
     "@rollup/plugin-alias": "~3.1.1",
     "@rollup/plugin-babel": "~5.2.2",
     "@rollup/plugin-commonjs": "~17.0.0",
