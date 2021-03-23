@@ -17,7 +17,7 @@ module.exports = {
       //   }
       // }
     ], // 开发服务代理配置 (dev-server proxy config)
-    port: 6200, // 开发服务端口号 (dev-server port)
+    port: 6201, // 开发服务端口号 (dev-server port)
     // host: 'dev.domain.com', // 开发服务端host (dev-server host)
     // https: true, // 以https协议启动开发服务 (start dev-server with https)
     devMiddlewareOptions: {
