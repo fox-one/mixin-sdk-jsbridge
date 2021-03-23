@@ -1,4 +1,5 @@
 'use strict';
+const path = require('path');
 
 module.exports = {
   env: {
@@ -21,7 +22,7 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     ecmaVersion: 2020,
     sourceType: 'module',
-    project: 'packages/mixin-jsbridge-demo/tsconfig.json',
+    project: path.resolve(__dirname, '../tsconfig.json'),
     extraFileExtensions: ['.vue']
   },
   plugins: [

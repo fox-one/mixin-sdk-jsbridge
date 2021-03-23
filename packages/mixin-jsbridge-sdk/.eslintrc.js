@@ -1,4 +1,5 @@
 'use strict';
+const path = require('path');
 
 module.exports = {
   env: {
@@ -21,7 +22,7 @@ module.exports = {
     },
     ecmaVersion: 2018,
     sourceType: 'module',
-    project: 'packages/mixin-jsbridge-sdk/tsconfig.json'
+    project: path.resolve(__dirname, 'tsconfig.json')
   },
   plugins: [
     '@typescript-eslint',
