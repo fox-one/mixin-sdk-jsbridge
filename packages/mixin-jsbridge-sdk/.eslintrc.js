@@ -21,7 +21,7 @@ module.exports = {
     },
     ecmaVersion: 2018,
     sourceType: 'module',
-    project: './tsconfig.json'
+    project: 'packages/mixin-jsbridge-sdk/tsconfig.json'
   },
   plugins: [
     '@typescript-eslint',
