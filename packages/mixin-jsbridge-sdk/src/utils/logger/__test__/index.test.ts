@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import getLogger from '../';
+import { getLogger } from '../';
 
 describe("getLogger test", function () {
   it('getLogger is a function', function () {

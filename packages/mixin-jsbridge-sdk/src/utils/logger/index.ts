@@ -21,3 +21,5 @@ export function getLogger(scope?: string) {
     return logger.setPrefix(getPrefix(scope, suffix));
   };
 }
+
+export default getLogger;

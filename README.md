@@ -1,59 +1,51 @@
 # @foxone/mixin-sdk-jsbridge
+该是用 lerna 管理的多包项目，请使用 [lerna](https://lerna.js.org/) 进行项目管理和开发
 
-## 快速开始 (quick start)
-### 安装依赖 (Install dependencies)
+## init
+  ```shell
+  yarn bootstrap
+  ```
 
-```shell
-yarn
-```
+## dev
+  - start sdk server
+    ```sh
+    yarn dev
+    ```
 
-### 启动项目 (Run project)
+  - server demo server
+    ```sh
+    yarn dev:demo
+    ```
 
-```shell
-yarn start
-```
-or
-```shell
-yarn dev
-```
+## new
+  - create a module for sdk
+    ```sh
+    yarn new
+    ```
 
-### 新建模块 (Create a Module)
+  - create a component for demo
+    ```sh
+    yarn new:demo
+    ```
 
-```shell
-yarn new
-```
+## build
+  - build sdk project
+    ```sh
+    yarn build
+    ```
 
----
+  - build demo project
+    ```sh
+    yarn build:demo
+    ```
 
-## 构建和发布 (Build and Release)
-### 构建 (Build)
-```shell
-yarn build
-```
+## release
+  - release sdk project
+    ```sh
+    yarn release
+    ```
 
-*构建项目时绕过所有检查 (Bypass all pre-check before building) 👇*
-```shell
-yarn build -n
-```
-
-### 发布 (Release)
-```shell
-yarn release
-```
-
-*发布项目时忽略版本迭代 (Ignoring version of iteration) 👇*
-```shell
-yarn release -i
-```
-
-*发布项目时指定迭代的版本为0.3.25 (Manual specify version of iteration to 0.3.25) 👇*
-```shell
-yarn release -m 0.3.25
-```
-
-*发布项目时绕过所有检查 (Bypass all pre-check before release) 👇*
-```shell
-yarn release -n
-```
-
-**更多配置项请在 [omni.config.js](https://github.com/omni-door/cli/blob/master/docs/OMNI.zh-CN.md) 中编辑 (More powerful customizations is in [omni.config.js](https://github.com/omni-door/cli/blob/master/docs/OMNI.md))**
+  - build demo project
+    ```sh
+    yarn release:demo
+    ```

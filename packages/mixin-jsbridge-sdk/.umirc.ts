@@ -1,5 +1,5 @@
 export default {
-  title: '@foxone/mixin-sdk-jsbridge',
+  title: 'mixin-jsbridge-sdk',
   mode: 'doc',
   publicPath: './',
   history: { type: 'hash' }

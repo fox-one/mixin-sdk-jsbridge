@@ -1,0 +1,98 @@
+{
+  "name": "mixin-jsbridge-sdk",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "start": "omni dev",
+    "dev": "omni dev",
+    "test": "npm run test:mocha",
+    "test:mocha": "nyc mocha --opts mocha.opts",
+    "test:headless": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
+    "test:browser": "karma start --browsers Chrome",
+    "lint": "npm run lint:prettier && npm run lint:es",
+    "lint:fix": "npm run lint:prettier_fix && npm run lint:es_fix",
+    "lint:es": "eslint src/ --ext .ts --ext .tsx",
+    "lint:es_fix": "eslint src/ --ext .ts --ext .tsx --fix",
+    "lint:prettier": "prettier --check src/",
+    "lint:prettier_fix": "prettier --write src/",
+    "lint:commit": "commitlint -e $HUSKY_GIT_PARAMS",
+    "new": "omni new",
+    "build": "omni build",
+    "build:demo": "dumi build",
+    "release": "omni release"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run lint && npm run test:headless",
+      "commit-msg": "npm run lint:commit"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "npm run lint:es_fix",
+      "npm run lint:prettier_fix"
+    ],
+    "src/**/*.{css,scss,sass,less}": [
+      "npm run lint:prettier_fix"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "~7.10.0",
+    "@babel/plugin-transform-runtime": "~7.10.0",
+    "@babel/preset-env": "~7.10.0",
+    "@babel/preset-typescript": "~7.10.0",
+    "@babel/runtime-corejs3": "~7.10.0",
+    "@commitlint/cli": "8.3.5",
+    "@omni-door/cli": "~2.3.3",
+    "@rollup/plugin-alias": "~3.1.1",
+    "@rollup/plugin-babel": "~5.2.2",
+    "@rollup/plugin-commonjs": "~17.0.0",
+    "@rollup/plugin-json": "~4.1.0",
+    "@rollup/plugin-node-resolve": "~11.0.0",
+    "@types/chai": "4.2.9",
+    "@types/mocha": "7.0.1",
+    "@typescript-eslint/eslint-plugin": "~3.8.0",
+    "@typescript-eslint/parser": "~3.8.0",
+    "chai": "4.2.0",
+    "del": "5.1.0",
+    "detect-port": "1.3.0",
+    "dumi": "1.0.35",
+    "eslint": "~7.6.0",
+    "eslint-config-prettier": "~6.13.0",
+    "eslint-plugin-prettier": "~3.1.4",
+    "husky": "4.2.3",
+    "ip": "1.1.5",
+    "karma": "4.4.1",
+    "karma-chrome-launcher": "3.1.0",
+    "karma-coverage": "2.0.1",
+    "karma-firefox-launcher": "1.3.0",
+    "karma-mocha": "1.3.0",
+    "karma-opera-launcher": "1.0.0",
+    "karma-safari-launcher": "1.0.0",
+    "karma-typescript": "4.1.1",
+    "karma-webpack": "4.0.2",
+    "lint-staged": "10.0.7",
+    "mocha": "7.0.1",
+    "nyc": "15.0.0",
+    "prettier": "~2.1.2",
+    "rollup": "~2.34.1",
+    "rollup-plugin-typescript": "~1.0.1",
+    "rollup-plugin-typescript2": "~0.26.0",
+    "ts-loader": "6.2.1",
+    "ts-node": "8.6.2",
+    "tsconfig-paths": "~3.9.0",
+    "ttypescript": "~1.5.12",
+    "typescript": "~3.9.7",
+    "typescript-transform-paths": "~2.0.3"
+  },
+  "dependencies": {
+    "peeler-js": "^0.4.0"
+  }
+}
