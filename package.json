@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "license": "MIT",
+  "main": "./index.js",
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "dev": "omni dev -P ./packages/mixin-jsbridge-sdk",
