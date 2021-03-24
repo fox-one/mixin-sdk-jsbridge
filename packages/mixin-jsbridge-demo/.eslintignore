@@ -1,0 +1,12 @@
+
+build/
+configs/
+es/
+lib/
+dist/
+node_modules/
+**/__test__/
+
+.eslintrc.js
+*.config.js
+*.conf.js

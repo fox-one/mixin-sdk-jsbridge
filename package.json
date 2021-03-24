@@ -17,6 +17,10 @@
   },
   "devDependencies": {
     "@omni-door/cli": "~2.3.3",
+    "karma": "4.4.1",
+    "karma-chrome-launcher": "3.1.0",
+    "karma-coverage": "2.0.1",
+    "karma-webpack": "4.0.2",
     "lerna": "^4.0.0"
   }
 }

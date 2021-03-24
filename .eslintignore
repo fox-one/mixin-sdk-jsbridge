@@ -1,17 +1,18 @@
-build/
-configs/
-es/
-lib/
+**/build/
+**/configs/
+**/es/
+**/lib/
 dist/
 server/
-demo/
+docs/
 node_modules/
-.docz/
-.storybook/
-.out/
+**/node_modules/
+**/.docz/
+**/.storybook/
+**/.out/
 **/__test__/
 **/__stories__/
-src/.umi
+**/src/.umi
 
 .eslintrc.js
 *.config.js
