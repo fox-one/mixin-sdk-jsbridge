@@ -1,9 +1,13 @@
 # @foxone/mixin-sdk-jsbridge
-该是用 lerna 管理的多包项目，请使用 [lerna](https://lerna.js.org/) 进行项目管理和开发
+
+https://fox-one.github.io/mixin-sdk-jsbridge/#/
+
+
+请使用 [lerna](https://lerna.js.org/) 结合 npm script 进行项目管理和开发
 
 ## init
   ```shell
-  yarn bootstrap
+  lerna bootstrap && yarn
   ```
 
 ## dev
