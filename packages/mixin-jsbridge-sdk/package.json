@@ -8,7 +8,7 @@
   "scripts": {
     "start": "omni dev",
     "dev": "omni dev",
-    "test": "npm run test:mocha",
+    "test": "karma start --single-run && npm run test:mocha",
     "test:mocha": "nyc mocha --opts mocha.opts",
     "test:headless": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "test:browser": "karma start --browsers Chrome",
@@ -27,7 +27,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "npm run lint && npm run test",
+      "pre-push": "npm run lint && npm run test:headless",
       "commit-msg": "npm run lint:commit"
     }
   },
@@ -89,7 +89,8 @@
     "tsconfig-paths": "~3.9.0",
     "ttypescript": "~1.5.12",
     "typescript": "~3.9.7",
-    "typescript-transform-paths": "~2.0.3"
+    "typescript-transform-paths": "~2.0.3",
+    "webpack": "^4.0.0"
   },
   "dependencies": {
     "peeler-js": "^0.4.0"
