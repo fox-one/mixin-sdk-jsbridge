@@ -12,6 +12,7 @@ node_modules/
 **/__test__/
 **/__stories__/
 src/.umi
+umd/
 
 .eslintrc.js
 *.config.js

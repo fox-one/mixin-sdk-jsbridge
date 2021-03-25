@@ -5,6 +5,11 @@ https://fox-one.github.io/mixin-sdk-jsbridge/#/
 
 请使用 [lerna](https://lerna.js.org/) 结合 npm script 进行项目管理和开发
 
+## install dependencies to global
+  ```shell
+  npm i -g lerna yarn
+  ```
+
 ## init
   ```shell
   lerna bootstrap && yarn

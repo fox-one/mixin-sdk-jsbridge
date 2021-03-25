@@ -1,2 +1,5 @@
-export {};
+class Bridge {}
+
+
+export { };
 export default {};

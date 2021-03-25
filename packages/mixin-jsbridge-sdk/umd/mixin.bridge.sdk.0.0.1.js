@@ -1,0 +1,1 @@
+(function(g,f){typeof exports==='object'&&typeof module!=='undefined'?f(exports):typeof define==='function'&&define.amd?define(['exports'],f):(g=typeof globalThis!=='undefined'?globalThis:g||self,f(g.$MixinBridge={}));}(this,(function(exports){'use strict';var index = {};exports.default=index;Object.defineProperty(exports,'__esModule',{value:true});})));
