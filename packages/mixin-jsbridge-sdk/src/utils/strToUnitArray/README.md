@@ -1,0 +1,7 @@
+# strToUnitArray
+
+## Example
+
+```typescript
+strToUnitArray()
+```

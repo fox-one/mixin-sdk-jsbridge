@@ -1,0 +1,7 @@
+# binArrayToStr
+
+## Example
+
+```typescript
+binArrayToStr()
+```
