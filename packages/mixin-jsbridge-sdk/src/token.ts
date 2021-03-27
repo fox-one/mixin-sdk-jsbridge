@@ -49,7 +49,7 @@ export function getAccessCode(params: {
   if (randomArr && hashArr) {
     const verifier = base64URLEncode(base64.fromByteArray(randomArr));
     const challenge = base64URLEncode(base64.fromByteArray(hashArr));
-    localStorage.setItem('code-verifier', verifier);
+    localStorage.setItem('_mixin-code-verifier', verifier);
 
     let SCOPESTR = '';
     Object.keys(auth).forEach(scope => {
@@ -59,7 +59,7 @@ export function getAccessCode(params: {
       else
         SCOPESTR += `+${scopeValue}`;
     });
-    let url = `https://mixin-oauth.firesbox.com/?client_id=${client_id}&redirect_url=${redirect_url}&scope=${SCOPESTR}&code_challenge=${challenge}`;
+    let url = `https://mixin-oauth.firesbox.com/?client_id=${client_id}&redirect_url=${redirect_url}&scope=${SCOPESTR}&code_challenge=${challenge}&response_type=code`;
     if (state) {
       const str = encodeURIComponent(JSON.stringify(state));
       url += `&state=${str}`;
@@ -72,7 +72,7 @@ export function getAccessToken(params: {
   code: string;
   client_id: string;
 }) {
-  const verifier = localStorage.getItem('code-verifier');
+  const verifier = localStorage.getItem('_mixin-code-verifier');
   const data = { ...params, code_verifier: verifier };
   return request({
     url: 'https://mixin-api.zeromesh.net/oauth/token',

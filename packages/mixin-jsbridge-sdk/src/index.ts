@@ -1,7 +1,7 @@
 import { parseUrl } from 'peeler-js';
 import messager from './messager';
 import { getAccessCode, getAccessToken } from './token';
-import { getLogger, parseError } from '@utils/index';
+import { getLogger, parseError, env } from '@utils/index';
 /** import types */
 import type { AUTH } from './token';
 
@@ -18,9 +18,31 @@ export class Bridge {
     this._token = void 0;
     this.logger = getLogger();
 
+    this.getContext = this.getContext.bind(this);
+    this.reloadTheme = this.reloadTheme.bind(this);
+    this.playlist = this.playlist.bind(this);
     this.login = this.login.bind(this);
-    this.getToken = this.getToken.bind(this);
+    this.requestToken = this.requestToken.bind(this);
+    this.getCode = this.getCode.bind(this);
     this.handlerError = this.handlerError.bind(this);
+  }
+
+  public getContext() {
+    const ctx = messager('getContext')();
+    ctx.platform = ctx.platform || (env().isIOS ? 'iOS' : 'Android');
+    return ctx;
+  }
+
+  public reloadTheme() {
+    messager('reloadTheme')();
+  }
+
+  public playlist(src: string[]) {
+    return messager('playlist')(src);
+  }
+
+  public get token() {
+    return this._token ?? localStorage.getItem('_mixin-token');
   }
 
   public login(auth: AUTH, params?: {
@@ -41,13 +63,12 @@ export class Bridge {
     });
   }
 
-  public getToken(params?: {
+  public requestToken(params?: {
     code?: string;
     client_id?: string;
-    persistence?: boolean;
-  }) {
+  }, persistence = true) {
     const { client_id: client_id_config } = this.config || {};
-    const { code: code_params, client_id: client_id_params, persistence } = params || {};
+    const { code: code_params, client_id: client_id_params } = params || {};
     const code_url = this.getCode();
 
     const client_id = client_id_params || client_id_config;
@@ -65,9 +86,7 @@ export class Bridge {
       })
         .then(token => {
           this._token = token;
-          if (persistence) {
-            localStorage.setItem('token', token);
-          }
+          if (persistence) localStorage.setItem('_mixin-token', token);
           resolve(token);
         })
         .catch(err => this.handlerError(err, 'getToken', 'get token failed!'));

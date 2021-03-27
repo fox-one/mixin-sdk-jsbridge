@@ -42,9 +42,10 @@ module.exports = function (config) {
         declaration: false
       }),
       babel({
-        include: 'node_modules/**',
-        extensions,
-        runtimeHelpers: true
+        exclude: 'node_modules/**',
+        plugins: [['@babel/plugin-transform-runtime', { corejs: 3 }]],
+        babelHelpers: 'runtime',
+        extensions
       }),
       json()
     ]
