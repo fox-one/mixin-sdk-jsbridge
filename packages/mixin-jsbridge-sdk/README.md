@@ -7,6 +7,6 @@
 
 - [接口文档](/2)
 
-- [Bridge-Debug 平台]()
+- [Bridge-Debug 平台](https://fox-one.github.io/mixin-sdk-jsbridge-debug/#/)
 
 - [github地址](https://github.com/fox-one/mixin-sdk-jsbridge/tree/master/packages/mixin-jsbridge-sdk)
