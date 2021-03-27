@@ -6151,22 +6151,40 @@ function () {
     this.getCode = bind$3(_context6 = this.getCode).call(_context6, this);
     this.handlerError = bind$3(_context7 = this.handlerError).call(_context7, this);
   }
+  /**
+   * 获取 app 上下文
+   * @returns
+   */
+
 
   Bridge.prototype.getContext = function () {
     var ctx = messager('getContext')();
     ctx.platform = ctx.platform || (env().isIOS ? 'iOS' : 'Android');
     return ctx;
   };
+  /**
+   * 重载
+   */
+
 
   Bridge.prototype.reloadTheme = function () {
     messager('reloadTheme')();
   };
+  /**
+   * 打开播放列表
+   * @param src
+   * @returns
+   */
+
 
   Bridge.prototype.playlist = function (src) {
     return messager('playlist')(src);
   };
 
   defineProperty$2(Bridge.prototype, "token", {
+    /**
+     * 获取 access token
+     */
     get: function get() {
       var _a;
 
@@ -6175,6 +6193,13 @@ function () {
     enumerable: false,
     configurable: true
   });
+  /**
+   * 跳转到授权登陆页
+   * @param auth
+   * @param params
+   * @returns
+   */
+
 
   Bridge.prototype.login = function (auth, params) {
     var client_id = (this.config || {}).client_id;
@@ -6190,6 +6215,13 @@ function () {
       auth: auth
     }));
   };
+  /**
+   * 根据 code 换取 access token
+   * @param params
+   * @param persistence
+   * @returns
+   */
+
 
   Bridge.prototype.requestToken = function (params, persistence) {
     var _this = this;

@@ -22,7 +22,8 @@ module.exports = {
     // https: true, // 以https协议启动开发服务 (start dev-server with https)
     devMiddlewareOptions: {
       headers: { 'Access-Control-Allow-Origin': '*' }
-    }
+    },
+    favicon: path.resolve(__dirname, './favicon.ico')
   },
 
   build: {
@@ -35,7 +36,7 @@ module.exports = {
 
     // 输出路径 (the directory for compiled project)
     // 务必使用绝对路径 (must be a absolute path)
-    outDir: path.resolve(__dirname, '../../../docs'),
+    outDir: path.resolve(__dirname, '../docs'),
 
     // 构建的资源是否加上hash，可选 'hash'、'contenthash'、'chunkhash' (whether the hash tag add to building result)
     hash: true,
@@ -45,7 +46,9 @@ module.exports = {
     configuration: config => merge(config, require(path.resolve(__dirname, 'webpack.config.prod.js'))),
 
     reserve: {
-      assets: [] // 构建结果保留其他资源的路径 (reserve other asset paths)
+      assets: [
+        path.resolve('./favicon.ico')
+      ] // 构建结果保留其他资源的路径 (reserve other asset paths)
     },
 
     preflight: {

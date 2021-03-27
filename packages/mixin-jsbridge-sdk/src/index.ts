@@ -27,24 +27,45 @@ export class Bridge {
     this.handlerError = this.handlerError.bind(this);
   }
 
+  /**
+   * 获取 app 上下文
+   * @returns 
+   */
   public getContext() {
     const ctx = messager('getContext')();
     ctx.platform = ctx.platform || (env().isIOS ? 'iOS' : 'Android');
     return ctx;
   }
 
+  /**
+   * 重载
+   */
   public reloadTheme() {
     messager('reloadTheme')();
   }
 
+  /**
+   * 打开播放列表
+   * @param src 
+   * @returns 
+   */
   public playlist(src: string[]) {
     return messager('playlist')(src);
   }
 
+  /**
+   * 获取 access token
+   */
   public get token() {
     return this._token ?? localStorage.getItem('_mixin-token');
   }
 
+  /**
+   * 跳转到授权登陆页
+   * @param auth
+   * @param params 
+   * @returns 
+   */
   public login(auth: AUTH, params?: {
     client_id?: string;
     redirect_url?: string;
@@ -63,6 +84,12 @@ export class Bridge {
     });
   }
 
+  /**
+   * 根据 code 换取 access token
+   * @param params 
+   * @param persistence 
+   * @returns 
+   */
   public requestToken(params?: {
     code?: string;
     client_id?: string;

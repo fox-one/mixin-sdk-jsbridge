@@ -1,7 +1,0 @@
-# binArrayToStr
-
-## Example
-
-```typescript
-binArrayToStr()
-```

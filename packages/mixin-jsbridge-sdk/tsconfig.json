@@ -74,6 +74,7 @@
     "es/",
     "dist/",
     "build/",
+    "umd/",
     "server/",
     "demo/",
     ".docz/",

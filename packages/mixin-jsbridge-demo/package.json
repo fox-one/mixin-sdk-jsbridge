@@ -31,6 +31,7 @@
   },
   "license": "ISC",
   "dependencies": {
+    "@foxone/mixin-sdk-jsbridge": "^0.0.1",
     "core-js": "^3.6.4",
     "regenerator-runtime": "^0.13.5",
     "vue": "^3.0.7",

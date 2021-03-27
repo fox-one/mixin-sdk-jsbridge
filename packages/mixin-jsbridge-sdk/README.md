@@ -1,59 +1,12 @@
-# mixin-jsbridge-sdk
+# @foxone/mixin-sdk-jsbridge
 
-## 快速开始 (quick start)
-### 安装依赖 (Install dependencies)
+**Mixin JsBridge SDK**
 
-```shell
-yarn
-```
+## 导航
+- [快速开始](/1)
 
-### 启动项目 (Run project)
+- [接口文档](/2)
 
-```shell
-yarn start
-```
-or
-```shell
-yarn dev
-```
+- [Bridge-Debug 平台]()
 
-### 新建模块 (Create a Module)
-
-```shell
-yarn new
-```
-
----
-
-## 构建和发布 (Build and Release)
-### 构建 (Build)
-```shell
-yarn build
-```
-
-*构建项目时绕过所有检查 (Bypass all pre-check before building) 👇*
-```shell
-yarn build -n
-```
-
-### 发布 (Release)
-```shell
-yarn release
-```
-
-*发布项目时忽略版本迭代 (Ignoring version of iteration) 👇*
-```shell
-yarn release -i
-```
-
-*发布项目时指定迭代的版本为0.3.25 (Manual specify version of iteration to 0.3.25) 👇*
-```shell
-yarn release -m 0.3.25
-```
-
-*发布项目时绕过所有检查 (Bypass all pre-check before release) 👇*
-```shell
-yarn release -n
-```
-
-**更多配置项请在 [omni.config.js](https://github.com/omni-door/cli/blob/master/docs/OMNI.zh-CN.md) 中编辑 (More powerful customizations is in [omni.config.js](https://github.com/omni-door/cli/blob/master/docs/OMNI.md))**
+- [github地址](https://github.com/fox-one/mixin-sdk-jsbridge/tree/master/packages/mixin-jsbridge-sdk)

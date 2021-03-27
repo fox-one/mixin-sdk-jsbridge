@@ -1,7 +1,0 @@
-# strToUnitArray
-
-## Example
-
-```typescript
-strToUnitArray()
-```

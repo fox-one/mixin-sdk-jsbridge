@@ -1,7 +1,0 @@
-# request
-
-## Example
-
-```typescript
-request()
-```
