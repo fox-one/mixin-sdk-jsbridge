@@ -47,7 +47,10 @@ module.exports = {
 
     reserve: {
       assets: [
-        path.resolve('./favicon.ico')
+        {
+          srcPath: path.resolve(__dirname, './favicon.ico'),
+          relativePath: './favicon.ico'
+        }
       ] // 构建结果保留其他资源的路径 (reserve other asset paths)
     },
 
