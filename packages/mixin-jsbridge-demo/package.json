@@ -33,6 +33,7 @@
   "dependencies": {
     "@foxone/mixin-sdk-jsbridge": "^0.0.1",
     "core-js": "^3.6.4",
+    "element-plus": "^1.0.2-beta.35",
     "regenerator-runtime": "^0.13.5",
     "vue": "^3.0.7",
     "vue-router": "^4.0.5"

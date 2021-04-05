@@ -1,6 +1,18 @@
 <template>
-  <div class="main">
-    <router-view />
+  <el-container class="main">
+    <el-header>
+      <template v-if="avatarUrl">
+        <el-avatar :size="50" :src="avatarUrl" />
+        <span>{{ userName }}</span>
+      </template>
+      <template v-else>
+        <el-button icon="el-icon-user" type="info" plain> 登录 </el-button>
+      </template>
+    </el-header>
+    <el-main>
+      <router-view />
+    </el-main>
+
     <span class="main-btn main-btn-home">
       <router-link to="/">Home</router-link>
     </span>
@@ -13,9 +25,23 @@
     <span class="main-btn main-btn-detail-2">
       <router-link to="/detail/2"> Detail - Part2 </router-link>
     </span>
-    <footer class="main-footer">OMNI-DOOR TEAM ©omni-door</footer>
-  </div>
+    <el-footer class="main-footer"> FoxONE FED ©foxone </el-footer>
+  </el-container>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  setup() {},
+  data() {
+    return {
+      avatarUrl: '',
+      userName: ''
+    };
+  }
+});
+</script>
 
 <style lang="less" scoped>
 @import './App.less';
