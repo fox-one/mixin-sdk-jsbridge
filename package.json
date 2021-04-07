@@ -17,7 +17,7 @@
     "release:demo": "omni release -P ./packages/mixin-jsbridge-demo"
   },
   "devDependencies": {
-    "@omni-door/cli": "~2.3.3",
+    "@omni-door/cli": "^2.3.6",
     "karma": "4.4.1",
     "karma-chrome-launcher": "3.1.0",
     "karma-coverage": "2.0.1",

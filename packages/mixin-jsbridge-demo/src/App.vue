@@ -6,7 +6,9 @@
         <span>{{ userName }}</span>
       </template>
       <template v-else>
-        <el-button icon="el-icon-user" type="info" plain> 登录 </el-button>
+        <el-button icon="el-icon-user" type="info" plain @click="goLogin">
+          登录
+        </el-button>
       </template>
     </el-header>
     <el-main>
@@ -31,6 +33,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import Bridge from '@foxone/mixin-sdk-jsbridge';
+
+const bridge = new Bridge();
 
 export default defineComponent({
   setup() {},
@@ -39,6 +44,9 @@ export default defineComponent({
       avatarUrl: '',
       userName: ''
     };
+  },
+  methods: {
+    goLogin: function () {}
   }
 });
 </script>
