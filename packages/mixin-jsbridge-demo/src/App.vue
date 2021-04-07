@@ -35,7 +35,9 @@
 import { defineComponent } from 'vue';
 import Bridge from '@foxone/mixin-sdk-jsbridge';
 
-const bridge = new Bridge();
+const bridge = new Bridge({
+  client_id: '86cf39ad-4e63-46c6-a6db-90cea8d05c1d'
+});
 
 export default defineComponent({
   setup() {},
@@ -46,7 +48,15 @@ export default defineComponent({
     };
   },
   methods: {
-    goLogin: function () {}
+    goLogin: function () {
+      bridge.login({
+        profile: true,
+        phone: true,
+        contacts: true,
+        assets: true,
+        snapshots: true
+      });
+    }
   }
 });
 </script>

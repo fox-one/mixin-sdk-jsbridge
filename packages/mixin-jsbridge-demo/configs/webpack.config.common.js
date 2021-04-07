@@ -53,6 +53,7 @@ module.exports = {
       '@pages': path.resolve(__dirname, '../src/pages'),
       '@components': path.resolve(__dirname, '../src/components')
     },
-    extensions: ['.vue', '.ts', '.tsx', '.js', '.jsx', '.less', '.css']
+    extensions: ['.vue', '.ts', '.tsx', '.js', '.jsx', '.less', '.css'],
+    fallback: { "crypto": false }
   }
 };
