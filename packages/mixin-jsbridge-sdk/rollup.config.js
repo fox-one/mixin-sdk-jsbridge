@@ -37,7 +37,8 @@ module.exports = function (config) {
       }),
       commonjs(),
       typescript({
-        target: 'es5',
+        target: "es2015",
+        module: "ESNext",
         lib: ["es5", "es6", "es2015", "es2016", "dom"],
         declaration: false
       }),
