@@ -11,6 +11,7 @@
     "new:demo": "omni new -P ./packages/mixin-jsbridge-demo",
     "lint": "lerna run lint",
     "build": "omni build -P ./packages/mixin-jsbridge-sdk",
+    "build:quick": "omni build -n -P ./packages/mixin-jsbridge-sdk",
     "build:demo": "omni build -P ./packages/mixin-jsbridge-demo",
     "build:doc": "cd ./packages/mixin-jsbridge-sdk && yarn build:demo",
     "release": "omni release -P ./packages/mixin-jsbridge-sdk",

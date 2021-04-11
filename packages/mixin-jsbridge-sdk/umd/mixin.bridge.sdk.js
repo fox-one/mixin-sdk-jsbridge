@@ -1734,19 +1734,57 @@ for (var COLLECTION_NAME in domIterables) {
     createNonEnumerableProperty(CollectionPrototype, TO_STRING_TAG$3, COLLECTION_NAME);
   }
   iterators[COLLECTION_NAME] = iterators.Array;
-}var promise$1 = path.Promise;var promise$2 = promise$1;var promise$3 = promise$2;// `Object.defineProperty` method
-// https://tc39.es/ecma262/#sec-object.defineproperty
-_export({ target: 'Object', stat: true, forced: !descriptors, sham: !descriptors }, {
-  defineProperty: objectDefineProperty.f
-});var defineProperty_1 = createCommonjsModule(function (module) {
-var Object = path.Object;
+}var promise$1 = path.Promise;var promise$2 = promise$1;var promise$3 = promise$2;var f$4 = Object.getOwnPropertySymbols;
 
-var defineProperty = module.exports = function defineProperty(it, key, desc) {
-  return Object.defineProperty(it, key, desc);
-};
+var objectGetOwnPropertySymbols = {
+	f: f$4
+};var nativeAssign = Object.assign;
+var defineProperty$1 = Object.defineProperty;
 
-if (Object.defineProperty.sham) defineProperty.sham = true;
-});var defineProperty$1 = defineProperty_1;var defineProperty$2 = defineProperty$1;var slice = [].slice;
+// `Object.assign` method
+// https://tc39.es/ecma262/#sec-object.assign
+var objectAssign = !nativeAssign || fails(function () {
+  // should have correct order of operations (Edge bug)
+  if (descriptors && nativeAssign({ b: 1 }, nativeAssign(defineProperty$1({}, 'a', {
+    enumerable: true,
+    get: function () {
+      defineProperty$1(this, 'b', {
+        value: 3,
+        enumerable: false
+      });
+    }
+  }), { b: 2 })).b !== 1) return true;
+  // should work with symbols and should have deterministic property order (V8 bug)
+  var A = {};
+  var B = {};
+  /* global Symbol -- required for testing */
+  var symbol = Symbol();
+  var alphabet = 'abcdefghijklmnopqrst';
+  A[symbol] = 7;
+  alphabet.split('').forEach(function (chr) { B[chr] = chr; });
+  return nativeAssign({}, A)[symbol] != 7 || objectKeys(nativeAssign({}, B)).join('') != alphabet;
+}) ? function assign(target, source) { // eslint-disable-line no-unused-vars -- required for `.length`
+  var T = toObject(target);
+  var argumentsLength = arguments.length;
+  var index = 1;
+  var getOwnPropertySymbols = objectGetOwnPropertySymbols.f;
+  var propertyIsEnumerable = objectPropertyIsEnumerable.f;
+  while (argumentsLength > index) {
+    var S = indexedObject(arguments[index++]);
+    var keys = getOwnPropertySymbols ? objectKeys(S).concat(getOwnPropertySymbols(S)) : objectKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
+    while (length > j) {
+      key = keys[j++];
+      if (!descriptors || propertyIsEnumerable.call(S, key)) T[key] = S[key];
+    }
+  } return T;
+} : nativeAssign;// `Object.assign` method
+// https://tc39.es/ecma262/#sec-object.assign
+_export({ target: 'Object', stat: true, forced: Object.assign !== objectAssign }, {
+  assign: objectAssign
+});var assign = path.Object.assign;var assign$1 = assign;var assign$2 = assign$1;var slice = [].slice;
 var factories = {};
 
 var construct = function (C, argsLength, args) {
@@ -1779,31 +1817,42 @@ _export({ target: 'Function', proto: true }, {
 var bind_1 = function (it) {
   var own = it.bind;
   return it === FunctionPrototype || (it instanceof Function && own === FunctionPrototype.bind) ? bind$1 : own;
-};var bind$2 = bind_1;var bind$3 = bind$2;/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
+};var bind$2 = bind_1;var bind$3 = bind$2;function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
 
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
+var classCallCheck = _classCallCheck;// `Object.defineProperty` method
+// https://tc39.es/ecma262/#sec-object.defineproperty
+_export({ target: 'Object', stat: true, forced: !descriptors, sham: !descriptors }, {
+  defineProperty: objectDefineProperty.f
+});var defineProperty_1 = createCommonjsModule(function (module) {
+var Object = path.Object;
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
+var defineProperty = module.exports = function defineProperty(it, key, desc) {
+  return Object.defineProperty(it, key, desc);
+};
 
-var __assign = function() {
-    __assign = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};/**
+if (Object.defineProperty.sham) defineProperty.sham = true;
+});var defineProperty$2 = defineProperty_1;var defineProperty$3 = defineProperty$2;function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+
+    defineProperty$3(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+var createClass = _createClass;/**
  * @param {AnyEventName} event event name
  * @param {function} fn event callback
  * @param {object} dom event dom
@@ -1984,7 +2033,96 @@ var numberParseInt = FORCED$1 ? function parseInt(string, radix) {
 // https://tc39.es/ecma262/#sec-parseint-string-radix
 _export({ global: true, forced: parseInt != numberParseInt }, {
   parseInt: numberParseInt
-});var logger = createCommonjsModule(function (module, exports) {
+});// `IsArray` abstract operation
+// https://tc39.es/ecma262/#sec-isarray
+var isArray = Array.isArray || function isArray(arg) {
+  return classofRaw(arg) == 'Array';
+};var createProperty = function (object, key, value) {
+  var propertyKey = toPrimitive(key);
+  if (propertyKey in object) objectDefineProperty.f(object, propertyKey, createPropertyDescriptor(0, value));
+  else object[propertyKey] = value;
+};var SPECIES$3 = wellKnownSymbol('species');
+
+// `ArraySpeciesCreate` abstract operation
+// https://tc39.es/ecma262/#sec-arrayspeciescreate
+var arraySpeciesCreate = function (originalArray, length) {
+  var C;
+  if (isArray(originalArray)) {
+    C = originalArray.constructor;
+    // cross-realm fallback
+    if (typeof C == 'function' && (C === Array || isArray(C.prototype))) C = undefined;
+    else if (isObject(C)) {
+      C = C[SPECIES$3];
+      if (C === null) C = undefined;
+    }
+  } return new (C === undefined ? Array : C)(length === 0 ? 0 : length);
+};var SPECIES$4 = wellKnownSymbol('species');
+
+var arrayMethodHasSpeciesSupport = function (METHOD_NAME) {
+  // We can't use this feature detection in V8 since it causes
+  // deoptimization and serious performance degradation
+  // https://github.com/zloirock/core-js/issues/677
+  return engineV8Version >= 51 || !fails(function () {
+    var array = [];
+    var constructor = array.constructor = {};
+    constructor[SPECIES$4] = function () {
+      return { foo: 1 };
+    };
+    return array[METHOD_NAME](Boolean).foo !== 1;
+  });
+};var IS_CONCAT_SPREADABLE = wellKnownSymbol('isConcatSpreadable');
+var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF;
+var MAXIMUM_ALLOWED_INDEX_EXCEEDED = 'Maximum allowed index exceeded';
+
+// We can't use this feature detection in V8 since it causes
+// deoptimization and serious performance degradation
+// https://github.com/zloirock/core-js/issues/679
+var IS_CONCAT_SPREADABLE_SUPPORT = engineV8Version >= 51 || !fails(function () {
+  var array = [];
+  array[IS_CONCAT_SPREADABLE] = false;
+  return array.concat()[0] !== array;
+});
+
+var SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('concat');
+
+var isConcatSpreadable = function (O) {
+  if (!isObject(O)) return false;
+  var spreadable = O[IS_CONCAT_SPREADABLE];
+  return spreadable !== undefined ? !!spreadable : isArray(O);
+};
+
+var FORCED$2 = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT;
+
+// `Array.prototype.concat` method
+// https://tc39.es/ecma262/#sec-array.prototype.concat
+// with adding support of @@isConcatSpreadable and @@species
+_export({ target: 'Array', proto: true, forced: FORCED$2 }, {
+  // eslint-disable-next-line no-unused-vars -- required for `.length`
+  concat: function concat(arg) {
+    var O = toObject(this);
+    var A = arraySpeciesCreate(O, 0);
+    var n = 0;
+    var i, k, length, len, E;
+    for (i = -1, length = arguments.length; i < length; i++) {
+      E = i === -1 ? O : arguments[i];
+      if (isConcatSpreadable(E)) {
+        len = toLength(E.length);
+        if (n + len > MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
+        for (k = 0; k < len; k++, n++) if (k in E) createProperty(A, n, E[k]);
+      } else {
+        if (n >= MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
+        createProperty(A, n++, E);
+      }
+    }
+    A.length = n;
+    return A;
+  }
+});var concat = entryVirtual('Array').concat;var ArrayPrototype$1 = Array.prototype;
+
+var concat_1 = function (it) {
+  var own = it.concat;
+  return it === ArrayPrototype$1 || (it instanceof Array && own === ArrayPrototype$1.concat) ? concat : own;
+};var concat$1 = concat_1;var concat$2 = concat$1;var logger = createCommonjsModule(function (module, exports) {
 function createCommonjsModule(e,t){return e(t={exports:{}},t.exports),t.exports}function getCjsExportFromNamespace(e){return e&&e.default||e}Object.defineProperty(exports,"__esModule",{value:!0});var _core=createCommonjsModule(function(e){var t=e.exports={version:"2.6.9"};"number"==typeof __e&&(__e=t);}),_core_1=_core.version,$JSON=_core.JSON||(_core.JSON={stringify:JSON.stringify}),stringify=function(e){return $JSON.stringify.apply($JSON,arguments)},stringify$1=stringify;function __awaiter(i,s,a,c){return new(a=a||Promise)(function(e,t){function r(e){try{n(c.next(e));}catch(e){t(e);}}function o(e){try{n(c.throw(e));}catch(e){t(e);}}function n(t){t.done?e(t.value):new a(function(e){e(t.value);}).then(r,o);}n((c=c.apply(i,s||[])).next());})}function __generator(r,o){var n,i,s,e,a={label:0,sent:function(){if(1&s[0])throw s[1];return s[1]},trys:[],ops:[]};return e={next:t(0),throw:t(1),return:t(2)},"function"==typeof Symbol&&(e[Symbol.iterator]=function(){return this}),e;function t(t){return function(e){return function(t){if(n)throw new TypeError("Generator is already executing.");for(;a;)try{if(n=1,i&&(s=2&t[0]?i.return:t[0]?i.throw||((s=i.return)&&s.call(i),0):i.next)&&!(s=s.call(i,t[1])).done)return s;switch(i=0,s&&(t=[2&t[0],s.value]),t[0]){case 0:case 1:s=t;break;case 4:return a.label++,{value:t[1],done:!1};case 5:a.label++,i=t[1],t=[0];continue;case 7:t=a.ops.pop(),a.trys.pop();continue;default:if(!(s=0<(s=a.trys).length&&s[s.length-1])&&(6===t[0]||2===t[0])){a=0;continue}if(3===t[0]&&(!s||t[1]>s[0]&&t[1]<s[3])){a.label=t[1];break}if(6===t[0]&&a.label<s[1]){a.label=s[1],s=t;break}if(s&&a.label<s[2]){a.label=s[2],a.ops.push(t);break}s[2]&&a.ops.pop(),a.trys.pop();continue}t=o.call(r,a);}catch(e){t=[6,e],i=0;}finally{n=s=0;}if(5&t[0])throw t[1];return {value:t[0]?t[1]:void 0,done:!0}}([t,e])}}}function __spreadArrays(){for(var e=0,t=0,r=arguments.length;t<r;t++)e+=arguments[t].length;var o=Array(e),n=0;for(t=0;t<r;t++)for(var i=arguments[t],s=0,a=i.length;s<a;s++,n++)o[n]=i[s];return o}var es6_object_toString=Object.freeze({}),ceil=Math.ceil,floor=Math.floor,_toInteger=function(e){return isNaN(e=+e)?0:(0<e?floor:ceil)(e)},_defined=function(e){if(null==e)throw TypeError("Can't call method on  "+e);return e},_stringAt=function(a){return function(e,t){var r,o,n=String(_defined(e)),i=_toInteger(t),s=n.length;return i<0||s<=i?a?"":void 0:(r=n.charCodeAt(i))<55296||56319<r||i+1===s||(o=n.charCodeAt(i+1))<56320||57343<o?a?n.charAt(i):r:a?n.slice(i,i+2):o-56320+(r-55296<<10)+65536}},_library=!0,_global=createCommonjsModule(function(e){var t=e.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=t);}),_aFunction=function(e){if("function"!=typeof e)throw TypeError(e+" is not a function!");return e},_ctx=function(o,n,e){if(_aFunction(o),void 0===n)return o;switch(e){case 1:return function(e){return o.call(n,e)};case 2:return function(e,t){return o.call(n,e,t)};case 3:return function(e,t,r){return o.call(n,e,t,r)}}return function(){return o.apply(n,arguments)}},_isObject=function(e){return "object"==typeof e?null!==e:"function"==typeof e},_anObject=function(e){if(!_isObject(e))throw TypeError(e+" is not an object!");return e},_fails=function(e){try{return !!e()}catch(e){return !0}},_descriptors=!_fails(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a}),document$1=_global.document,is=_isObject(document$1)&&_isObject(document$1.createElement),_domCreate=function(e){return is?document$1.createElement(e):{}},_ie8DomDefine=!_descriptors&&!_fails(function(){return 7!=Object.defineProperty(_domCreate("div"),"a",{get:function(){return 7}}).a}),_toPrimitive=function(e,t){if(!_isObject(e))return e;var r,o;if(t&&"function"==typeof(r=e.toString)&&!_isObject(o=r.call(e)))return o;if("function"==typeof(r=e.valueOf)&&!_isObject(o=r.call(e)))return o;if(!t&&"function"==typeof(r=e.toString)&&!_isObject(o=r.call(e)))return o;throw TypeError("Can't convert object to primitive value")},dP=Object.defineProperty,f=_descriptors?Object.defineProperty:function(e,t,r){if(_anObject(e),t=_toPrimitive(t,!0),_anObject(r),_ie8DomDefine)try{return dP(e,t,r)}catch(e){}if("get"in r||"set"in r)throw TypeError("Accessors not supported!");return "value"in r&&(e[t]=r.value),e},_objectDp={f:f},_propertyDesc=function(e,t){return {enumerable:!(1&e),configurable:!(2&e),writable:!(4&e),value:t}},_hide=_descriptors?function(e,t,r){return _objectDp.f(e,t,_propertyDesc(1,r))}:function(e,t,r){return e[t]=r,e},hasOwnProperty={}.hasOwnProperty,_has=function(e,t){return hasOwnProperty.call(e,t)},PROTOTYPE="prototype",$export=function(e,t,r){var o,n,i,s=e&$export.F,a=e&$export.G,c=e&$export.S,l=e&$export.P,u=e&$export.B,_=e&$export.W,f=a?_core:_core[t]||(_core[t]={}),p=f[PROTOTYPE],y=a?_global:c?_global[t]:(_global[t]||{})[PROTOTYPE];for(o in a&&(r=t),r)(n=!s&&y&&void 0!==y[o])&&_has(f,o)||(i=n?y[o]:r[o],f[o]=a&&"function"!=typeof y[o]?r[o]:u&&n?_ctx(i,_global):_&&y[o]==i?function(o){function e(e,t,r){if(this instanceof o){switch(arguments.length){case 0:return new o;case 1:return new o(e);case 2:return new o(e,t)}return new o(e,t,r)}return o.apply(this,arguments)}return e[PROTOTYPE]=o[PROTOTYPE],e}(i):l&&"function"==typeof i?_ctx(Function.call,i):i,l&&((f.virtual||(f.virtual={}))[o]=i,e&$export.R&&p&&!p[o]&&_hide(p,o,i)));};$export.F=1,$export.G=2,$export.S=4,$export.P=8,$export.B=16,$export.W=32,$export.U=64,$export.R=128;var _export=$export,_redefine=_hide,_iterators={},toString={}.toString,_cof=function(e){return toString.call(e).slice(8,-1)},_iobject=Object("z").propertyIsEnumerable(0)?Object:function(e){return "String"==_cof(e)?e.split(""):Object(e)},_toIobject=function(e){return _iobject(_defined(e))},min=Math.min,_toLength=function(e){return 0<e?min(_toInteger(e),9007199254740991):0},max=Math.max,min$1=Math.min,_toAbsoluteIndex=function(e,t){return (e=_toInteger(e))<0?max(e+t,0):min$1(e,t)},_arrayIncludes=function(a){return function(e,t,r){var o,n=_toIobject(e),i=_toLength(n.length),s=_toAbsoluteIndex(r,i);if(a&&t!=t){for(;s<i;)if((o=n[s++])!=o)return !0}else for(;s<i;s++)if((a||s in n)&&n[s]===t)return a||s||0;return !a&&-1}},_shared=createCommonjsModule(function(e){var t="__core-js_shared__",r=_global[t]||(_global[t]={});(e.exports=function(e,t){return r[e]||(r[e]=void 0!==t?t:{})})("versions",[]).push({version:_core.version,mode:"pure",copyright:"© 2019 Denis Pushkarev (zloirock.ru)"});}),id=0,px=Math.random(),_uid=function(e){return "Symbol(".concat(void 0===e?"":e,")_",(++id+px).toString(36))},shared=_shared("keys"),_sharedKey=function(e){return shared[e]||(shared[e]=_uid(e))},arrayIndexOf=_arrayIncludes(!1),IE_PROTO=_sharedKey("IE_PROTO"),_objectKeysInternal=function(e,t){var r,o=_toIobject(e),n=0,i=[];for(r in o)r!=IE_PROTO&&_has(o,r)&&i.push(r);for(;t.length>n;)_has(o,r=t[n++])&&(~arrayIndexOf(i,r)||i.push(r));return i},_enumBugKeys="constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(","),_objectKeys=Object.keys||function(e){return _objectKeysInternal(e,_enumBugKeys)},_objectDps=_descriptors?Object.defineProperties:function(e,t){_anObject(e);for(var r,o=_objectKeys(t),n=o.length,i=0;i<n;)_objectDp.f(e,r=o[i++],t[r]);return e},document$2=_global.document,_html=document$2&&document$2.documentElement,IE_PROTO$1=_sharedKey("IE_PROTO"),Empty=function(){},PROTOTYPE$1="prototype",createDict=function(){var e,t=_domCreate("iframe"),r=_enumBugKeys.length;for(t.style.display="none",_html.appendChild(t),t.src="javascript:",(e=t.contentWindow.document).open(),e.write("<script>document.F=Object<\/script>"),e.close(),createDict=e.F;r--;)delete createDict[PROTOTYPE$1][_enumBugKeys[r]];return createDict()},_objectCreate=Object.create||function(e,t){var r;return null!==e?(Empty[PROTOTYPE$1]=_anObject(e),r=new Empty,Empty[PROTOTYPE$1]=null,r[IE_PROTO$1]=e):r=createDict(),void 0===t?r:_objectDps(r,t)},_wks=createCommonjsModule(function(e){var t=_shared("wks"),r=_global.Symbol,o="function"==typeof r;(e.exports=function(e){return t[e]||(t[e]=o&&r[e]||(o?r:_uid)("Symbol."+e))}).store=t;}),def=_objectDp.f,TAG=_wks("toStringTag"),_setToStringTag=function(e,t,r){e&&!_has(e=r?e:e.prototype,TAG)&&def(e,TAG,{configurable:!0,value:t});},IteratorPrototype={};_hide(IteratorPrototype,_wks("iterator"),function(){return this});var _iterCreate=function(e,t,r){e.prototype=_objectCreate(IteratorPrototype,{next:_propertyDesc(1,r)}),_setToStringTag(e,t+" Iterator");},_toObject=function(e){return Object(_defined(e))},IE_PROTO$2=_sharedKey("IE_PROTO"),ObjectProto=Object.prototype,_objectGpo=Object.getPrototypeOf||function(e){return e=_toObject(e),_has(e,IE_PROTO$2)?e[IE_PROTO$2]:"function"==typeof e.constructor&&e instanceof e.constructor?e.constructor.prototype:e instanceof Object?ObjectProto:null},ITERATOR=_wks("iterator"),BUGGY=!([].keys&&"next"in[].keys()),FF_ITERATOR="@@iterator",KEYS="keys",VALUES="values",returnThis=function(){return this},_iterDefine=function(e,t,r,o,n,i,s){_iterCreate(r,t,o);function a(e){if(!BUGGY&&e in y)return y[e];switch(e){case KEYS:case VALUES:return function(){return new r(this,e)}}return function(){return new r(this,e)}}var c,l,u,_=t+" Iterator",f=n==VALUES,p=!1,y=e.prototype,h=y[ITERATOR]||y[FF_ITERATOR]||n&&y[n],b=h||a(n),g=n?f?a("entries"):b:void 0,m="Array"==t&&y.entries||h;if(m&&(u=_objectGpo(m.call(new e)))!==Object.prototype&&u.next&&_setToStringTag(u,_,!0),f&&h&&h.name!==VALUES&&(p=!0,b=function(){return h.call(this)}),s&&(BUGGY||p||!y[ITERATOR])&&_hide(y,ITERATOR,b),_iterators[t]=b,_iterators[_]=returnThis,n)if(c={values:f?b:a(VALUES),keys:i?b:a(KEYS),entries:g},s)for(l in c)l in y||_redefine(y,l,c[l]);else _export(_export.P+_export.F*(BUGGY||p),t,c);return c},$at=_stringAt(!0);_iterDefine(String,"String",function(e){this._t=String(e),this._i=0;},function(){var e,t=this._t,r=this._i;return r>=t.length?{value:void 0,done:!0}:(e=$at(t,r),this._i+=e.length,{value:e,done:!1})});var _iterStep=function(e,t){return {value:t,done:!!e}},es6_array_iterator=_iterDefine(Array,"Array",function(e,t){this._t=_toIobject(e),this._i=0,this._k=t;},function(){var e=this._t,t=this._k,r=this._i++;return !e||r>=e.length?(this._t=void 0,_iterStep(1)):_iterStep(0,"keys"==t?r:"values"==t?e[r]:[r,e[r]])},"values");_iterators.Arguments=_iterators.Array;for(var TO_STRING_TAG=_wks("toStringTag"),DOMIterables="CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,TextTrackList,TouchList".split(","),i=0;i<DOMIterables.length;i++){var NAME=DOMIterables[i],Collection=_global[NAME],proto=Collection&&Collection.prototype;proto&&!proto[TO_STRING_TAG]&&_hide(proto,TO_STRING_TAG,NAME),_iterators[NAME]=_iterators.Array;}var defer,channel,port,TAG$1=_wks("toStringTag"),ARG="Arguments"==_cof(function(){return arguments}()),tryGet=function(e,t){try{return e[t]}catch(e){}},_classof=function(e){var t,r,o;return void 0===e?"Undefined":null===e?"Null":"string"==typeof(r=tryGet(t=Object(e),TAG$1))?r:ARG?_cof(t):"Object"==(o=_cof(t))&&"function"==typeof t.callee?"Arguments":o},_anInstance=function(e,t,r,o){if(!(e instanceof t)||void 0!==o&&o in e)throw TypeError(r+": incorrect invocation!");return e},_iterCall=function(t,e,r,o){try{return o?e(_anObject(r)[0],r[1]):e(r)}catch(e){var n=t.return;throw void 0!==n&&_anObject(n.call(t)),e}},ITERATOR$1=_wks("iterator"),ArrayProto=Array.prototype,_isArrayIter=function(e){return void 0!==e&&(_iterators.Array===e||ArrayProto[ITERATOR$1]===e)},ITERATOR$2=_wks("iterator"),core_getIteratorMethod=_core.getIteratorMethod=function(e){if(null!=e)return e[ITERATOR$2]||e["@@iterator"]||_iterators[_classof(e)]},_forOf=createCommonjsModule(function(e){var f={},p={},t=e.exports=function(e,t,r,o,n){var i,s,a,c,l=n?function(){return e}:core_getIteratorMethod(e),u=_ctx(r,o,t?2:1),_=0;if("function"!=typeof l)throw TypeError(e+" is not iterable!");if(_isArrayIter(l)){for(i=_toLength(e.length);_<i;_++)if((c=t?u(_anObject(s=e[_])[0],s[1]):u(e[_]))===f||c===p)return c}else for(a=l.call(e);!(s=a.next()).done;)if((c=_iterCall(a,u,s.value,t))===f||c===p)return c};t.BREAK=f,t.RETURN=p;}),SPECIES=_wks("species"),_speciesConstructor=function(e,t){var r,o=_anObject(e).constructor;return void 0===o||null==(r=_anObject(o)[SPECIES])?t:_aFunction(r)},_invoke=function(e,t,r){var o=void 0===r;switch(t.length){case 0:return o?e():e.call(r);case 1:return o?e(t[0]):e.call(r,t[0]);case 2:return o?e(t[0],t[1]):e.call(r,t[0],t[1]);case 3:return o?e(t[0],t[1],t[2]):e.call(r,t[0],t[1],t[2]);case 4:return o?e(t[0],t[1],t[2],t[3]):e.call(r,t[0],t[1],t[2],t[3])}return e.apply(r,t)},process=_global.process,setTask=_global.setImmediate,clearTask=_global.clearImmediate,MessageChannel=_global.MessageChannel,Dispatch=_global.Dispatch,counter=0,queue={},ONREADYSTATECHANGE="onreadystatechange",run=function(){var e=+this;if(queue.hasOwnProperty(e)){var t=queue[e];delete queue[e],t();}},listener=function(e){run.call(e.data);};setTask&&clearTask||(setTask=function(e){for(var t=[],r=1;r<arguments.length;)t.push(arguments[r++]);return queue[++counter]=function(){_invoke("function"==typeof e?e:Function(e),t);},defer(counter),counter},clearTask=function(e){delete queue[e];},"process"==_cof(process)?defer=function(e){process.nextTick(_ctx(run,e,1));}:Dispatch&&Dispatch.now?defer=function(e){Dispatch.now(_ctx(run,e,1));}:MessageChannel?(port=(channel=new MessageChannel).port2,channel.port1.onmessage=listener,defer=_ctx(port.postMessage,port,1)):_global.addEventListener&&"function"==typeof postMessage&&!_global.importScripts?(defer=function(e){_global.postMessage(e+"","*");},_global.addEventListener("message",listener,!1)):defer=ONREADYSTATECHANGE in _domCreate("script")?function(e){_html.appendChild(_domCreate("script"))[ONREADYSTATECHANGE]=function(){_html.removeChild(this),run.call(e);};}:function(e){setTimeout(_ctx(run,e,1),0);});var _task={set:setTask,clear:clearTask},macrotask=_task.set,Observer=_global.MutationObserver||_global.WebKitMutationObserver,process$1=_global.process,Promise$1=_global.Promise,isNode="process"==_cof(process$1),_microtask=function(){function e(){var e,t;for(isNode&&(e=process$1.domain)&&e.exit();r;){t=r.fn,r=r.next;try{t();}catch(e){throw r?n():o=void 0,e}}o=void 0,e&&e.enter();}var r,o,n;if(isNode)n=function(){process$1.nextTick(e);};else if(!Observer||_global.navigator&&_global.navigator.standalone)if(Promise$1&&Promise$1.resolve){var t=Promise$1.resolve(void 0);n=function(){t.then(e);};}else n=function(){macrotask.call(_global,e);};else {var i=!0,s=document.createTextNode("");new Observer(e).observe(s,{characterData:!0}),n=function(){s.data=i=!i;};}return function(e){var t={fn:e,next:void 0};o&&(o.next=t),r||(r=t,n()),o=t;}};function PromiseCapability(e){var r,o;this.promise=new e(function(e,t){if(void 0!==r||void 0!==o)throw TypeError("Bad Promise constructor");r=e,o=t;}),this.resolve=_aFunction(r),this.reject=_aFunction(o);}var f$1=function(e){return new PromiseCapability(e)},_newPromiseCapability={f:f$1},_perform=function(e){try{return {e:!1,v:e()}}catch(e){return {e:!0,v:e}}},navigator=_global.navigator,_userAgent=navigator&&navigator.userAgent||"",_promiseResolve=function(e,t){if(_anObject(e),_isObject(t)&&t.constructor===e)return t;var r=_newPromiseCapability.f(e);return (0, r.resolve)(t),r.promise},_redefineAll=function(e,t,r){for(var o in t)r&&e[o]?e[o]=t[o]:_hide(e,o,t[o]);return e},SPECIES$1=_wks("species"),_setSpecies=function(e){var t="function"==typeof _core[e]?_core[e]:_global[e];_descriptors&&t&&!t[SPECIES$1]&&_objectDp.f(t,SPECIES$1,{configurable:!0,get:function(){return this}});},ITERATOR$3=_wks("iterator"),SAFE_CLOSING=!1;try{var riter=[7][ITERATOR$3]();riter.return=function(){SAFE_CLOSING=!0;},Array.from(riter,function(){throw 2});}catch(e){}var Internal,newGenericPromiseCapability,OwnPromiseCapability,Wrapper,_iterDetect=function(e,t){if(!t&&!SAFE_CLOSING)return !1;var r=!1;try{var o=[7],n=o[ITERATOR$3]();n.next=function(){return {done:r=!0}},o[ITERATOR$3]=function(){return n},e(o);}catch(e){}return r},task=_task.set,microtask=_microtask(),PROMISE="Promise",TypeError$1=_global.TypeError,process$2=_global.process,versions=process$2&&process$2.versions,v8=versions&&versions.v8||"",$Promise=_global[PROMISE],isNode$1="process"==_classof(process$2),empty=function(){},newPromiseCapability=newGenericPromiseCapability=_newPromiseCapability.f,USE_NATIVE=!!function(){try{var e=$Promise.resolve(1),t=(e.constructor={})[_wks("species")]=function(e){e(empty,empty);};return (isNode$1||"function"==typeof PromiseRejectionEvent)&&e.then(empty)instanceof t&&0!==v8.indexOf("6.6")&&-1===_userAgent.indexOf("Chrome/66")}catch(e){}}(),isThenable=function(e){var t;return !(!_isObject(e)||"function"!=typeof(t=e.then))&&t},notify=function(u,r){if(!u._n){u._n=!0;var o=u._c;microtask(function(){for(var c=u._v,l=1==u._s,e=0,t=function(e){var t,r,o,n=l?e.ok:e.fail,i=e.resolve,s=e.reject,a=e.domain;try{n?(l||(2==u._h&&onHandleUnhandled(u),u._h=1),!0===n?t=c:(a&&a.enter(),t=n(c),a&&(a.exit(),o=!0)),t===e.promise?s(TypeError$1("Promise-chain cycle")):(r=isThenable(t))?r.call(t,i,s):i(t)):s(c);}catch(e){a&&!o&&a.exit(),s(e);}};o.length>e;)t(o[e++]);u._c=[],u._n=!1,r&&!u._h&&onUnhandled(u);});}},onUnhandled=function(i){task.call(_global,function(){var e,t,r,o=i._v,n=isUnhandled(i);if(n&&(e=_perform(function(){isNode$1?process$2.emit("unhandledRejection",o,i):(t=_global.onunhandledrejection)?t({promise:i,reason:o}):(r=_global.console)&&r.error&&r.error("Unhandled promise rejection",o);}),i._h=isNode$1||isUnhandled(i)?2:1),i._a=void 0,n&&e.e)throw e.v});},isUnhandled=function(e){return 1!==e._h&&0===(e._a||e._c).length},onHandleUnhandled=function(t){task.call(_global,function(){var e;isNode$1?process$2.emit("rejectionHandled",t):(e=_global.onrejectionhandled)&&e({promise:t,reason:t._v});});},$reject=function(e){var t=this;t._d||(t._d=!0,(t=t._w||t)._v=e,t._s=2,t._a||(t._a=t._c.slice()),notify(t,!0));},$resolve=function(e){var r,o=this;if(!o._d){o._d=!0,o=o._w||o;try{if(o===e)throw TypeError$1("Promise can't be resolved itself");(r=isThenable(e))?microtask(function(){var t={_w:o,_d:!1};try{r.call(e,_ctx($resolve,t,1),_ctx($reject,t,1));}catch(e){$reject.call(t,e);}}):(o._v=e,o._s=1,notify(o,!1));}catch(e){$reject.call({_w:o,_d:!1},e);}}};USE_NATIVE||($Promise=function(e){_anInstance(this,$Promise,PROMISE,"_h"),_aFunction(e),Internal.call(this);try{e(_ctx($resolve,this,1),_ctx($reject,this,1));}catch(e){$reject.call(this,e);}},(Internal=function(e){this._c=[],this._a=void 0,this._s=0,this._d=!1,this._v=void 0,this._h=0,this._n=!1;}).prototype=_redefineAll($Promise.prototype,{then:function(e,t){var r=newPromiseCapability(_speciesConstructor(this,$Promise));return r.ok="function"!=typeof e||e,r.fail="function"==typeof t&&t,r.domain=isNode$1?process$2.domain:void 0,this._c.push(r),this._a&&this._a.push(r),this._s&&notify(this,!1),r.promise},catch:function(e){return this.then(void 0,e)}}),OwnPromiseCapability=function(){var e=new Internal;this.promise=e,this.resolve=_ctx($resolve,e,1),this.reject=_ctx($reject,e,1);},_newPromiseCapability.f=newPromiseCapability=function(e){return e===$Promise||e===Wrapper?new OwnPromiseCapability(e):newGenericPromiseCapability(e)}),_export(_export.G+_export.W+_export.F*!USE_NATIVE,{Promise:$Promise}),_setToStringTag($Promise,PROMISE),_setSpecies(PROMISE),Wrapper=_core[PROMISE],_export(_export.S+_export.F*!USE_NATIVE,PROMISE,{reject:function(e){var t=newPromiseCapability(this);return (0, t.reject)(e),t.promise}}),_export(_export.S+_export.F*_library,PROMISE,{resolve:function(e){return _promiseResolve(this===Wrapper?$Promise:this,e)}}),_export(_export.S+_export.F*!(USE_NATIVE&&_iterDetect(function(e){$Promise.all(e).catch(empty);})),PROMISE,{all:function(e){var s=this,t=newPromiseCapability(s),a=t.resolve,c=t.reject,r=_perform(function(){var o=[],n=0,i=1;_forOf(e,!1,function(e){var t=n++,r=!1;o.push(void 0),i++,s.resolve(e).then(function(e){r||(r=!0,o[t]=e,--i||a(o));},c);}),--i||a(o);});return r.e&&c(r.v),t.promise},race:function(e){var t=this,r=newPromiseCapability(t),o=r.reject,n=_perform(function(){_forOf(e,!1,function(e){t.resolve(e).then(r.resolve,o);});});return n.e&&o(n.v),r.promise}}),_export(_export.P+_export.R,"Promise",{finally:function(t){var r=_speciesConstructor(this,_core.Promise||_global.Promise),e="function"==typeof t;return this.then(e?function(e){return _promiseResolve(r,t()).then(function(){return e})}:t,e?function(e){return _promiseResolve(r,t()).then(function(){throw e})}:t)}}),_export(_export.S,"Promise",{try:function(e){var t=_newPromiseCapability.f(this),r=_perform(e);return (r.e?t.reject:t.resolve)(r.v),t.promise}}),getCjsExportFromNamespace(es6_object_toString);var promise=_core.Promise,promise$1=promise,_meta=createCommonjsModule(function(e){function r(e){t(e,o,{value:{i:"O"+ ++n,w:{}}});}var o=_uid("meta"),t=_objectDp.f,n=0,i=Object.isExtensible||function(){return !0},s=!_fails(function(){return i(Object.preventExtensions({}))}),a=e.exports={KEY:o,NEED:!1,fastKey:function(e,t){if(!_isObject(e))return "symbol"==typeof e?e:("string"==typeof e?"S":"P")+e;if(!_has(e,o)){if(!i(e))return "F";if(!t)return "E";r(e);}return e[o].i},getWeak:function(e,t){if(!_has(e,o)){if(!i(e))return !0;if(!t)return !1;r(e);}return e[o].w},onFreeze:function(e){return s&&a.NEED&&i(e)&&!_has(e,o)&&r(e),e}};}),_meta_1=_meta.KEY,_meta_2=_meta.NEED,_meta_3=_meta.fastKey,_meta_4=_meta.getWeak,_meta_5=_meta.onFreeze,f$2=_wks,_wksExt={f:f$2},defineProperty=_objectDp.f,_wksDefine=function(e){var t=_core.Symbol||(_core.Symbol={});"_"==e.charAt(0)||e in t||defineProperty(t,e,{value:_wksExt.f(e)});},f$3=Object.getOwnPropertySymbols,_objectGops={f:f$3},f$4={}.propertyIsEnumerable,_objectPie={f:f$4},_enumKeys=function(e){var t=_objectKeys(e),r=_objectGops.f;if(r)for(var o,n=r(e),i=_objectPie.f,s=0;n.length>s;)i.call(e,o=n[s++])&&t.push(o);return t},_isArray=Array.isArray||function(e){return "Array"==_cof(e)},hiddenKeys=_enumBugKeys.concat("length","prototype"),f$5=Object.getOwnPropertyNames||function(e){return _objectKeysInternal(e,hiddenKeys)},_objectGopn={f:f$5},gOPN=_objectGopn.f,toString$1={}.toString,windowNames="object"==typeof window&&window&&Object.getOwnPropertyNames?Object.getOwnPropertyNames(window):[],getWindowNames=function(e){try{return gOPN(e)}catch(e){return windowNames.slice()}},f$6=function(e){return windowNames&&"[object Window]"==toString$1.call(e)?getWindowNames(e):gOPN(_toIobject(e))},_objectGopnExt={f:f$6},gOPD=Object.getOwnPropertyDescriptor,f$7=_descriptors?gOPD:function(e,t){if(e=_toIobject(e),t=_toPrimitive(t,!0),_ie8DomDefine)try{return gOPD(e,t)}catch(e){}if(_has(e,t))return _propertyDesc(!_objectPie.f.call(e,t),e[t])},_objectGopd={f:f$7},META=_meta.KEY,gOPD$1=_objectGopd.f,dP$1=_objectDp.f,gOPN$1=_objectGopnExt.f,$Symbol=_global.Symbol,$JSON$1=_global.JSON,_stringify=$JSON$1&&$JSON$1.stringify,PROTOTYPE$2="prototype",HIDDEN=_wks("_hidden"),TO_PRIMITIVE=_wks("toPrimitive"),isEnum={}.propertyIsEnumerable,SymbolRegistry=_shared("symbol-registry"),AllSymbols=_shared("symbols"),OPSymbols=_shared("op-symbols"),ObjectProto$1=Object[PROTOTYPE$2],USE_NATIVE$1="function"==typeof $Symbol&&!!_objectGops.f,QObject=_global.QObject,setter=!QObject||!QObject[PROTOTYPE$2]||!QObject[PROTOTYPE$2].findChild,setSymbolDesc=_descriptors&&_fails(function(){return 7!=_objectCreate(dP$1({},"a",{get:function(){return dP$1(this,"a",{value:7}).a}})).a})?function(e,t,r){var o=gOPD$1(ObjectProto$1,t);o&&delete ObjectProto$1[t],dP$1(e,t,r),o&&e!==ObjectProto$1&&dP$1(ObjectProto$1,t,o);}:dP$1,wrap=function(e){var t=AllSymbols[e]=_objectCreate($Symbol[PROTOTYPE$2]);return t._k=e,t},isSymbol=USE_NATIVE$1&&"symbol"==typeof $Symbol.iterator?function(e){return "symbol"==typeof e}:function(e){return e instanceof $Symbol},$defineProperty=function(e,t,r){return e===ObjectProto$1&&$defineProperty(OPSymbols,t,r),_anObject(e),t=_toPrimitive(t,!0),_anObject(r),_has(AllSymbols,t)?(r.enumerable?(_has(e,HIDDEN)&&e[HIDDEN][t]&&(e[HIDDEN][t]=!1),r=_objectCreate(r,{enumerable:_propertyDesc(0,!1)})):(_has(e,HIDDEN)||dP$1(e,HIDDEN,_propertyDesc(1,{})),e[HIDDEN][t]=!0),setSymbolDesc(e,t,r)):dP$1(e,t,r)},$defineProperties=function(e,t){_anObject(e);for(var r,o=_enumKeys(t=_toIobject(t)),n=0,i=o.length;n<i;)$defineProperty(e,r=o[n++],t[r]);return e},$create=function(e,t){return void 0===t?_objectCreate(e):$defineProperties(_objectCreate(e),t)},$propertyIsEnumerable=function(e){var t=isEnum.call(this,e=_toPrimitive(e,!0));return !(this===ObjectProto$1&&_has(AllSymbols,e)&&!_has(OPSymbols,e))&&(!(t||!_has(this,e)||!_has(AllSymbols,e)||_has(this,HIDDEN)&&this[HIDDEN][e])||t)},$getOwnPropertyDescriptor=function(e,t){if(e=_toIobject(e),t=_toPrimitive(t,!0),e!==ObjectProto$1||!_has(AllSymbols,t)||_has(OPSymbols,t)){var r=gOPD$1(e,t);return !r||!_has(AllSymbols,t)||_has(e,HIDDEN)&&e[HIDDEN][t]||(r.enumerable=!0),r}},$getOwnPropertyNames=function(e){for(var t,r=gOPN$1(_toIobject(e)),o=[],n=0;r.length>n;)_has(AllSymbols,t=r[n++])||t==HIDDEN||t==META||o.push(t);return o},$getOwnPropertySymbols=function(e){for(var t,r=e===ObjectProto$1,o=gOPN$1(r?OPSymbols:_toIobject(e)),n=[],i=0;o.length>i;)!_has(AllSymbols,t=o[i++])||r&&!_has(ObjectProto$1,t)||n.push(AllSymbols[t]);return n};USE_NATIVE$1||(_redefine(($Symbol=function(e){if(this instanceof $Symbol)throw TypeError("Symbol is not a constructor!");var t=_uid(0<arguments.length?e:void 0),r=function(e){this===ObjectProto$1&&r.call(OPSymbols,e),_has(this,HIDDEN)&&_has(this[HIDDEN],t)&&(this[HIDDEN][t]=!1),setSymbolDesc(this,t,_propertyDesc(1,e));};return _descriptors&&setter&&setSymbolDesc(ObjectProto$1,t,{configurable:!0,set:r}),wrap(t)})[PROTOTYPE$2],"toString",function(){return this._k}),_objectGopd.f=$getOwnPropertyDescriptor,_objectDp.f=$defineProperty,_objectGopn.f=_objectGopnExt.f=$getOwnPropertyNames,_objectPie.f=$propertyIsEnumerable,_objectGops.f=$getOwnPropertySymbols,_descriptors&&!_library&&_redefine(ObjectProto$1,"propertyIsEnumerable",$propertyIsEnumerable),_wksExt.f=function(e){return wrap(_wks(e))}),_export(_export.G+_export.W+_export.F*!USE_NATIVE$1,{Symbol:$Symbol});for(var es6Symbols="hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","),j=0;es6Symbols.length>j;)_wks(es6Symbols[j++]);for(var wellKnownSymbols=_objectKeys(_wks.store),k=0;wellKnownSymbols.length>k;)_wksDefine(wellKnownSymbols[k++]);_export(_export.S+_export.F*!USE_NATIVE$1,"Symbol",{for:function(e){return _has(SymbolRegistry,e+="")?SymbolRegistry[e]:SymbolRegistry[e]=$Symbol(e)},keyFor:function(e){if(!isSymbol(e))throw TypeError(e+" is not a symbol!");for(var t in SymbolRegistry)if(SymbolRegistry[t]===e)return t},useSetter:function(){setter=!0;},useSimple:function(){setter=!1;}}),_export(_export.S+_export.F*!USE_NATIVE$1,"Object",{create:$create,defineProperty:$defineProperty,defineProperties:$defineProperties,getOwnPropertyDescriptor:$getOwnPropertyDescriptor,getOwnPropertyNames:$getOwnPropertyNames,getOwnPropertySymbols:$getOwnPropertySymbols});var FAILS_ON_PRIMITIVES=_fails(function(){_objectGops.f(1);});_export(_export.S+_export.F*FAILS_ON_PRIMITIVES,"Object",{getOwnPropertySymbols:function(e){return _objectGops.f(_toObject(e))}}),$JSON$1&&_export(_export.S+_export.F*(!USE_NATIVE$1||_fails(function(){var e=$Symbol();return "[null]"!=_stringify([e])||"{}"!=_stringify({a:e})||"{}"!=_stringify(Object(e))})),"JSON",{stringify:function(e){for(var t,r,o=[e],n=1;n<arguments.length;)o.push(arguments[n++]);if(r=t=o[1],(_isObject(t)||void 0!==e)&&!isSymbol(e))return _isArray(t)||(t=function(e,t){if("function"==typeof r&&(t=r.call(this,e,t)),!isSymbol(t))return t}),o[1]=t,_stringify.apply($JSON$1,o)}}),$Symbol[PROTOTYPE$2][TO_PRIMITIVE]||_hide($Symbol[PROTOTYPE$2],TO_PRIMITIVE,$Symbol[PROTOTYPE$2].valueOf),_setToStringTag($Symbol,"Symbol"),_setToStringTag(Math,"Math",!0),_setToStringTag(_global.JSON,"JSON",!0),_wksDefine("asyncIterator"),_wksDefine("observable");var args,symbol=_core.Symbol,symbol$1=symbol,gen=function(){return __generator(this,function(e){switch(e.label){case 0:return [4];case 1:return e.sent(),[2]}})};!function(){args=arguments;}();var typeMap={string:"",number:1,boolean:!0,null:null,undefined:void 0,symbol:symbol$1(1),array:[],arguments:args,object:{},regexp:/regexp/,date:new Date,function:function(){},promise:promise$1.resolve(void 0),generatorfunction:gen,generator:gen(),asyncfunction:function(){return __awaiter(void 0,void 0,void 0,function(){return __generator(this,function(e){return [2]})})}};function isType(r){return function(e){if("object"!=typeof e)return typeof e===r.toLowerCase();var t=Object.prototype.toString.call(e).length-1;return Object.prototype.toString.call(e).slice(8,t).toLowerCase()===r.toLowerCase()}}_export(_export.S,"Date",{now:function(){return (new Date).getTime()}});var logLevelSet,now=_core.Date.now,now$1=now;function getTs(){return now$1&&+now$1()||(new Date).getTime()}function getLocalDate(e){void 0===e&&(e=getTs());var t=new Date(e),r=t.getTimezoneOffset(),o={year:t.getFullYear()+"",month:t.getMonth()+1+"",day:t.getDate()+"",hour:t.getHours()+"",minute:t.getMinutes()+"",second:t.getSeconds()+"",timezone:Math.abs(r)/60+""};for(var n in o)if(Object.prototype.hasOwnProperty.call(o,n)){var i=o[n];i.length<=1&&(o[n]="0"+i);}return o.month+"/"+o.day+"/"+o.year+" "+o.hour+":"+o.minute+":"+o.second+" GMT"+(0<r?"-":"+")+o.timezone+"00"}!function(e){e[e.detail=0]="detail",e[e.info=1]="info",e[e.warn=2]="warn",e[e.error=3]="error",e[e.success=4]="success",e[e.silent=5]="silent";}(logLevelSet=logLevelSet||{});var colorPlates={log:"color: #1f132b; background-color: #f0f0f0",info:"color: white; background-color: #2274A5",warn:"color: #494008; background-color: #e7c60c",error:"color: white; background-color: #D33F49",success:"color: white; background-color: #95B46A"},nodeColorPlates={font:{log:"[30m",info:"[37m",warn:"[30m",error:"[37m",success:"[37m"},bg:{log:"[47m",info:"[44m",warn:"[43m",error:"[41m",success:"[42m"}},Logger=function(){function e(e){void 0===e&&(e={}),this.debug=e.debug||!1,this.logLevel=+(e.logLevel&&""+logLevelSet[e.logLevel]||logLevelSet.warn),this.logPrefix=e.logPrefix||"Peeler-Js",this._logOptimize=this._logOptimize.bind(this);}return e.prototype.setPrefix=function(e){return e&&"string"==typeof e&&(this.logPrefix=e),this},e.prototype.setLevel=function(e){return e&&void 0!==logLevelSet[e]&&(this.logLevel=logLevelSet[e]),this},e.prototype.setDebug=function(e){return "boolean"==typeof e&&(this.debug=e),this},e.prototype.detail=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];var r=this.logLevel!==logLevelSet.silent&&this.logLevel===logLevelSet.detail;this.debug&&r&&this._logOptimize.apply(this,__spreadArrays(["log"],e));},e.prototype.log=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];this.detail.apply(this,e);},e.prototype.info=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];var r=this.logLevel!==logLevelSet.silent&&this.logLevel!==logLevelSet.error&&this.logLevel!==logLevelSet.warn;this.debug&&r&&this._logOptimize.apply(this,__spreadArrays(["info"],e));},e.prototype.logInfo=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];this.info.apply(this,e);},e.prototype.warn=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];var r=this.logLevel!==logLevelSet.silent&&this.logLevel!==logLevelSet.error;this.debug&&r&&this._logOptimize.apply(this,__spreadArrays(["warn"],e));},e.prototype.logWarn=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];this.warn.apply(this,e);},e.prototype.error=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];var r=this.logLevel!==logLevelSet.silent;this.debug&&r&&this._logOptimize.apply(this,__spreadArrays(["error"],e));},e.prototype.logErr=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];this.error.apply(this,e);},e.prototype.success=function(){for(var e=[],t=0;t<arguments.length;t++)e[t]=arguments[t];var r=this.logLevel!==logLevelSet.silent;this.debug&&r&&this._logOptimize.apply(this,__spreadArrays(["success"],e));},e.prototype._logOptimize=function(e){for(var t=[],r=1;r<arguments.length;r++)t[r-1]=arguments[r];var o="undefined"!=typeof window,n="success"===e?console.log.bind(console):console[e].bind(console),i=o?["%c "+e.charAt(0).toUpperCase()+e.slice(1)+" ",colorPlates[e]]:[""+nodeColorPlates.font[e]+nodeColorPlates.bg[e]+"%s[0m"," "+e.charAt(0).toUpperCase()+e.slice(1)+" "],s=t.every(function(e){return isType("object")(e)||isType("array")(e)});try{if(console.table&&s)return n.apply(void 0,__spreadArrays(i,["["+this.logPrefix+"] ("+getLocalDate()+"):"])),void console.table(t)}catch(e){}t=t.map(function(e){if(isType("object")(e)||isType("array")(e))try{return stringify$1(e)}catch(e){}return e}),n.apply(void 0,__spreadArrays(i,["["+this.logPrefix+"]:"],t,["("+getLocalDate()+")"]));},e}();exports.Logger=Logger,exports.default=Logger;
 });var logger$1 = new logger.Logger({
   debug: true,
@@ -1996,9 +2134,13 @@ function getPrefix(scope, suffix) {
   var str = 'FOX-ONE-JSBridge';
 
   if (scope && suffix) {
-    str = str + " " + scope + "-" + suffix;
+    var _context, _context2;
+
+    str = concat$2(_context = concat$2(_context2 = "".concat(str, " ")).call(_context2, scope, "-")).call(_context, suffix);
   } else if (scope) {
-    str = str + " " + scope;
+    var _context3;
+
+    str = concat$2(_context3 = "".concat(str, " ")).call(_context3, scope);
   }
 
   return str;
@@ -2014,26 +2156,7 @@ function getUA(e){if(!e)return null;function i(i){return i.test(e)}function o(i)
   var _a;
 
   var ua = (_a = window === null || window === void 0 ? void 0 : window.navigator) === null || _a === void 0 ? void 0 : _a.userAgent;
-  return __assign({}, getUA_1.getUA(ua));
-}var logger$2 = getLogger('strToUnitArray');
-function strToUnitArray(str) {
-  if (typeof Uint8Array === 'undefined') {
-    logger$2().warn('Your browser not support Unit8Array!');
-    return null;
-  }
-
-  try {
-    var ret = new Uint8Array(str.length);
-
-    for (var i = 0; i < ret.length; i++) {
-      ret[i] = str.charCodeAt(i);
-    }
-
-    return ret;
-  } catch (err) {
-    logger$2().warn(err);
-    return null;
-  }
+  return assign$2({}, getUA_1.getUA(ua));
 }function parseError(err) {
   var _a, _b, _c;
 
@@ -2065,7 +2188,7 @@ var toString$1 = Object.prototype.toString;
  * @param {Object} val The value to test
  * @returns {boolean} True if value is an Array, otherwise false
  */
-function isArray(val) {
+function isArray$1(val) {
   return toString$1.call(val) === '[object Array]';
 }
 
@@ -2292,7 +2415,7 @@ function forEach(obj, fn) {
     obj = [obj];
   }
 
-  if (isArray(obj)) {
+  if (isArray$1(obj)) {
     // Iterate over array values
     for (var i = 0, l = obj.length; i < l; i++) {
       fn.call(null, obj[i], i, obj);
@@ -2331,7 +2454,7 @@ function merge(/* obj1, obj2, obj3, ... */) {
       result[key] = merge(result[key], val);
     } else if (isPlainObject(val)) {
       result[key] = merge({}, val);
-    } else if (isArray(val)) {
+    } else if (isArray$1(val)) {
       result[key] = val.slice();
     } else {
       result[key] = val;
@@ -2377,7 +2500,7 @@ function stripBOM(content) {
 }
 
 var utils = {
-  isArray: isArray,
+  isArray: isArray$1,
   isArrayBuffer: isArrayBuffer,
   isBuffer: isBuffer,
   isFormData: isFormData,
@@ -4573,8 +4696,8 @@ var _default$1 = handleRes;
 
 var handleRes_1 = /*#__PURE__*/Object.defineProperty({
 	default: _default$1
-}, '__esModule', {value: true});var __assign$1 = (commonjsGlobal && commonjsGlobal.__assign) || function () {
-    __assign$1 = Object.assign || function(t) {
+}, '__esModule', {value: true});var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
+    __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
             for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -4582,7 +4705,7 @@ var handleRes_1 = /*#__PURE__*/Object.defineProperty({
         }
         return t;
     };
-    return __assign$1.apply(this, arguments);
+    return __assign.apply(this, arguments);
 };
 var __importDefault = (commonjsGlobal && commonjsGlobal.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -4610,25 +4733,25 @@ var Request = /** @class */ (function () {
         if (netWorkError) {
             return {
                 message: 'Network exception, please try again later',
-                data: __assign$1(__assign$1({}, data), { status: status })
+                data: __assign(__assign({}, data), { status: status })
             };
         }
         else if (status >= 500) {
             return {
                 message: 'The server is not stable. Please try again later.',
-                data: __assign$1(__assign$1({}, data), { status: status })
+                data: __assign(__assign({}, data), { status: status })
             };
         }
         else if (status) {
             return {
                 message: 'The network is unstable. Please try again later.',
-                data: __assign$1(__assign$1({}, data), { status: status })
+                data: __assign(__assign({}, data), { status: status })
             };
         }
         else {
             return {
                 message: 'Client network connection abnormal, please try again',
-                data: __assign$1(__assign$1({}, data), { status: -1 })
+                data: __assign(__assign({}, data), { status: -1 })
             };
         }
     };
@@ -4681,7 +4804,7 @@ var Request = /** @class */ (function () {
     Request.prototype.setting = function (config) {
         if (!config)
             return this._logger.logWarn('setting method required correct parameters!');
-        this._config = __assign$1(__assign$1({}, this._config), config);
+        this._config = __assign(__assign({}, this._config), config);
         this._handleRes = handleRes_1$1.default(this._config);
     };
     Request.prototype.request = function (options) {
@@ -4749,17 +4872,16 @@ var Request = /** @class */ (function () {
     };
     return Request;
 }());
-var _default$2 = Request;var _a;
-var request = (_a = new _default$2({
+var _default$2 = Request;var _Request = new _default$2({
   codeMap: {
     suc_code: 200,
     err_code: -1
   },
   codeField: 'code'
-}), _a.request),
-    setting = _a.setting;var isType_1 = createCommonjsModule(function (module, exports) {
+}),
+    request = _Request.request;var isType_1 = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports,"__esModule",{value:!0});var es6_object_toString=Object.freeze({}),ceil=Math.ceil,floor=Math.floor,_toInteger=function(e){return isNaN(e=+e)?0:(0<e?floor:ceil)(e)},_defined=function(e){if(null==e)throw TypeError("Can't call method on  "+e);return e},_stringAt=function(c){return function(e,t){var r,o,n=String(_defined(e)),i=_toInteger(t),s=n.length;return i<0||s<=i?c?"":void 0:(r=n.charCodeAt(i))<55296||56319<r||i+1===s||(o=n.charCodeAt(i+1))<56320||57343<o?c?n.charAt(i):r:c?n.slice(i,i+2):o-56320+(r-55296<<10)+65536}},_library=!0;function createCommonjsModule(e,t){return e(t={exports:{}},t.exports),t.exports}function getCjsExportFromNamespace(e){return e&&e.default||e}var _global=createCommonjsModule(function(e){var t=e.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=t);}),_core=createCommonjsModule(function(e){var t=e.exports={version:"2.6.9"};"number"==typeof __e&&(__e=t);}),_core_1=_core.version,_aFunction=function(e){if("function"!=typeof e)throw TypeError(e+" is not a function!");return e},_ctx=function(o,n,e){if(_aFunction(o),void 0===n)return o;switch(e){case 1:return function(e){return o.call(n,e)};case 2:return function(e,t){return o.call(n,e,t)};case 3:return function(e,t,r){return o.call(n,e,t,r)}}return function(){return o.apply(n,arguments)}},_isObject=function(e){return "object"==typeof e?null!==e:"function"==typeof e},_anObject=function(e){if(!_isObject(e))throw TypeError(e+" is not an object!");return e},_fails=function(e){try{return !!e()}catch(e){return !0}},_descriptors=!_fails(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a}),document$1=_global.document,is=_isObject(document$1)&&_isObject(document$1.createElement),_domCreate=function(e){return is?document$1.createElement(e):{}},_ie8DomDefine=!_descriptors&&!_fails(function(){return 7!=Object.defineProperty(_domCreate("div"),"a",{get:function(){return 7}}).a}),_toPrimitive=function(e,t){if(!_isObject(e))return e;var r,o;if(t&&"function"==typeof(r=e.toString)&&!_isObject(o=r.call(e)))return o;if("function"==typeof(r=e.valueOf)&&!_isObject(o=r.call(e)))return o;if(!t&&"function"==typeof(r=e.toString)&&!_isObject(o=r.call(e)))return o;throw TypeError("Can't convert object to primitive value")},dP=Object.defineProperty,f=_descriptors?Object.defineProperty:function(e,t,r){if(_anObject(e),t=_toPrimitive(t,!0),_anObject(r),_ie8DomDefine)try{return dP(e,t,r)}catch(e){}if("get"in r||"set"in r)throw TypeError("Accessors not supported!");return "value"in r&&(e[t]=r.value),e},_objectDp={f:f},_propertyDesc=function(e,t){return {enumerable:!(1&e),configurable:!(2&e),writable:!(4&e),value:t}},_hide=_descriptors?function(e,t,r){return _objectDp.f(e,t,_propertyDesc(1,r))}:function(e,t,r){return e[t]=r,e},hasOwnProperty={}.hasOwnProperty,_has=function(e,t){return hasOwnProperty.call(e,t)},PROTOTYPE="prototype",$export=function(e,t,r){var o,n,i,s=e&$export.F,c=e&$export.G,a=e&$export.S,u=e&$export.P,l=e&$export.B,_=e&$export.W,f=c?_core:_core[t]||(_core[t]={}),p=f[PROTOTYPE],y=c?_global:a?_global[t]:(_global[t]||{})[PROTOTYPE];for(o in c&&(r=t),r)(n=!s&&y&&void 0!==y[o])&&_has(f,o)||(i=n?y[o]:r[o],f[o]=c&&"function"!=typeof y[o]?r[o]:l&&n?_ctx(i,_global):_&&y[o]==i?function(o){function e(e,t,r){if(this instanceof o){switch(arguments.length){case 0:return new o;case 1:return new o(e);case 2:return new o(e,t)}return new o(e,t,r)}return o.apply(this,arguments)}return e[PROTOTYPE]=o[PROTOTYPE],e}(i):u&&"function"==typeof i?_ctx(Function.call,i):i,u&&((f.virtual||(f.virtual={}))[o]=i,e&$export.R&&p&&!p[o]&&_hide(p,o,i)));};$export.F=1,$export.G=2,$export.S=4,$export.P=8,$export.B=16,$export.W=32,$export.U=64,$export.R=128;var _export=$export,_redefine=_hide,_iterators={},toString={}.toString,_cof=function(e){return toString.call(e).slice(8,-1)},_iobject=Object("z").propertyIsEnumerable(0)?Object:function(e){return "String"==_cof(e)?e.split(""):Object(e)},_toIobject=function(e){return _iobject(_defined(e))},min=Math.min,_toLength=function(e){return 0<e?min(_toInteger(e),9007199254740991):0},max=Math.max,min$1=Math.min,_toAbsoluteIndex=function(e,t){return (e=_toInteger(e))<0?max(e+t,0):min$1(e,t)},_arrayIncludes=function(c){return function(e,t,r){var o,n=_toIobject(e),i=_toLength(n.length),s=_toAbsoluteIndex(r,i);if(c&&t!=t){for(;s<i;)if((o=n[s++])!=o)return !0}else for(;s<i;s++)if((c||s in n)&&n[s]===t)return c||s||0;return !c&&-1}},_shared=createCommonjsModule(function(e){var t="__core-js_shared__",r=_global[t]||(_global[t]={});(e.exports=function(e,t){return r[e]||(r[e]=void 0!==t?t:{})})("versions",[]).push({version:_core.version,mode:"pure",copyright:"© 2019 Denis Pushkarev (zloirock.ru)"});}),id=0,px=Math.random(),_uid=function(e){return "Symbol(".concat(void 0===e?"":e,")_",(++id+px).toString(36))},shared=_shared("keys"),_sharedKey=function(e){return shared[e]||(shared[e]=_uid(e))},arrayIndexOf=_arrayIncludes(!1),IE_PROTO=_sharedKey("IE_PROTO"),_objectKeysInternal=function(e,t){var r,o=_toIobject(e),n=0,i=[];for(r in o)r!=IE_PROTO&&_has(o,r)&&i.push(r);for(;t.length>n;)_has(o,r=t[n++])&&(~arrayIndexOf(i,r)||i.push(r));return i},_enumBugKeys="constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(","),_objectKeys=Object.keys||function(e){return _objectKeysInternal(e,_enumBugKeys)},_objectDps=_descriptors?Object.defineProperties:function(e,t){_anObject(e);for(var r,o=_objectKeys(t),n=o.length,i=0;i<n;)_objectDp.f(e,r=o[i++],t[r]);return e},document$2=_global.document,_html=document$2&&document$2.documentElement,IE_PROTO$1=_sharedKey("IE_PROTO"),Empty=function(){},PROTOTYPE$1="prototype",createDict=function(){var e,t=_domCreate("iframe"),r=_enumBugKeys.length;for(t.style.display="none",_html.appendChild(t),t.src="javascript:",(e=t.contentWindow.document).open(),e.write("<script>document.F=Object<\/script>"),e.close(),createDict=e.F;r--;)delete createDict[PROTOTYPE$1][_enumBugKeys[r]];return createDict()},_objectCreate=Object.create||function(e,t){var r;return null!==e?(Empty[PROTOTYPE$1]=_anObject(e),r=new Empty,Empty[PROTOTYPE$1]=null,r[IE_PROTO$1]=e):r=createDict(),void 0===t?r:_objectDps(r,t)},_wks=createCommonjsModule(function(e){var t=_shared("wks"),r=_global.Symbol,o="function"==typeof r;(e.exports=function(e){return t[e]||(t[e]=o&&r[e]||(o?r:_uid)("Symbol."+e))}).store=t;}),def=_objectDp.f,TAG=_wks("toStringTag"),_setToStringTag=function(e,t,r){e&&!_has(e=r?e:e.prototype,TAG)&&def(e,TAG,{configurable:!0,value:t});},IteratorPrototype={};_hide(IteratorPrototype,_wks("iterator"),function(){return this});var _iterCreate=function(e,t,r){e.prototype=_objectCreate(IteratorPrototype,{next:_propertyDesc(1,r)}),_setToStringTag(e,t+" Iterator");},_toObject=function(e){return Object(_defined(e))},IE_PROTO$2=_sharedKey("IE_PROTO"),ObjectProto=Object.prototype,_objectGpo=Object.getPrototypeOf||function(e){return e=_toObject(e),_has(e,IE_PROTO$2)?e[IE_PROTO$2]:"function"==typeof e.constructor&&e instanceof e.constructor?e.constructor.prototype:e instanceof Object?ObjectProto:null},ITERATOR=_wks("iterator"),BUGGY=!([].keys&&"next"in[].keys()),FF_ITERATOR="@@iterator",KEYS="keys",VALUES="values",returnThis=function(){return this},_iterDefine=function(e,t,r,o,n,i,s){_iterCreate(r,t,o);function c(e){if(!BUGGY&&e in y)return y[e];switch(e){case KEYS:case VALUES:return function(){return new r(this,e)}}return function(){return new r(this,e)}}var a,u,l,_=t+" Iterator",f=n==VALUES,p=!1,y=e.prototype,b=y[ITERATOR]||y[FF_ITERATOR]||n&&y[n],m=b||c(n),h=n?f?c("entries"):m:void 0,d="Array"==t&&y.entries||b;if(d&&(l=_objectGpo(d.call(new e)))!==Object.prototype&&l.next&&_setToStringTag(l,_,!0),f&&b&&b.name!==VALUES&&(p=!0,m=function(){return b.call(this)}),s&&(BUGGY||p||!y[ITERATOR])&&_hide(y,ITERATOR,m),_iterators[t]=m,_iterators[_]=returnThis,n)if(a={values:f?m:c(VALUES),keys:i?m:c(KEYS),entries:h},s)for(u in a)u in y||_redefine(y,u,a[u]);else _export(_export.P+_export.F*(BUGGY||p),t,a);return a},$at=_stringAt(!0);_iterDefine(String,"String",function(e){this._t=String(e),this._i=0;},function(){var e,t=this._t,r=this._i;return r>=t.length?{value:void 0,done:!0}:(e=$at(t,r),this._i+=e.length,{value:e,done:!1})});var _iterStep=function(e,t){return {value:t,done:!!e}},es6_array_iterator=_iterDefine(Array,"Array",function(e,t){this._t=_toIobject(e),this._i=0,this._k=t;},function(){var e=this._t,t=this._k,r=this._i++;return !e||r>=e.length?(this._t=void 0,_iterStep(1)):_iterStep(0,"keys"==t?r:"values"==t?e[r]:[r,e[r]])},"values");_iterators.Arguments=_iterators.Array;for(var TO_STRING_TAG=_wks("toStringTag"),DOMIterables="CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,TextTrackList,TouchList".split(","),i=0;i<DOMIterables.length;i++){var NAME=DOMIterables[i],Collection=_global[NAME],proto=Collection&&Collection.prototype;proto&&!proto[TO_STRING_TAG]&&_hide(proto,TO_STRING_TAG,NAME),_iterators[NAME]=_iterators.Array;}var defer,channel,port,TAG$1=_wks("toStringTag"),ARG="Arguments"==_cof(function(){return arguments}()),tryGet=function(e,t){try{return e[t]}catch(e){}},_classof=function(e){var t,r,o;return void 0===e?"Undefined":null===e?"Null":"string"==typeof(r=tryGet(t=Object(e),TAG$1))?r:ARG?_cof(t):"Object"==(o=_cof(t))&&"function"==typeof t.callee?"Arguments":o},_anInstance=function(e,t,r,o){if(!(e instanceof t)||void 0!==o&&o in e)throw TypeError(r+": incorrect invocation!");return e},_iterCall=function(t,e,r,o){try{return o?e(_anObject(r)[0],r[1]):e(r)}catch(e){var n=t.return;throw void 0!==n&&_anObject(n.call(t)),e}},ITERATOR$1=_wks("iterator"),ArrayProto=Array.prototype,_isArrayIter=function(e){return void 0!==e&&(_iterators.Array===e||ArrayProto[ITERATOR$1]===e)},ITERATOR$2=_wks("iterator"),core_getIteratorMethod=_core.getIteratorMethod=function(e){if(null!=e)return e[ITERATOR$2]||e["@@iterator"]||_iterators[_classof(e)]},_forOf=createCommonjsModule(function(e){var f={},p={},t=e.exports=function(e,t,r,o,n){var i,s,c,a,u=n?function(){return e}:core_getIteratorMethod(e),l=_ctx(r,o,t?2:1),_=0;if("function"!=typeof u)throw TypeError(e+" is not iterable!");if(_isArrayIter(u)){for(i=_toLength(e.length);_<i;_++)if((a=t?l(_anObject(s=e[_])[0],s[1]):l(e[_]))===f||a===p)return a}else for(c=u.call(e);!(s=c.next()).done;)if((a=_iterCall(c,l,s.value,t))===f||a===p)return a};t.BREAK=f,t.RETURN=p;}),SPECIES=_wks("species"),_speciesConstructor=function(e,t){var r,o=_anObject(e).constructor;return void 0===o||null==(r=_anObject(o)[SPECIES])?t:_aFunction(r)},_invoke=function(e,t,r){var o=void 0===r;switch(t.length){case 0:return o?e():e.call(r);case 1:return o?e(t[0]):e.call(r,t[0]);case 2:return o?e(t[0],t[1]):e.call(r,t[0],t[1]);case 3:return o?e(t[0],t[1],t[2]):e.call(r,t[0],t[1],t[2]);case 4:return o?e(t[0],t[1],t[2],t[3]):e.call(r,t[0],t[1],t[2],t[3])}return e.apply(r,t)},process=_global.process,setTask=_global.setImmediate,clearTask=_global.clearImmediate,MessageChannel=_global.MessageChannel,Dispatch=_global.Dispatch,counter=0,queue={},ONREADYSTATECHANGE="onreadystatechange",run=function(){var e=+this;if(queue.hasOwnProperty(e)){var t=queue[e];delete queue[e],t();}},listener=function(e){run.call(e.data);};setTask&&clearTask||(setTask=function(e){for(var t=[],r=1;r<arguments.length;)t.push(arguments[r++]);return queue[++counter]=function(){_invoke("function"==typeof e?e:Function(e),t);},defer(counter),counter},clearTask=function(e){delete queue[e];},"process"==_cof(process)?defer=function(e){process.nextTick(_ctx(run,e,1));}:Dispatch&&Dispatch.now?defer=function(e){Dispatch.now(_ctx(run,e,1));}:MessageChannel?(port=(channel=new MessageChannel).port2,channel.port1.onmessage=listener,defer=_ctx(port.postMessage,port,1)):_global.addEventListener&&"function"==typeof postMessage&&!_global.importScripts?(defer=function(e){_global.postMessage(e+"","*");},_global.addEventListener("message",listener,!1)):defer=ONREADYSTATECHANGE in _domCreate("script")?function(e){_html.appendChild(_domCreate("script"))[ONREADYSTATECHANGE]=function(){_html.removeChild(this),run.call(e);};}:function(e){setTimeout(_ctx(run,e,1),0);});var _task={set:setTask,clear:clearTask},macrotask=_task.set,Observer=_global.MutationObserver||_global.WebKitMutationObserver,process$1=_global.process,Promise$1=_global.Promise,isNode="process"==_cof(process$1),_microtask=function(){function e(){var e,t;for(isNode&&(e=process$1.domain)&&e.exit();r;){t=r.fn,r=r.next;try{t();}catch(e){throw r?n():o=void 0,e}}o=void 0,e&&e.enter();}var r,o,n;if(isNode)n=function(){process$1.nextTick(e);};else if(!Observer||_global.navigator&&_global.navigator.standalone)if(Promise$1&&Promise$1.resolve){var t=Promise$1.resolve(void 0);n=function(){t.then(e);};}else n=function(){macrotask.call(_global,e);};else {var i=!0,s=document.createTextNode("");new Observer(e).observe(s,{characterData:!0}),n=function(){s.data=i=!i;};}return function(e){var t={fn:e,next:void 0};o&&(o.next=t),r||(r=t,n()),o=t;}};function PromiseCapability(e){var r,o;this.promise=new e(function(e,t){if(void 0!==r||void 0!==o)throw TypeError("Bad Promise constructor");r=e,o=t;}),this.resolve=_aFunction(r),this.reject=_aFunction(o);}var f$1=function(e){return new PromiseCapability(e)},_newPromiseCapability={f:f$1},_perform=function(e){try{return {e:!1,v:e()}}catch(e){return {e:!0,v:e}}},navigator=_global.navigator,_userAgent=navigator&&navigator.userAgent||"",_promiseResolve=function(e,t){if(_anObject(e),_isObject(t)&&t.constructor===e)return t;var r=_newPromiseCapability.f(e);return (0, r.resolve)(t),r.promise},_redefineAll=function(e,t,r){for(var o in t)r&&e[o]?e[o]=t[o]:_hide(e,o,t[o]);return e},SPECIES$1=_wks("species"),_setSpecies=function(e){var t="function"==typeof _core[e]?_core[e]:_global[e];_descriptors&&t&&!t[SPECIES$1]&&_objectDp.f(t,SPECIES$1,{configurable:!0,get:function(){return this}});},ITERATOR$3=_wks("iterator"),SAFE_CLOSING=!1;try{var riter=[7][ITERATOR$3]();riter.return=function(){SAFE_CLOSING=!0;},Array.from(riter,function(){throw 2});}catch(e){}var Internal,newGenericPromiseCapability,OwnPromiseCapability,Wrapper,_iterDetect=function(e,t){if(!t&&!SAFE_CLOSING)return !1;var r=!1;try{var o=[7],n=o[ITERATOR$3]();n.next=function(){return {done:r=!0}},o[ITERATOR$3]=function(){return n},e(o);}catch(e){}return r},task=_task.set,microtask=_microtask(),PROMISE="Promise",TypeError$1=_global.TypeError,process$2=_global.process,versions=process$2&&process$2.versions,v8=versions&&versions.v8||"",$Promise=_global[PROMISE],isNode$1="process"==_classof(process$2),empty=function(){},newPromiseCapability=newGenericPromiseCapability=_newPromiseCapability.f,USE_NATIVE=!!function(){try{var e=$Promise.resolve(1),t=(e.constructor={})[_wks("species")]=function(e){e(empty,empty);};return (isNode$1||"function"==typeof PromiseRejectionEvent)&&e.then(empty)instanceof t&&0!==v8.indexOf("6.6")&&-1===_userAgent.indexOf("Chrome/66")}catch(e){}}(),isThenable=function(e){var t;return !(!_isObject(e)||"function"!=typeof(t=e.then))&&t},notify=function(l,r){if(!l._n){l._n=!0;var o=l._c;microtask(function(){for(var a=l._v,u=1==l._s,e=0,t=function(e){var t,r,o,n=u?e.ok:e.fail,i=e.resolve,s=e.reject,c=e.domain;try{n?(u||(2==l._h&&onHandleUnhandled(l),l._h=1),!0===n?t=a:(c&&c.enter(),t=n(a),c&&(c.exit(),o=!0)),t===e.promise?s(TypeError$1("Promise-chain cycle")):(r=isThenable(t))?r.call(t,i,s):i(t)):s(a);}catch(e){c&&!o&&c.exit(),s(e);}};o.length>e;)t(o[e++]);l._c=[],l._n=!1,r&&!l._h&&onUnhandled(l);});}},onUnhandled=function(i){task.call(_global,function(){var e,t,r,o=i._v,n=isUnhandled(i);if(n&&(e=_perform(function(){isNode$1?process$2.emit("unhandledRejection",o,i):(t=_global.onunhandledrejection)?t({promise:i,reason:o}):(r=_global.console)&&r.error&&r.error("Unhandled promise rejection",o);}),i._h=isNode$1||isUnhandled(i)?2:1),i._a=void 0,n&&e.e)throw e.v});},isUnhandled=function(e){return 1!==e._h&&0===(e._a||e._c).length},onHandleUnhandled=function(t){task.call(_global,function(){var e;isNode$1?process$2.emit("rejectionHandled",t):(e=_global.onrejectionhandled)&&e({promise:t,reason:t._v});});},$reject=function(e){var t=this;t._d||(t._d=!0,(t=t._w||t)._v=e,t._s=2,t._a||(t._a=t._c.slice()),notify(t,!0));},$resolve=function(e){var r,o=this;if(!o._d){o._d=!0,o=o._w||o;try{if(o===e)throw TypeError$1("Promise can't be resolved itself");(r=isThenable(e))?microtask(function(){var t={_w:o,_d:!1};try{r.call(e,_ctx($resolve,t,1),_ctx($reject,t,1));}catch(e){$reject.call(t,e);}}):(o._v=e,o._s=1,notify(o,!1));}catch(e){$reject.call({_w:o,_d:!1},e);}}};USE_NATIVE||($Promise=function(e){_anInstance(this,$Promise,PROMISE,"_h"),_aFunction(e),Internal.call(this);try{e(_ctx($resolve,this,1),_ctx($reject,this,1));}catch(e){$reject.call(this,e);}},(Internal=function(e){this._c=[],this._a=void 0,this._s=0,this._d=!1,this._v=void 0,this._h=0,this._n=!1;}).prototype=_redefineAll($Promise.prototype,{then:function(e,t){var r=newPromiseCapability(_speciesConstructor(this,$Promise));return r.ok="function"!=typeof e||e,r.fail="function"==typeof t&&t,r.domain=isNode$1?process$2.domain:void 0,this._c.push(r),this._a&&this._a.push(r),this._s&&notify(this,!1),r.promise},catch:function(e){return this.then(void 0,e)}}),OwnPromiseCapability=function(){var e=new Internal;this.promise=e,this.resolve=_ctx($resolve,e,1),this.reject=_ctx($reject,e,1);},_newPromiseCapability.f=newPromiseCapability=function(e){return e===$Promise||e===Wrapper?new OwnPromiseCapability(e):newGenericPromiseCapability(e)}),_export(_export.G+_export.W+_export.F*!USE_NATIVE,{Promise:$Promise}),_setToStringTag($Promise,PROMISE),_setSpecies(PROMISE),Wrapper=_core[PROMISE],_export(_export.S+_export.F*!USE_NATIVE,PROMISE,{reject:function(e){var t=newPromiseCapability(this);return (0, t.reject)(e),t.promise}}),_export(_export.S+_export.F*_library,PROMISE,{resolve:function(e){return _promiseResolve(this===Wrapper?$Promise:this,e)}}),_export(_export.S+_export.F*!(USE_NATIVE&&_iterDetect(function(e){$Promise.all(e).catch(empty);})),PROMISE,{all:function(e){var s=this,t=newPromiseCapability(s),c=t.resolve,a=t.reject,r=_perform(function(){var o=[],n=0,i=1;_forOf(e,!1,function(e){var t=n++,r=!1;o.push(void 0),i++,s.resolve(e).then(function(e){r||(r=!0,o[t]=e,--i||c(o));},a);}),--i||c(o);});return r.e&&a(r.v),t.promise},race:function(e){var t=this,r=newPromiseCapability(t),o=r.reject,n=_perform(function(){_forOf(e,!1,function(e){t.resolve(e).then(r.resolve,o);});});return n.e&&o(n.v),r.promise}}),_export(_export.P+_export.R,"Promise",{finally:function(t){var r=_speciesConstructor(this,_core.Promise||_global.Promise),e="function"==typeof t;return this.then(e?function(e){return _promiseResolve(r,t()).then(function(){return e})}:t,e?function(e){return _promiseResolve(r,t()).then(function(){throw e})}:t)}}),_export(_export.S,"Promise",{try:function(e){var t=_newPromiseCapability.f(this),r=_perform(e);return (r.e?t.reject:t.resolve)(r.v),t.promise}}),getCjsExportFromNamespace(es6_object_toString);var promise=_core.Promise,promise$1=promise,_meta=createCommonjsModule(function(e){function r(e){t(e,o,{value:{i:"O"+ ++n,w:{}}});}var o=_uid("meta"),t=_objectDp.f,n=0,i=Object.isExtensible||function(){return !0},s=!_fails(function(){return i(Object.preventExtensions({}))}),c=e.exports={KEY:o,NEED:!1,fastKey:function(e,t){if(!_isObject(e))return "symbol"==typeof e?e:("string"==typeof e?"S":"P")+e;if(!_has(e,o)){if(!i(e))return "F";if(!t)return "E";r(e);}return e[o].i},getWeak:function(e,t){if(!_has(e,o)){if(!i(e))return !0;if(!t)return !1;r(e);}return e[o].w},onFreeze:function(e){return s&&c.NEED&&i(e)&&!_has(e,o)&&r(e),e}};}),_meta_1=_meta.KEY,_meta_2=_meta.NEED,_meta_3=_meta.fastKey,_meta_4=_meta.getWeak,_meta_5=_meta.onFreeze,f$2=_wks,_wksExt={f:f$2},defineProperty=_objectDp.f,_wksDefine=function(e){var t=_core.Symbol||(_core.Symbol={});"_"==e.charAt(0)||e in t||defineProperty(t,e,{value:_wksExt.f(e)});},f$3=Object.getOwnPropertySymbols,_objectGops={f:f$3},f$4={}.propertyIsEnumerable,_objectPie={f:f$4},_enumKeys=function(e){var t=_objectKeys(e),r=_objectGops.f;if(r)for(var o,n=r(e),i=_objectPie.f,s=0;n.length>s;)i.call(e,o=n[s++])&&t.push(o);return t},_isArray=Array.isArray||function(e){return "Array"==_cof(e)},hiddenKeys=_enumBugKeys.concat("length","prototype"),f$5=Object.getOwnPropertyNames||function(e){return _objectKeysInternal(e,hiddenKeys)},_objectGopn={f:f$5},gOPN=_objectGopn.f,toString$1={}.toString,windowNames="object"==typeof window&&window&&Object.getOwnPropertyNames?Object.getOwnPropertyNames(window):[],getWindowNames=function(e){try{return gOPN(e)}catch(e){return windowNames.slice()}},f$6=function(e){return windowNames&&"[object Window]"==toString$1.call(e)?getWindowNames(e):gOPN(_toIobject(e))},_objectGopnExt={f:f$6},gOPD=Object.getOwnPropertyDescriptor,f$7=_descriptors?gOPD:function(e,t){if(e=_toIobject(e),t=_toPrimitive(t,!0),_ie8DomDefine)try{return gOPD(e,t)}catch(e){}if(_has(e,t))return _propertyDesc(!_objectPie.f.call(e,t),e[t])},_objectGopd={f:f$7},META=_meta.KEY,gOPD$1=_objectGopd.f,dP$1=_objectDp.f,gOPN$1=_objectGopnExt.f,$Symbol=_global.Symbol,$JSON=_global.JSON,_stringify=$JSON&&$JSON.stringify,PROTOTYPE$2="prototype",HIDDEN=_wks("_hidden"),TO_PRIMITIVE=_wks("toPrimitive"),isEnum={}.propertyIsEnumerable,SymbolRegistry=_shared("symbol-registry"),AllSymbols=_shared("symbols"),OPSymbols=_shared("op-symbols"),ObjectProto$1=Object[PROTOTYPE$2],USE_NATIVE$1="function"==typeof $Symbol&&!!_objectGops.f,QObject=_global.QObject,setter=!QObject||!QObject[PROTOTYPE$2]||!QObject[PROTOTYPE$2].findChild,setSymbolDesc=_descriptors&&_fails(function(){return 7!=_objectCreate(dP$1({},"a",{get:function(){return dP$1(this,"a",{value:7}).a}})).a})?function(e,t,r){var o=gOPD$1(ObjectProto$1,t);o&&delete ObjectProto$1[t],dP$1(e,t,r),o&&e!==ObjectProto$1&&dP$1(ObjectProto$1,t,o);}:dP$1,wrap=function(e){var t=AllSymbols[e]=_objectCreate($Symbol[PROTOTYPE$2]);return t._k=e,t},isSymbol=USE_NATIVE$1&&"symbol"==typeof $Symbol.iterator?function(e){return "symbol"==typeof e}:function(e){return e instanceof $Symbol},$defineProperty=function(e,t,r){return e===ObjectProto$1&&$defineProperty(OPSymbols,t,r),_anObject(e),t=_toPrimitive(t,!0),_anObject(r),_has(AllSymbols,t)?(r.enumerable?(_has(e,HIDDEN)&&e[HIDDEN][t]&&(e[HIDDEN][t]=!1),r=_objectCreate(r,{enumerable:_propertyDesc(0,!1)})):(_has(e,HIDDEN)||dP$1(e,HIDDEN,_propertyDesc(1,{})),e[HIDDEN][t]=!0),setSymbolDesc(e,t,r)):dP$1(e,t,r)},$defineProperties=function(e,t){_anObject(e);for(var r,o=_enumKeys(t=_toIobject(t)),n=0,i=o.length;n<i;)$defineProperty(e,r=o[n++],t[r]);return e},$create=function(e,t){return void 0===t?_objectCreate(e):$defineProperties(_objectCreate(e),t)},$propertyIsEnumerable=function(e){var t=isEnum.call(this,e=_toPrimitive(e,!0));return !(this===ObjectProto$1&&_has(AllSymbols,e)&&!_has(OPSymbols,e))&&(!(t||!_has(this,e)||!_has(AllSymbols,e)||_has(this,HIDDEN)&&this[HIDDEN][e])||t)},$getOwnPropertyDescriptor=function(e,t){if(e=_toIobject(e),t=_toPrimitive(t,!0),e!==ObjectProto$1||!_has(AllSymbols,t)||_has(OPSymbols,t)){var r=gOPD$1(e,t);return !r||!_has(AllSymbols,t)||_has(e,HIDDEN)&&e[HIDDEN][t]||(r.enumerable=!0),r}},$getOwnPropertyNames=function(e){for(var t,r=gOPN$1(_toIobject(e)),o=[],n=0;r.length>n;)_has(AllSymbols,t=r[n++])||t==HIDDEN||t==META||o.push(t);return o},$getOwnPropertySymbols=function(e){for(var t,r=e===ObjectProto$1,o=gOPN$1(r?OPSymbols:_toIobject(e)),n=[],i=0;o.length>i;)!_has(AllSymbols,t=o[i++])||r&&!_has(ObjectProto$1,t)||n.push(AllSymbols[t]);return n};USE_NATIVE$1||(_redefine(($Symbol=function(e){if(this instanceof $Symbol)throw TypeError("Symbol is not a constructor!");var t=_uid(0<arguments.length?e:void 0),r=function(e){this===ObjectProto$1&&r.call(OPSymbols,e),_has(this,HIDDEN)&&_has(this[HIDDEN],t)&&(this[HIDDEN][t]=!1),setSymbolDesc(this,t,_propertyDesc(1,e));};return _descriptors&&setter&&setSymbolDesc(ObjectProto$1,t,{configurable:!0,set:r}),wrap(t)})[PROTOTYPE$2],"toString",function(){return this._k}),_objectGopd.f=$getOwnPropertyDescriptor,_objectDp.f=$defineProperty,_objectGopn.f=_objectGopnExt.f=$getOwnPropertyNames,_objectPie.f=$propertyIsEnumerable,_objectGops.f=$getOwnPropertySymbols,_descriptors&&!_library&&_redefine(ObjectProto$1,"propertyIsEnumerable",$propertyIsEnumerable),_wksExt.f=function(e){return wrap(_wks(e))}),_export(_export.G+_export.W+_export.F*!USE_NATIVE$1,{Symbol:$Symbol});for(var es6Symbols="hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","),j=0;es6Symbols.length>j;)_wks(es6Symbols[j++]);for(var wellKnownSymbols=_objectKeys(_wks.store),k=0;wellKnownSymbols.length>k;)_wksDefine(wellKnownSymbols[k++]);_export(_export.S+_export.F*!USE_NATIVE$1,"Symbol",{for:function(e){return _has(SymbolRegistry,e+="")?SymbolRegistry[e]:SymbolRegistry[e]=$Symbol(e)},keyFor:function(e){if(!isSymbol(e))throw TypeError(e+" is not a symbol!");for(var t in SymbolRegistry)if(SymbolRegistry[t]===e)return t},useSetter:function(){setter=!0;},useSimple:function(){setter=!1;}}),_export(_export.S+_export.F*!USE_NATIVE$1,"Object",{create:$create,defineProperty:$defineProperty,defineProperties:$defineProperties,getOwnPropertyDescriptor:$getOwnPropertyDescriptor,getOwnPropertyNames:$getOwnPropertyNames,getOwnPropertySymbols:$getOwnPropertySymbols});var FAILS_ON_PRIMITIVES=_fails(function(){_objectGops.f(1);});_export(_export.S+_export.F*FAILS_ON_PRIMITIVES,"Object",{getOwnPropertySymbols:function(e){return _objectGops.f(_toObject(e))}}),$JSON&&_export(_export.S+_export.F*(!USE_NATIVE$1||_fails(function(){var e=$Symbol();return "[null]"!=_stringify([e])||"{}"!=_stringify({a:e})||"{}"!=_stringify(Object(e))})),"JSON",{stringify:function(e){for(var t,r,o=[e],n=1;n<arguments.length;)o.push(arguments[n++]);if(r=t=o[1],(_isObject(t)||void 0!==e)&&!isSymbol(e))return _isArray(t)||(t=function(e,t){if("function"==typeof r&&(t=r.call(this,e,t)),!isSymbol(t))return t}),o[1]=t,_stringify.apply($JSON,o)}}),$Symbol[PROTOTYPE$2][TO_PRIMITIVE]||_hide($Symbol[PROTOTYPE$2],TO_PRIMITIVE,$Symbol[PROTOTYPE$2].valueOf),_setToStringTag($Symbol,"Symbol"),_setToStringTag(Math,"Math",!0),_setToStringTag(_global.JSON,"JSON",!0),_wksDefine("asyncIterator"),_wksDefine("observable");var symbol=_core.Symbol,symbol$1=symbol;function __awaiter(i,s,c,a){return new(c=c||Promise)(function(e,t){function r(e){try{n(a.next(e));}catch(e){t(e);}}function o(e){try{n(a.throw(e));}catch(e){t(e);}}function n(t){t.done?e(t.value):new c(function(e){e(t.value);}).then(r,o);}n((a=a.apply(i,s||[])).next());})}function __generator(r,o){var n,i,s,e,c={label:0,sent:function(){if(1&s[0])throw s[1];return s[1]},trys:[],ops:[]};return e={next:t(0),throw:t(1),return:t(2)},"function"==typeof Symbol&&(e[Symbol.iterator]=function(){return this}),e;function t(t){return function(e){return function(t){if(n)throw new TypeError("Generator is already executing.");for(;c;)try{if(n=1,i&&(s=2&t[0]?i.return:t[0]?i.throw||((s=i.return)&&s.call(i),0):i.next)&&!(s=s.call(i,t[1])).done)return s;switch(i=0,s&&(t=[2&t[0],s.value]),t[0]){case 0:case 1:s=t;break;case 4:return c.label++,{value:t[1],done:!1};case 5:c.label++,i=t[1],t=[0];continue;case 7:t=c.ops.pop(),c.trys.pop();continue;default:if(!(s=0<(s=c.trys).length&&s[s.length-1])&&(6===t[0]||2===t[0])){c=0;continue}if(3===t[0]&&(!s||t[1]>s[0]&&t[1]<s[3])){c.label=t[1];break}if(6===t[0]&&c.label<s[1]){c.label=s[1],s=t;break}if(s&&c.label<s[2]){c.label=s[2],c.ops.push(t);break}s[2]&&c.ops.pop(),c.trys.pop();continue}t=o.call(r,c);}catch(e){t=[6,e],i=0;}finally{n=s=0;}if(5&t[0])throw t[1];return {value:t[0]?t[1]:void 0,done:!0}}([t,e])}}}var args,gen=function(){return __generator(this,function(e){switch(e.label){case 0:return [4];case 1:return e.sent(),[2]}})};!function(){args=arguments;}();var typeMap={string:"",number:1,boolean:!0,null:null,undefined:void 0,symbol:symbol$1(1),array:[],arguments:args,object:{},regexp:/regexp/,date:new Date,function:function(){},promise:promise$1.resolve(void 0),generatorfunction:gen,generator:gen(),asyncfunction:function(){return __awaiter(void 0,void 0,void 0,function(){return __generator(this,function(e){return [2]})})}};function isType(r){return function(e){if("object"!=typeof e)return typeof e===r.toLowerCase();var t=Object.prototype.toString.call(e).length-1;return Object.prototype.toString.call(e).slice(8,t).toLowerCase()===r.toLowerCase()}}exports.default=isType,exports.isType=isType;
-});var logger$3 = getLogger('messager');
+});var logger$2 = getLogger('messager');
 function messager(type) {
   var _context;
 
@@ -4770,7 +4892,7 @@ function messager(type) {
     return JSON.parse(prompt('MixinContext.getContext()'));
   } : (_c = (_b = (_a = window === null || window === void 0 ? void 0 : window.webkit) === null || _a === void 0 ? void 0 : _a.messageHandlers) === null || _b === void 0 ? void 0 : _b[type]) === null || _c === void 0 ? void 0 : bind$3(_context = _c.postMessage).call(_context, (_e = (_d = window === null || window === void 0 ? void 0 : window.webkit) === null || _d === void 0 ? void 0 : _d.messageHandlers) === null || _e === void 0 ? void 0 : _e[type]) : (_g = (_f = window === null || window === void 0 ? void 0 : window.MixinContext) === null || _f === void 0 ? void 0 : _f[type]) === null || _g === void 0 ? void 0 : bind$3(_g).call(_g, window === null || window === void 0 ? void 0 : window.MixinContext);
   return handler !== null && handler !== void 0 ? handler : function () {
-    return logger$3().warn('Please call in mixin app!');
+    return logger$2().warn('Please call in mixin app!');
   };
 }var $stringify = getBuiltIn('JSON', 'stringify');
 var re = /[\uD800-\uDFFF]/g;
@@ -4785,7 +4907,7 @@ var fix = function (match, offset, string) {
   } return match;
 };
 
-var FORCED$2 = fails(function () {
+var FORCED$3 = fails(function () {
   return $stringify('\uDF06\uD834') !== '"\\udf06\\ud834"'
     || $stringify('\uDEAD') !== '"\\udead"';
 });
@@ -4794,7 +4916,7 @@ if ($stringify) {
   // `JSON.stringify` method
   // https://tc39.es/ecma262/#sec-json.stringify
   // https://github.com/tc39/proposal-well-formed-stringify
-  _export({ target: 'JSON', stat: true, forced: FORCED$2 }, {
+  _export({ target: 'JSON', stat: true, forced: FORCED$3 }, {
     // eslint-disable-next-line no-unused-vars -- required for `.length`
     stringify: function stringify(it, replacer, space) {
       var result = $stringify.apply(null, arguments);
@@ -4814,26 +4936,7 @@ _export({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES }, {
   keys: function keys(it) {
     return objectKeys(toObject(it));
   }
-});var keys$1 = path.Object.keys;var keys$2 = keys$1;var keys$3 = keys$2;// `IsArray` abstract operation
-// https://tc39.es/ecma262/#sec-isarray
-var isArray$1 = Array.isArray || function isArray(arg) {
-  return classofRaw(arg) == 'Array';
-};var SPECIES$3 = wellKnownSymbol('species');
-
-// `ArraySpeciesCreate` abstract operation
-// https://tc39.es/ecma262/#sec-arrayspeciescreate
-var arraySpeciesCreate = function (originalArray, length) {
-  var C;
-  if (isArray$1(originalArray)) {
-    C = originalArray.constructor;
-    // cross-realm fallback
-    if (typeof C == 'function' && (C === Array || isArray$1(C.prototype))) C = undefined;
-    else if (isObject(C)) {
-      C = C[SPECIES$3];
-      if (C === null) C = undefined;
-    }
-  } return new (C === undefined ? Array : C)(length === 0 ? 0 : length);
-};var push = [].push;
+});var keys$1 = path.Object.keys;var keys$2 = keys$1;var keys$3 = keys$2;var push = [].push;
 
 // `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterOut }` methods implementation
 var createMethod$3 = function (TYPE) {
@@ -4917,7 +5020,7 @@ var arrayForEach = !STRICT_METHOD ? function forEach(callbackfn /* , thisArg */)
 // https://tc39.es/ecma262/#sec-array.prototype.foreach
 _export({ target: 'Array', proto: true, forced: [].forEach != arrayForEach }, {
   forEach: arrayForEach
-});var forEach$1 = entryVirtual('Array').forEach;var forEach$2 = forEach$1;var ArrayPrototype$1 = Array.prototype;
+});var forEach$1 = entryVirtual('Array').forEach;var forEach$2 = forEach$1;var ArrayPrototype$2 = Array.prototype;
 
 var DOMIterables = {
   DOMTokenList: true,
@@ -4926,163 +5029,10 @@ var DOMIterables = {
 
 var forEach_1 = function (it) {
   var own = it.forEach;
-  return it === ArrayPrototype$1 || (it instanceof Array && own === ArrayPrototype$1.forEach)
+  return it === ArrayPrototype$2 || (it instanceof Array && own === ArrayPrototype$2.forEach)
     // eslint-disable-next-line no-prototype-builtins -- safe
     || DOMIterables.hasOwnProperty(classof(it)) ? forEach$2 : own;
-};var forEach$3 = forEach_1;var byteLength_1 = byteLength;
-var toByteArray_1 = toByteArray;
-var fromByteArray_1 = fromByteArray;
-
-var lookup = [];
-var revLookup = [];
-var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
-
-var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-for (var i = 0, len = code.length; i < len; ++i) {
-  lookup[i] = code[i];
-  revLookup[code.charCodeAt(i)] = i;
-}
-
-// Support decoding URL-safe base64 strings, as Node.js does.
-// See: https://en.wikipedia.org/wiki/Base64#URL_applications
-revLookup['-'.charCodeAt(0)] = 62;
-revLookup['_'.charCodeAt(0)] = 63;
-
-function getLens (b64) {
-  var len = b64.length;
-
-  if (len % 4 > 0) {
-    throw new Error('Invalid string. Length must be a multiple of 4')
-  }
-
-  // Trim off extra bytes after placeholder bytes are found
-  // See: https://github.com/beatgammit/base64-js/issues/42
-  var validLen = b64.indexOf('=');
-  if (validLen === -1) validLen = len;
-
-  var placeHoldersLen = validLen === len
-    ? 0
-    : 4 - (validLen % 4);
-
-  return [validLen, placeHoldersLen]
-}
-
-// base64 is 4/3 + up to two characters of the original data
-function byteLength (b64) {
-  var lens = getLens(b64);
-  var validLen = lens[0];
-  var placeHoldersLen = lens[1];
-  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
-}
-
-function _byteLength (b64, validLen, placeHoldersLen) {
-  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
-}
-
-function toByteArray (b64) {
-  var tmp;
-  var lens = getLens(b64);
-  var validLen = lens[0];
-  var placeHoldersLen = lens[1];
-
-  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen));
-
-  var curByte = 0;
-
-  // if there are placeholders, only get up to the last complete 4 chars
-  var len = placeHoldersLen > 0
-    ? validLen - 4
-    : validLen;
-
-  var i;
-  for (i = 0; i < len; i += 4) {
-    tmp =
-      (revLookup[b64.charCodeAt(i)] << 18) |
-      (revLookup[b64.charCodeAt(i + 1)] << 12) |
-      (revLookup[b64.charCodeAt(i + 2)] << 6) |
-      revLookup[b64.charCodeAt(i + 3)];
-    arr[curByte++] = (tmp >> 16) & 0xFF;
-    arr[curByte++] = (tmp >> 8) & 0xFF;
-    arr[curByte++] = tmp & 0xFF;
-  }
-
-  if (placeHoldersLen === 2) {
-    tmp =
-      (revLookup[b64.charCodeAt(i)] << 2) |
-      (revLookup[b64.charCodeAt(i + 1)] >> 4);
-    arr[curByte++] = tmp & 0xFF;
-  }
-
-  if (placeHoldersLen === 1) {
-    tmp =
-      (revLookup[b64.charCodeAt(i)] << 10) |
-      (revLookup[b64.charCodeAt(i + 1)] << 4) |
-      (revLookup[b64.charCodeAt(i + 2)] >> 2);
-    arr[curByte++] = (tmp >> 8) & 0xFF;
-    arr[curByte++] = tmp & 0xFF;
-  }
-
-  return arr
-}
-
-function tripletToBase64 (num) {
-  return lookup[num >> 18 & 0x3F] +
-    lookup[num >> 12 & 0x3F] +
-    lookup[num >> 6 & 0x3F] +
-    lookup[num & 0x3F]
-}
-
-function encodeChunk (uint8, start, end) {
-  var tmp;
-  var output = [];
-  for (var i = start; i < end; i += 3) {
-    tmp =
-      ((uint8[i] << 16) & 0xFF0000) +
-      ((uint8[i + 1] << 8) & 0xFF00) +
-      (uint8[i + 2] & 0xFF);
-    output.push(tripletToBase64(tmp));
-  }
-  return output.join('')
-}
-
-function fromByteArray (uint8) {
-  var tmp;
-  var len = uint8.length;
-  var extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes
-  var parts = [];
-  var maxChunkLength = 16383; // must be multiple of 3
-
-  // go through the array every three bytes, we'll deal with trailing stuff later
-  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)));
-  }
-
-  // pad the end with zeros, but make sure to not forget the extra bytes
-  if (extraBytes === 1) {
-    tmp = uint8[len - 1];
-    parts.push(
-      lookup[tmp >> 2] +
-      lookup[(tmp << 4) & 0x3F] +
-      '=='
-    );
-  } else if (extraBytes === 2) {
-    tmp = (uint8[len - 2] << 8) + uint8[len - 1];
-    parts.push(
-      lookup[tmp >> 10] +
-      lookup[(tmp >> 4) & 0x3F] +
-      lookup[(tmp << 2) & 0x3F] +
-      '='
-    );
-  }
-
-  return parts.join('')
-}
-
-var base64Js = {
-	byteLength: byteLength_1,
-	toByteArray: toByteArray_1,
-	fromByteArray: fromByteArray_1
-};var core = createCommonjsModule(function (module, exports) {
+};var forEach$3 = forEach_1;var core = createCommonjsModule(function (module, exports) {
 (function (root, factory) {
 	{
 		// CommonJS
@@ -6088,42 +6038,46 @@ function generateRandomString(len) {
 }
 
 function getAccessCode(params) {
+  var _context, _context2, _context3, _context4;
+
+  // eslint-disable-next-line prefer-const
   var client_id = params.client_id,
       redirect_url = params.redirect_url,
       state = params.state,
-      _a = params.auth,
-      auth = _a === void 0 ? {} : _a;
+      _params$auth = params.auth,
+      auth = _params$auth === void 0 ? {} : _params$auth;
   var randomStr = generateRandomString(32);
-  var randomArr = strToUnitArray(randomStr);
-  var hashArr = strToUnitArray(sha256(randomStr).toString());
+  var randomCode = btoa(randomStr); // const randomArr = strToUnitArray(randomStr);
+  // const hashArr = strToUnitArray(sha256(randomStr).toString());
 
-  if (randomArr && hashArr) {
-    var _context;
+  var verifier = base64URLEncode(randomCode);
+  var challenge = base64URLEncode(sha256(randomCode).toString());
+  localStorage.setItem('_mixin-code-verifier', verifier);
+  var SCOPESTR = '';
 
-    var verifier = base64URLEncode(base64Js.fromByteArray(randomArr));
-    var challenge = base64URLEncode(base64Js.fromByteArray(hashArr));
-    localStorage.setItem('_mixin-code-verifier', verifier);
-    var SCOPESTR_1 = '';
+  forEach$3(_context = keys$3(auth)).call(_context, function (scope) {
+    var scopeValue = AUTHSCOPE[scope];
+    if (!SCOPESTR) SCOPESTR = scopeValue;else SCOPESTR += "+".concat(scopeValue);
+  });
 
-    forEach$3(_context = keys$3(auth)).call(_context, function (scope) {
-      var scopeValue = AUTHSCOPE[scope];
-      if (!SCOPESTR_1) SCOPESTR_1 = scopeValue;else SCOPESTR_1 += "+" + scopeValue;
-    });
+  client_id = client_id ? "&client_id=".concat(client_id) : '';
+  redirect_url = redirect_url ? "&redirect_url=".concat(redirect_url) : '';
+  SCOPESTR = SCOPESTR ? "&scope=".concat(SCOPESTR) : '';
+  challenge = challenge ? "&code_challenge=".concat(challenge) : '';
 
-    var url = "https://mixin-oauth.firesbox.com/?client_id=" + client_id + "&redirect_url=" + redirect_url + "&scope=" + SCOPESTR_1 + "&code_challenge=" + challenge + "&response_type=code";
+  var url = concat$2(_context2 = concat$2(_context3 = concat$2(_context4 = "https://mixin-oauth.firesbox.com/?response_type=code".concat(client_id)).call(_context4, redirect_url)).call(_context3, SCOPESTR)).call(_context2, challenge);
 
-    if (state) {
-      var str = encodeURIComponent(stringify$2(state));
-      url += "&state=" + str;
-    }
-
-    window.location.href = url;
+  if (state) {
+    var str = encodeURIComponent(stringify$2(state));
+    url += "&state=".concat(str);
   }
+
+  window.location.href = url;
 }
 function getAccessToken(params) {
   var verifier = localStorage.getItem('_mixin-code-verifier');
 
-  var data = __assign(__assign({}, params), {
+  var data = assign$2(assign$2({}, params), {
     code_verifier: verifier
   });
 
@@ -6134,11 +6088,11 @@ function getAccessToken(params) {
   }).success(function (res) {
     return res.access_token;
   });
-}var Bridge =
-/** @class */
-function () {
+}var Bridge = /*#__PURE__*/function () {
   function Bridge(config) {
     var _context, _context2, _context3, _context4, _context5, _context6, _context7;
+
+    classCallCheck(this, Bridge);
 
     this.config = config;
     this._token = void 0;
@@ -6157,139 +6111,142 @@ function () {
    */
 
 
-  Bridge.prototype.getContext = function () {
-    var ctx = messager('getContext')();
-    ctx.platform = ctx.platform || (env().isIOS ? 'iOS' : 'Android');
-    return ctx;
-  };
-  /**
-   * 重载
-   */
+  createClass(Bridge, [{
+    key: "getContext",
+    value: function getContext() {
+      var ctx = messager('getContext')();
+      ctx.platform = ctx.platform || (env().isIOS ? 'iOS' : 'Android');
+      return ctx;
+    }
+    /**
+     * 重载
+     */
 
+  }, {
+    key: "reloadTheme",
+    value: function reloadTheme() {
+      messager('reloadTheme')();
+    }
+    /**
+     * 打开播放列表
+     * @param src
+     * @returns
+     */
 
-  Bridge.prototype.reloadTheme = function () {
-    messager('reloadTheme')();
-  };
-  /**
-   * 打开播放列表
-   * @param src
-   * @returns
-   */
-
-
-  Bridge.prototype.playlist = function (src) {
-    return messager('playlist')(src);
-  };
-
-  defineProperty$2(Bridge.prototype, "token", {
+  }, {
+    key: "playlist",
+    value: function playlist(src) {
+      return messager('playlist')(src);
+    }
     /**
      * 获取 access token
      */
+
+  }, {
+    key: "token",
     get: function get() {
       var _a;
 
       return (_a = this._token) !== null && _a !== void 0 ? _a : localStorage.getItem('_mixin-token');
-    },
-    enumerable: false,
-    configurable: true
-  });
-  /**
-   * 跳转到授权登陆页
-   * @param auth
-   * @param params
-   * @returns
-   */
-
-
-  Bridge.prototype.login = function (auth, params) {
-    var client_id = (this.config || {}).client_id;
-    var cid = (params === null || params === void 0 ? void 0 : params.client_id) || client_id;
-
-    if (!cid) {
-      this.logger('login').warn('Please pass client_id first!');
-      return;
     }
+    /**
+     * 跳转到授权登陆页
+     * @param auth
+     * @param params
+     * @returns
+     */
 
-    getAccessCode(__assign(__assign({}, params), {
-      client_id: cid,
-      auth: auth
-    }));
-  };
-  /**
-   * 根据 code 换取 access token
-   * @param params
-   * @param persistence
-   * @returns
-   */
+  }, {
+    key: "login",
+    value: function login(auth, params) {
+      var _ref = this.config || {},
+          client_id = _ref.client_id;
 
+      var cid = (params === null || params === void 0 ? void 0 : params.client_id) || client_id;
 
-  Bridge.prototype.requestToken = function (params, persistence) {
-    var _this = this;
+      if (!cid) {
+        this.logger('login').warn('Please pass client_id first!');
+        return;
+      }
 
-    if (persistence === void 0) {
-      persistence = true;
+      getAccessCode(assign$2(assign$2({}, params), {
+        client_id: cid,
+        auth: auth
+      }));
     }
+    /**
+     * 根据 code 换取 access token
+     * @param params
+     * @param persistence
+     * @returns
+     */
 
-    var client_id_config = (this.config || {}).client_id;
+  }, {
+    key: "requestToken",
+    value: function requestToken(params) {
+      var _this = this;
 
-    var _a = params || {},
-        code_params = _a.code,
-        client_id_params = _a.client_id;
+      var persistence = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
-    var code_url = this.getCode();
-    var client_id = client_id_params || client_id_config;
-    var code = code_params || code_url;
+      var _ref2 = this.config || {},
+          client_id_config = _ref2.client_id;
 
-    if (!client_id || !code) {
-      var msg_part = !client_id && !code ? 'client_id and code' : !client_id ? 'client_id' : 'code';
-      this.logger('getToken').warn("Please pass " + msg_part + " first!");
-      return;
-    }
+      var _ref3 = params || {},
+          code_params = _ref3.code,
+          client_id_params = _ref3.client_id;
 
-    return new promise$3(function (resolve, reject) {
-      getAccessToken({
-        code: code,
-        client_id: client_id
-      }).then(function (token) {
-        _this._token = token;
-        if (persistence) localStorage.setItem('_mixin-token', token);
-        resolve(token);
-      })["catch"](function (err) {
-        return _this.handlerError(err, 'getToken', 'get token failed!');
+      var code_url = this.getCode();
+      var client_id = client_id_params || client_id_config;
+      var code = code_params || code_url;
+
+      if (!client_id || !code) {
+        var msg_part = !client_id && !code ? 'client_id and code' : !client_id ? 'client_id' : 'code';
+        this.logger('getToken').warn("Please pass ".concat(msg_part, " first!"));
+        return;
+      }
+
+      return new promise$3(function (resolve, reject) {
+        getAccessToken({
+          code: code,
+          client_id: client_id
+        }).then(function (token) {
+          _this._token = token;
+          if (persistence) localStorage.setItem('_mixin-token', token);
+          resolve(token);
+        })["catch"](function (err) {
+          return _this.handlerError(err, 'getToken', 'get token failed!');
+        });
       });
-    });
-  };
-
-  Bridge.prototype.getCode = function () {
-    var _a, _b, _c;
-
-    var parseData = parseUrl(window.location.href);
-
-    if (typeof parseData !== 'string') {
-      var hash = parseData.hash,
-          search = parseData.search;
-      var regExp = /code=([^&#]*)/g;
-      var code = (_b = (_a = regExp.exec(search)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : (_c = regExp.exec(hash)) === null || _c === void 0 ? void 0 : _c[1];
-      return code;
     }
-  };
+  }, {
+    key: "getCode",
+    value: function getCode() {
+      var _a, _b, _c;
 
-  Bridge.prototype.handlerError = function (err, prefix, msg) {
-    if (prefix === void 0) {
-      prefix = '';
+      var parseData = parseUrl(window.location.href);
+
+      if (typeof parseData !== 'string') {
+        var hash = parseData.hash,
+            search = parseData.search;
+        var regExp = /code=([^&#]*)/g;
+        var code = (_b = (_a = regExp.exec(search)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : (_c = regExp.exec(hash)) === null || _c === void 0 ? void 0 : _c[1];
+        return code;
+      }
     }
+  }, {
+    key: "handlerError",
+    value: function handlerError(err) {
+      var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      var msg = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'oops! some error has ocurred!';
 
-    if (msg === void 0) {
-      msg = 'oops! some error has ocurred!';
+      var _parseError = parseError(err),
+          message = _parseError.message,
+          stack = _parseError.stack,
+          name = _parseError.name;
+
+      this.logger(prefix).error("\uD83D\uDC47 ".concat(msg, " \u274C"), '\n', name, message, stack);
     }
-
-    var _a = parseError(err),
-        message = _a.message,
-        stack = _a.stack,
-        name = _a.name;
-
-    this.logger(prefix).error("\uD83D\uDC47 " + msg + " \u274C", '\n', name, message, stack);
-  };
+  }]);
 
   return Bridge;
 }();exports.Bridge=Bridge;exports.default=Bridge;Object.defineProperty(exports,'__esModule',{value:true});})));

@@ -42,30 +42,36 @@ export function getAccessCode(params: {
   state?: string;
   auth?: AUTH;
 }) {
-  const { client_id, redirect_url, state, auth = {} } = params;
+  // eslint-disable-next-line prefer-const
+  let { client_id, redirect_url, state, auth = {} } = params;
   const randomStr = generateRandomString(32);
-  const randomArr = strToUnitArray(randomStr);
-  const hashArr = strToUnitArray(sha256(randomStr).toString());
-  if (randomArr && hashArr) {
-    const verifier = base64URLEncode(base64.fromByteArray(randomArr));
-    const challenge = base64URLEncode(base64.fromByteArray(hashArr));
-    localStorage.setItem('_mixin-code-verifier', verifier);
+  const randomCode = btoa(randomStr);
+  // const randomArr = strToUnitArray(randomStr);
+  // const hashArr = strToUnitArray(sha256(randomStr).toString());
+  const verifier = base64URLEncode(randomCode);
+  let challenge = base64URLEncode(sha256(randomCode).toString());
+  localStorage.setItem('_mixin-code-verifier', verifier);
 
-    let SCOPESTR = '';
-    Object.keys(auth).forEach(scope => {
-      const scopeValue = AUTHSCOPE[scope as keyof typeof AUTHSCOPE];
-      if (!SCOPESTR)
-        SCOPESTR = scopeValue;
-      else
-        SCOPESTR += `+${scopeValue}`;
-    });
-    let url = `https://mixin-oauth.firesbox.com/?client_id=${client_id}&redirect_url=${redirect_url}&scope=${SCOPESTR}&code_challenge=${challenge}&response_type=code`;
-    if (state) {
-      const str = encodeURIComponent(JSON.stringify(state));
-      url += `&state=${str}`;
-    }
-    window.location.href = url;
+  let SCOPESTR = '';
+  Object.keys(auth).forEach(scope => {
+    const scopeValue = AUTHSCOPE[scope as keyof typeof AUTHSCOPE];
+    if (!SCOPESTR)
+      SCOPESTR = scopeValue;
+    else
+      SCOPESTR += `+${scopeValue}`;
+  });
+
+  client_id = client_id ? `&client_id=${client_id}` : '';
+  redirect_url = redirect_url ? `&redirect_url=${redirect_url}` : '';
+  SCOPESTR = SCOPESTR ? `&scope=${SCOPESTR}` : '';
+  challenge = challenge ? `&code_challenge=${challenge}` : '';
+
+  let url = `https://mixin-oauth.firesbox.com/?response_type=code${client_id}${redirect_url}${SCOPESTR}${challenge}`;
+  if (state) {
+    const str = encodeURIComponent(JSON.stringify(state));
+    url += `&state=${str}`;
   }
+  window.location.href = url;
 }
 
 export function getAccessToken(params: {
