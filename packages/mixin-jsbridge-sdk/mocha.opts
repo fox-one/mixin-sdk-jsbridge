@@ -1,5 +1,5 @@
 # mocha.opts
---require ts-node/register
+--require mocha.ts-node.js
 --require tsconfig-paths/register
 --reporter spec
 src/**/__test__/*.ts
