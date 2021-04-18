@@ -71,7 +71,7 @@ export function getAccessCode(params: {
   });
 
   client_id = client_id ? `&client_id=${client_id}` : '';
-  redirect_url = redirect_url ? `&redirect=${encodeURIComponent(redirect_url)}` : '';
+  redirect_url = redirect_url ? `&redirect_url=${encodeURIComponent(redirect_url)}` : '';
   SCOPESTR = SCOPESTR ? `&scope=${SCOPESTR}` : '';
   challenge = challenge ? `&code_challenge=${challenge}` : '';
 
