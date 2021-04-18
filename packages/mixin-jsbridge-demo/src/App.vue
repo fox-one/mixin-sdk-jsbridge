@@ -47,14 +47,19 @@ export default defineComponent({
       userName: ''
     };
   },
+  mounted() {
+    bridge.requestToken();
+  },
   methods: {
     goLogin: function () {
       bridge.login({
         profile: true,
         phone: true,
-        contacts: true,
+        contacts: false,
         assets: true,
-        snapshots: true
+        snapshots: false
+        // messages: false,
+        // represent: false
       });
     }
   }

@@ -1,4 +1,5 @@
 import base64 from 'base64-js';
+import EncBase64 from 'crypto-js/enc-base64';
 import sha256 from 'crypto-js/sha256';
 import { request, strToUnitArray } from '@utils/index';
 
@@ -9,14 +10,20 @@ export type AUTH = {
   contacts?: boolean;
   assets?: boolean;
   snapshots?: boolean;
+  messages?: boolean;
+  represent?: boolean;
 };
 
+export type SCOPE = keyof typeof AUTHSCOPE;
+
 const AUTHSCOPE = {
-  phone: 'PHONE%3AREAD',
-  profile: 'PROFILE%3AREAD',
-  contacts: 'CONTACTS%3AREAD',
-  assets: 'ASSETS%3AREAD',
-  snapshots: 'SNAPSHOTS%3AREAD'
+  phone: 'PHONE:READ',
+  profile: 'PROFILE:READ',
+  contacts: 'CONTACTS:READ',
+  assets: 'ASSETS:READ',
+  snapshots: 'SNAPSHOTS:READ',
+  messages: 'MESSAGES:READ',
+  represent: 'REPRESENT:READ'
 };
 
 function base64URLEncode(str: string) {
@@ -43,18 +50,20 @@ export function getAccessCode(params: {
   auth?: AUTH;
 }) {
   // eslint-disable-next-line prefer-const
-  let { client_id, redirect_url, state, auth = {} } = params;
-  const randomStr = generateRandomString(32);
-  const randomCode = btoa(randomStr);
-  // const randomArr = strToUnitArray(randomStr);
-  // const hashArr = strToUnitArray(sha256(randomStr).toString());
-  const verifier = base64URLEncode(randomCode);
-  let challenge = base64URLEncode(sha256(randomCode).toString());
-  localStorage.setItem('_mixin-code-verifier', verifier);
+  let { client_id, redirect_url = window.location.href, state, auth = {} } = params;
+  const randomCode = generateRandomString(32);
+  const randomArr = strToUnitArray(randomCode);
+  let challenge;
+  if (randomArr) {
+    const verifier = base64URLEncode(base64.fromByteArray(randomArr));
+    challenge = base64URLEncode(sha256(randomCode).toString(EncBase64));
+    verifier && localStorage.setItem('$_mixin-code-verifier', verifier);
+  }
 
   let SCOPESTR = '';
   Object.keys(auth).forEach(scope => {
-    const scopeValue = AUTHSCOPE[scope as keyof typeof AUTHSCOPE];
+    if (!auth[scope as SCOPE]) return;
+    const scopeValue = AUTHSCOPE[scope as SCOPE];
     if (!SCOPESTR)
       SCOPESTR = scopeValue;
     else
@@ -62,7 +71,7 @@ export function getAccessCode(params: {
   });
 
   client_id = client_id ? `&client_id=${client_id}` : '';
-  redirect_url = redirect_url ? `&redirect_url=${redirect_url}` : '';
+  redirect_url = redirect_url ? `&redirect=${encodeURIComponent(redirect_url)}` : '';
   SCOPESTR = SCOPESTR ? `&scope=${SCOPESTR}` : '';
   challenge = challenge ? `&code_challenge=${challenge}` : '';
 
@@ -78,12 +87,13 @@ export function getAccessToken(params: {
   code: string;
   client_id: string;
 }) {
-  const verifier = localStorage.getItem('_mixin-code-verifier');
+  const verifier = localStorage.getItem('$_mixin-code-verifier');
   const data = { ...params, code_verifier: verifier };
   return request({
     url: 'https://mixin-api.zeromesh.net/oauth/token',
     method: 'POST',
-    data
+    data,
+    withCredentials: false
   })
     .success(res => res.access_token);
 }

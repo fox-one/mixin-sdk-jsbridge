@@ -101,7 +101,7 @@ export class Bridge {
     const client_id = client_id_params || client_id_config;
     const code = code_params || code_url;
     if (!client_id || !code) {
-      const msg_part = !client_id && !code ? 'client_id and code' : !client_id ? 'client_id' : 'code';
+      const msg_part = !client_id && !code ? 'client_id and access_code' : !client_id ? 'client_id' : 'access_code';
       this.logger('getToken').warn(`Please pass ${msg_part} first!`);
       return;
     }
