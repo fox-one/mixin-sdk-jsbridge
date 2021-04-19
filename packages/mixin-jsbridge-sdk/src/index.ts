@@ -137,7 +137,7 @@ export class Bridge {
         Authorization: `Bearer ${token}`
       },
       withCredentials: false
-    });
+    }).then(res => res.data);
   }
 
   private getCode() {

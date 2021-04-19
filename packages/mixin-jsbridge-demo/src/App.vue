@@ -1,33 +1,43 @@
 <template>
-  <el-container class="main">
-    <el-header>
-      <template v-if="avatarUrl">
-        <el-avatar :size="50" :src="avatarUrl" />
-        <span>{{ userName }}</span>
+  <el-container class="wrapper">
+    <el-header class="header">
+      <template v-if="avatarUrl || userName">
+        <el-avatar class="header-avatar" :size="30" :src="avatarUrl" />
+        <span class="header-username">{{ userName }}</span>
       </template>
       <template v-else>
-        <el-button icon="el-icon-user" type="info" plain @click="goLogin">
+        <el-button
+          class="header-login"
+          icon="el-icon-user"
+          type="info"
+          @click="goLogin"
+        >
           登录
         </el-button>
       </template>
     </el-header>
-    <el-main>
+
+    <el-main class="main">
       <router-view />
+      <div class="main-operation">
+        <el-select v-model="currentBridge">
+          <el-option
+            v-for="bridge in bridgeOptions"
+            :key="bridge"
+            :value="bridge"
+          />
+        </el-select>
+        <el-input
+          v-model="textarea"
+          type="textarea"
+          :rows="2"
+          placeholder="暂无数据……"
+        />
+        <el-button> 快猛戳我 </el-button>
+      </div>
     </el-main>
 
-    <span class="main-btn main-btn-home">
-      <router-link to="/">Home</router-link>
-    </span>
-    <span class="main-btn main-btn-detail">
-      <router-link to="/detail">Go Detail</router-link>
-    </span>
-    <span class="main-btn main-btn-detail-1">
-      <router-link to="/detail/1"> Detail - Part1 </router-link>
-    </span>
-    <span class="main-btn main-btn-detail-2">
-      <router-link to="/detail/2"> Detail - Part2 </router-link>
-    </span>
-    <el-footer class="main-footer"> FoxONE FED ©foxone </el-footer>
+    <el-footer class="footer"> FoxONE FED ©foxone </el-footer>
   </el-container>
 </template>
 
@@ -45,7 +55,9 @@ export default defineComponent({
     return {
       token: '',
       avatarUrl: '',
-      userName: ''
+      userName: '',
+      bridgeOptions: ['getContext', 'reloadTheme', 'playlist'],
+      currentBridge: ''
     };
   },
   async mounted() {
@@ -56,8 +68,13 @@ export default defineComponent({
 
     if (token) {
       this.token = token;
-      const userInfo = await bridge.getUserInfo();
-      console.info(userInfo, this.token);
+      try {
+        const { avatar_url, full_name } = await bridge.getUserInfo();
+        this.avatarUrl = avatar_url;
+        this.userName = full_name;
+      } catch (err) {
+        console.error(err);
+      }
     }
   },
   methods: {

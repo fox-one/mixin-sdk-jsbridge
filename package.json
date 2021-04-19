@@ -4,7 +4,7 @@
   "license": "MIT",
   "main": "./index.js",
   "scripts": {
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "yarn && lerna bootstrap",
     "dev": "omni dev -P ./packages/mixin-jsbridge-sdk",
     "dev:demo": "omni dev -P ./packages/mixin-jsbridge-demo",
     "new": "omni new -P ./packages/mixin-jsbridge-sdk",

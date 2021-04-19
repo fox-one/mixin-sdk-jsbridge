@@ -6547,6 +6547,8 @@ function getAccessToken(params) {
           Authorization: "Bearer ".concat(token)
         },
         withCredentials: false
+      }).then(function (res) {
+        return res.data;
       });
     }
   }, {
