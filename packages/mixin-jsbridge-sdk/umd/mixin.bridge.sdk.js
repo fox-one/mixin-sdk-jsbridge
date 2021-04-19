@@ -6545,7 +6545,8 @@ function getAccessToken(params) {
         headers: {
           'Content-Type': 'application/json',
           Authorization: "Bearer ".concat(token)
-        }
+        },
+        withCredentials: false
       });
     }
   }, {

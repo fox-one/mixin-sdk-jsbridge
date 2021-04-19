@@ -49,12 +49,16 @@ export default defineComponent({
     };
   },
   async mounted() {
-    this.token = bridge.token;
-    if (!this.token) {
-      this.token = await bridge.requestToken();
+    let token = bridge.token;
+    if (!token) {
+      token = await bridge.requestToken();
     }
 
-    console.info(555, this.token);
+    if (token) {
+      this.token = token;
+      const userInfo = await bridge.getUserInfo();
+      console.info(userInfo, this.token);
+    }
   },
   methods: {
     goLogin: function () {

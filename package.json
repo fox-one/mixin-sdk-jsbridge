@@ -18,7 +18,7 @@
     "release:demo": "omni release -P ./packages/mixin-jsbridge-demo"
   },
   "devDependencies": {
-    "@omni-door/cli": "^2.3.6",
+    "@omni-door/cli": "^2.3.7",
     "lerna": "^4.0.0"
   }
 }
