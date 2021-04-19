@@ -86,14 +86,14 @@ export function getAccessCode(params: {
 export function getAccessToken(params: {
   code: string;
   client_id: string;
+  code_verifier: string;
 }) {
-  const verifier = localStorage.getItem('$_mixin-code-verifier');
-  const data = { ...params, code_verifier: verifier };
+  const data = { ...params };
   return request({
     url: 'https://mixin-api.zeromesh.net/oauth/token',
     method: 'POST',
     data,
     withCredentials: false
   })
-    .success(res => res.access_token);
+    .then(res => res.data.access_token);
 }

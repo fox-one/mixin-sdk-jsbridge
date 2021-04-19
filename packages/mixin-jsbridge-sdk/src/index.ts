@@ -57,7 +57,7 @@ export class Bridge {
    * 获取 access token
    */
   public get token() {
-    return this._token ?? localStorage.getItem('_mixin-token');
+    return this._token ?? localStorage.getItem('$_mixin-token');
   }
 
   /**
@@ -93,27 +93,30 @@ export class Bridge {
   public requestToken(params?: {
     code?: string;
     client_id?: string;
+    code_verifier?: string;
   }, persistence = true) {
     const { client_id: client_id_config } = this.config || {};
-    const { code: code_params, client_id: client_id_params } = params || {};
+    const { code: code_params, code_verifier: code_verifier_params, client_id: client_id_params } = params || {};
     const code_url = this.getCode();
 
     const client_id = client_id_params || client_id_config;
     const code = code_params || code_url;
-    if (!client_id || !code) {
-      const msg_part = !client_id && !code ? 'client_id and access_code' : !client_id ? 'client_id' : 'access_code';
-      this.logger('getToken').warn(`Please pass ${msg_part} first!`);
+    const code_verifier = code_verifier_params || localStorage.getItem('$_mixin-code-verifier');
+
+    if (!client_id || !code_verifier || !code) {
+      this.logger('getToken').warn('The request parameters which contain client_id, access_code and code_verifier is not correct!');
       return;
     }
 
     return new Promise((resolve, reject) => {
       getAccessToken({
         code,
+        code_verifier,
         client_id
       })
         .then(token => {
           this._token = token;
-          if (persistence) localStorage.setItem('_mixin-token', token);
+          if (persistence) localStorage.setItem('$_mixin-token', token);
           resolve(token);
         })
         .catch(err => this.handlerError(err, 'getToken', 'get token failed!'));
@@ -132,11 +135,14 @@ export class Bridge {
   }
 
   private handlerError(err: any, prefix = '', msg = 'oops! some error has ocurred!') {
-    const {
-      message,
-      stack,
-      name
+    let {
+      // eslint-disable-next-line prefer-const
+      message = '',
+      stack = '',
+      name = ''
     } = parseError(err);
+    if (name) name = `(${name}): `;
+    if (stack) stack = ` at ${stack}`;
     this.logger(prefix).error(`👇 ${msg} ❌`, '\n', name, message, stack);
   }
 }

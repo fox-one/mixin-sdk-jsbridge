@@ -48,7 +48,12 @@ export default defineComponent({
     };
   },
   mounted() {
-    bridge.requestToken();
+    const token = bridge.token;
+    if (!token) {
+      bridge.requestToken();
+    } else {
+      console.info(555, token);
+    }
   },
   methods: {
     goLogin: function () {

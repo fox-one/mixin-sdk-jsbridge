@@ -6369,7 +6369,7 @@ function getAccessCode(params) {
   });
 
   client_id = client_id ? "&client_id=".concat(client_id) : '';
-  redirect_url = redirect_url ? "&redirect=".concat(encodeURIComponent(redirect_url)) : '';
+  redirect_url = redirect_url ? "&redirect_url=".concat(encodeURIComponent(redirect_url)) : '';
   SCOPESTR = SCOPESTR ? "&scope=".concat(SCOPESTR) : '';
   challenge = challenge ? "&code_challenge=".concat(challenge) : '';
 
@@ -6383,19 +6383,15 @@ function getAccessCode(params) {
   window.location.href = url;
 }
 function getAccessToken(params) {
-  var verifier = localStorage.getItem('$_mixin-code-verifier');
-
-  var data = assign$2(assign$2({}, params), {
-    code_verifier: verifier
-  });
+  var data = assign$2({}, params);
 
   return request({
     url: 'https://mixin-api.zeromesh.net/oauth/token',
     method: 'POST',
     data: data,
     withCredentials: false
-  }).success(function (res) {
-    return res.access_token;
+  }).then(function (res) {
+    return res.data.access_token;
   });
 }var Bridge = /*#__PURE__*/function () {
   function Bridge(config) {
@@ -6456,7 +6452,7 @@ function getAccessToken(params) {
     get: function get() {
       var _a;
 
-      return (_a = this._token) !== null && _a !== void 0 ? _a : localStorage.getItem('_mixin-token');
+      return (_a = this._token) !== null && _a !== void 0 ? _a : localStorage.getItem('$_mixin-token');
     }
     /**
      * 跳转到授权登陆页
@@ -6502,25 +6498,27 @@ function getAccessToken(params) {
 
       var _ref3 = params || {},
           code_params = _ref3.code,
+          code_verifier_params = _ref3.code_verifier,
           client_id_params = _ref3.client_id;
 
       var code_url = this.getCode();
       var client_id = client_id_params || client_id_config;
       var code = code_params || code_url;
+      var code_verifier = code_verifier_params || localStorage.getItem('$_mixin-code-verifier');
 
-      if (!client_id || !code) {
-        var msg_part = !client_id && !code ? 'client_id and access_code' : !client_id ? 'client_id' : 'access_code';
-        this.logger('getToken').warn("Please pass ".concat(msg_part, " first!"));
+      if (!client_id || !code_verifier || !code) {
+        this.logger('getToken').warn('The request parameters which contain client_id, access_code and code_verifier is not correct!');
         return;
       }
 
       return new promise$3(function (resolve, reject) {
         getAccessToken({
           code: code,
+          code_verifier: code_verifier,
           client_id: client_id
         }).then(function (token) {
           _this._token = token;
-          if (persistence) localStorage.setItem('_mixin-token', token);
+          if (persistence) localStorage.setItem('$_mixin-token', token);
           resolve(token);
         })["catch"](function (err) {
           return _this.handlerError(err, 'getToken', 'get token failed!');
@@ -6549,10 +6547,15 @@ function getAccessToken(params) {
       var msg = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'oops! some error has ocurred!';
 
       var _parseError = parseError(err),
-          message = _parseError.message,
-          stack = _parseError.stack,
-          name = _parseError.name;
+          _parseError$message = _parseError.message,
+          message = _parseError$message === void 0 ? '' : _parseError$message,
+          _parseError$stack = _parseError.stack,
+          stack = _parseError$stack === void 0 ? '' : _parseError$stack,
+          _parseError$name = _parseError.name,
+          name = _parseError$name === void 0 ? '' : _parseError$name;
 
+      if (name) name = "(".concat(name, "): ");
+      if (stack) stack = " at ".concat(stack);
       this.logger(prefix).error("\uD83D\uDC47 ".concat(msg, " \u274C"), '\n', name, message, stack);
     }
   }]);
