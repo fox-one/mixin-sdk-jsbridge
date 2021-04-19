@@ -6508,7 +6508,7 @@ function getAccessToken(params) {
 
       if (!client_id || !code_verifier || !code) {
         this.logger('getToken').warn('The request parameters which contain client_id, access_code and code_verifier is not correct!');
-        return;
+        return promise$3.resolve(null);
       }
 
       return new promise$3(function (resolve, reject) {
@@ -6523,6 +6523,29 @@ function getAccessToken(params) {
         })["catch"](function (err) {
           return _this.handlerError(err, 'getToken', 'get token failed!');
         });
+      });
+    }
+  }, {
+    key: "getUserInfo",
+    value: function getUserInfo(token) {
+      var _a;
+
+      if (token === void 0) {
+        token = (_a = this.token) !== null && _a !== void 0 ? _a : '';
+      }
+
+      if (!token) {
+        this.logger('getToken').warn('The access_token is invalid!');
+        return promise$3.resolve(null);
+      }
+
+      return request({
+        url: 'https://api.mixin.one/me',
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: "Bearer ".concat(token)
+        }
       });
     }
   }, {

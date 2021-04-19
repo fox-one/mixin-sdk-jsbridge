@@ -43,17 +43,18 @@ export default defineComponent({
   setup() {},
   data() {
     return {
+      token: '',
       avatarUrl: '',
       userName: ''
     };
   },
-  mounted() {
-    const token = bridge.token;
-    if (!token) {
-      bridge.requestToken();
-    } else {
-      console.info(555, token);
+  async mounted() {
+    this.token = bridge.token;
+    if (!this.token) {
+      this.token = await bridge.requestToken();
     }
+
+    console.info(555, this.token);
   },
   methods: {
     goLogin: function () {

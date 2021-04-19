@@ -2,6 +2,7 @@ import { parseUrl } from 'peeler-js';
 import messager from './messager';
 import { getAccessCode, getAccessToken } from './token';
 import { getLogger, parseError, env } from '@utils/index';
+import { request } from '@utils/index';
 /** import types */
 import type { AUTH } from './token';
 
@@ -94,7 +95,7 @@ export class Bridge {
     code?: string;
     client_id?: string;
     code_verifier?: string;
-  }, persistence = true) {
+  }, persistence = true): Promise<string | null> {
     const { client_id: client_id_config } = this.config || {};
     const { code: code_params, code_verifier: code_verifier_params, client_id: client_id_params } = params || {};
     const code_url = this.getCode();
@@ -105,7 +106,7 @@ export class Bridge {
 
     if (!client_id || !code_verifier || !code) {
       this.logger('getToken').warn('The request parameters which contain client_id, access_code and code_verifier is not correct!');
-      return;
+      return Promise.resolve(null);
     }
 
     return new Promise((resolve, reject) => {
@@ -120,6 +121,21 @@ export class Bridge {
           resolve(token);
         })
         .catch(err => this.handlerError(err, 'getToken', 'get token failed!'));
+    });
+  }
+
+  public getUserInfo(token: string = this.token ?? ''): Promise<Record<string, any> | null> {
+    if (!token) {
+      this.logger('getToken').warn('The access_token is invalid!');
+      return Promise.resolve(null);
+    }
+    return request({
+      url: 'https://api.mixin.one/me',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
     });
   }
 
