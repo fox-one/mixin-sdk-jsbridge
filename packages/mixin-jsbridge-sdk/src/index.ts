@@ -23,8 +23,10 @@ export class Bridge {
     this.reloadTheme = this.reloadTheme.bind(this);
     this.playlist = this.playlist.bind(this);
     this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
     this.requestToken = this.requestToken.bind(this);
     this.getCode = this.getCode.bind(this);
+    this.getUserInfo = this.getUserInfo.bind(this);
     this.handlerError = this.handlerError.bind(this);
   }
 
@@ -34,7 +36,7 @@ export class Bridge {
    */
   public getContext() {
     const ctx = messager('getContext')();
-    ctx.platform = ctx.platform || (env().isIOS ? 'iOS' : 'Android');
+    if (ctx) ctx.platform = ctx?.platform || (env().isIOS ? 'iOS' : 'Android');
     return ctx;
   }
 
@@ -83,6 +85,12 @@ export class Bridge {
       client_id: cid,
       auth
     });
+  }
+
+  public logout(reload = true) {
+    localStorage.removeItem('$_mixin-token');
+    localStorage.removeItem('$_mixin-code-verifier');
+    if (reload) window.location.reload();
   }
 
   /**

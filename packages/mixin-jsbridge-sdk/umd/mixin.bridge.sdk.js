@@ -6395,7 +6395,7 @@ function getAccessToken(params) {
   });
 }var Bridge = /*#__PURE__*/function () {
   function Bridge(config) {
-    var _context, _context2, _context3, _context4, _context5, _context6, _context7;
+    var _context, _context2, _context3, _context4, _context5, _context6, _context7, _context8, _context9;
 
     classCallCheck(this, Bridge);
 
@@ -6406,9 +6406,11 @@ function getAccessToken(params) {
     this.reloadTheme = bind$3(_context2 = this.reloadTheme).call(_context2, this);
     this.playlist = bind$3(_context3 = this.playlist).call(_context3, this);
     this.login = bind$3(_context4 = this.login).call(_context4, this);
-    this.requestToken = bind$3(_context5 = this.requestToken).call(_context5, this);
-    this.getCode = bind$3(_context6 = this.getCode).call(_context6, this);
-    this.handlerError = bind$3(_context7 = this.handlerError).call(_context7, this);
+    this.logout = bind$3(_context5 = this.logout).call(_context5, this);
+    this.requestToken = bind$3(_context6 = this.requestToken).call(_context6, this);
+    this.getCode = bind$3(_context7 = this.getCode).call(_context7, this);
+    this.getUserInfo = bind$3(_context8 = this.getUserInfo).call(_context8, this);
+    this.handlerError = bind$3(_context9 = this.handlerError).call(_context9, this);
   }
   /**
    * 获取 app 上下文
@@ -6420,7 +6422,7 @@ function getAccessToken(params) {
     key: "getContext",
     value: function getContext() {
       var ctx = messager('getContext')();
-      ctx.platform = ctx.platform || (env().isIOS ? 'iOS' : 'Android');
+      if (ctx) ctx.platform = (ctx === null || ctx === void 0 ? void 0 : ctx.platform) || (env().isIOS ? 'iOS' : 'Android');
       return ctx;
     }
     /**
@@ -6478,6 +6480,14 @@ function getAccessToken(params) {
         client_id: cid,
         auth: auth
       }));
+    }
+  }, {
+    key: "logout",
+    value: function logout() {
+      var reload = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      localStorage.removeItem('$_mixin-token');
+      localStorage.removeItem('$_mixin-code-verifier');
+      if (reload) window.location.reload();
     }
     /**
      * 根据 code 换取 access token
