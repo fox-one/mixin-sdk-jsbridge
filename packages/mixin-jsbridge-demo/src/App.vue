@@ -44,7 +44,7 @@
           v-model="result"
           class="main-operation-textarea"
           type="textarea"
-          :rows="6"
+          :rows="10"
           placeholder="暂无数据……"
         />
         <el-button
@@ -77,7 +77,7 @@ export default defineComponent({
       token: '',
       avatarUrl: '',
       userName: '',
-      bridgeOptions: ['getContext', 'reloadTheme', 'playlist'],
+      bridgeOptions: ['getUserInfo', 'getContext', 'reloadTheme', 'playlist'],
       playlists: [
         'https://dev-courses-storage.firesbox.com/7000103418/replay/0880eec2-baaa-41be-b7c7-3c4cbaab411d.mp4',
         'https://dev-courses-storage.firesbox.com/7000103418/replay/ab1984c4-1d3f-46fd-8108-f0698d502a3f.mp4',
@@ -120,7 +120,7 @@ export default defineComponent({
     callBridge: function () {
       if (this.currentBridge) {
         const res = bridge[this.currentBridge]?.(this.playlists);
-        this.result = res;
+        this.result = JSON.stringify(res);
       }
     },
     goLogout() {

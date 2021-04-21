@@ -297,7 +297,48 @@ var _export = function (options, source) {
       }
     }
   }
-};// `ToObject` abstract operation
+};var aFunction$1 = function (variable) {
+  return typeof variable == 'function' ? variable : undefined;
+};
+
+var getBuiltIn = function (namespace, method) {
+  return arguments.length < 2 ? aFunction$1(path[namespace]) || aFunction$1(global$1[namespace])
+    : path[namespace] && path[namespace][method] || global$1[namespace] && global$1[namespace][method];
+};var $stringify = getBuiltIn('JSON', 'stringify');
+var re = /[\uD800-\uDFFF]/g;
+var low = /^[\uD800-\uDBFF]$/;
+var hi = /^[\uDC00-\uDFFF]$/;
+
+var fix = function (match, offset, string) {
+  var prev = string.charAt(offset - 1);
+  var next = string.charAt(offset + 1);
+  if ((low.test(match) && !hi.test(next)) || (hi.test(match) && !low.test(prev))) {
+    return '\\u' + match.charCodeAt(0).toString(16);
+  } return match;
+};
+
+var FORCED = fails(function () {
+  return $stringify('\uDF06\uD834') !== '"\\udf06\\ud834"'
+    || $stringify('\uDEAD') !== '"\\udead"';
+});
+
+if ($stringify) {
+  // `JSON.stringify` method
+  // https://tc39.es/ecma262/#sec-json.stringify
+  // https://github.com/tc39/proposal-well-formed-stringify
+  _export({ target: 'JSON', stat: true, forced: FORCED }, {
+    // eslint-disable-next-line no-unused-vars -- required for `.length`
+    stringify: function stringify(it, replacer, space) {
+      var result = $stringify.apply(null, arguments);
+      return typeof result == 'string' ? result.replace(re, fix) : result;
+    }
+  });
+}if (!path.JSON) path.JSON = { stringify: JSON.stringify };
+
+// eslint-disable-next-line no-unused-vars -- required for `.length`
+var stringify = function stringify(it, replacer, space) {
+  return path.JSON.stringify.apply(null, arguments);
+};var stringify$1 = stringify;var stringify$2 = stringify$1;// `ToObject` abstract operation
 // https://tc39.es/ecma262/#sec-toobject
 var toObject = function (argument) {
   return Object(requireObjectCoercible(argument));
@@ -453,13 +494,6 @@ var objectDefineProperties = descriptors ? Object.defineProperties : function de
   var key;
   while (length > index) objectDefineProperty.f(O, key = keys[index++], Properties[key]);
   return O;
-};var aFunction$1 = function (variable) {
-  return typeof variable == 'function' ? variable : undefined;
-};
-
-var getBuiltIn = function (namespace, method) {
-  return arguments.length < 2 ? aFunction$1(path[namespace]) || aFunction$1(global$1[namespace])
-    : path[namespace] && path[namespace][method] || global$1[namespace] && global$1[namespace][method];
 };var html = getBuiltIn('document', 'documentElement');var GT = '>';
 var LT = '<';
 var PROTOTYPE = 'prototype';
@@ -1084,7 +1118,7 @@ var HANDLED = 1;
 var UNHANDLED = 2;
 var Internal, OwnPromiseCapability, PromiseWrapper;
 
-var FORCED = isForced_1(PROMISE, function () {
+var FORCED$1 = isForced_1(PROMISE, function () {
   var GLOBAL_CORE_JS_PROMISE = inspectSource(PromiseConstructor) !== String(PromiseConstructor);
   if (!GLOBAL_CORE_JS_PROMISE) {
     // V8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
@@ -1110,7 +1144,7 @@ var FORCED = isForced_1(PROMISE, function () {
   return !(promise.then(function () { /* empty */ }) instanceof FakePromise);
 });
 
-var INCORRECT_ITERATION = FORCED || !checkCorrectnessOfIteration(function (iterable) {
+var INCORRECT_ITERATION = FORCED$1 || !checkCorrectnessOfIteration(function (iterable) {
   PromiseConstructor.all(iterable)['catch'](function () { /* empty */ });
 });
 
@@ -1258,7 +1292,7 @@ var internalResolve = function (state, value, unwrap) {
 };
 
 // constructor polyfill
-if (FORCED) {
+if (FORCED$1) {
   // 25.4.3.1 Promise(executor)
   PromiseConstructor = function Promise(executor) {
     anInstance(this, PromiseConstructor, PROMISE);
@@ -1318,7 +1352,7 @@ if (FORCED) {
   };
 }
 
-_export({ global: true, wrap: true, forced: FORCED }, {
+_export({ global: true, wrap: true, forced: FORCED$1 }, {
   Promise: PromiseConstructor
 });
 
@@ -1328,7 +1362,7 @@ setSpecies(PROMISE);
 PromiseWrapper = getBuiltIn(PROMISE);
 
 // statics
-_export({ target: PROMISE, stat: true, forced: FORCED }, {
+_export({ target: PROMISE, stat: true, forced: FORCED$1 }, {
   // `Promise.reject` method
   // https://tc39.es/ecma262/#sec-promise.reject
   reject: function reject(r) {
@@ -2022,11 +2056,11 @@ var stringTrim = {
 
 var $parseInt = global$1.parseInt;
 var hex = /^[+-]?0[Xx]/;
-var FORCED$1 = $parseInt(whitespaces + '08') !== 8 || $parseInt(whitespaces + '0x16') !== 22;
+var FORCED$2 = $parseInt(whitespaces + '08') !== 8 || $parseInt(whitespaces + '0x16') !== 22;
 
 // `parseInt` method
 // https://tc39.es/ecma262/#sec-parseint-string-radix
-var numberParseInt = FORCED$1 ? function parseInt(string, radix) {
+var numberParseInt = FORCED$2 ? function parseInt(string, radix) {
   var S = trim(String(string));
   return $parseInt(S, (radix >>> 0) || (hex.test(S) ? 16 : 10));
 } : $parseInt;// `parseInt` method
@@ -2091,12 +2125,12 @@ var isConcatSpreadable = function (O) {
   return spreadable !== undefined ? !!spreadable : isArray(O);
 };
 
-var FORCED$2 = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT;
+var FORCED$3 = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT;
 
 // `Array.prototype.concat` method
 // https://tc39.es/ecma262/#sec-array.prototype.concat
 // with adding support of @@isConcatSpreadable and @@species
-_export({ target: 'Array', proto: true, forced: FORCED$2 }, {
+_export({ target: 'Array', proto: true, forced: FORCED$3 }, {
   // eslint-disable-next-line no-unused-vars -- required for `.length`
   concat: function concat(arg) {
     var O = toObject(this);
@@ -4913,41 +4947,7 @@ function messager(type) {
   return handler !== null && handler !== void 0 ? handler : function () {
     return logger$3().warn('Please call in mixin app!');
   };
-}var $stringify = getBuiltIn('JSON', 'stringify');
-var re = /[\uD800-\uDFFF]/g;
-var low = /^[\uD800-\uDBFF]$/;
-var hi = /^[\uDC00-\uDFFF]$/;
-
-var fix = function (match, offset, string) {
-  var prev = string.charAt(offset - 1);
-  var next = string.charAt(offset + 1);
-  if ((low.test(match) && !hi.test(next)) || (hi.test(match) && !low.test(prev))) {
-    return '\\u' + match.charCodeAt(0).toString(16);
-  } return match;
-};
-
-var FORCED$3 = fails(function () {
-  return $stringify('\uDF06\uD834') !== '"\\udf06\\ud834"'
-    || $stringify('\uDEAD') !== '"\\udead"';
-});
-
-if ($stringify) {
-  // `JSON.stringify` method
-  // https://tc39.es/ecma262/#sec-json.stringify
-  // https://github.com/tc39/proposal-well-formed-stringify
-  _export({ target: 'JSON', stat: true, forced: FORCED$3 }, {
-    // eslint-disable-next-line no-unused-vars -- required for `.length`
-    stringify: function stringify(it, replacer, space) {
-      var result = $stringify.apply(null, arguments);
-      return typeof result == 'string' ? result.replace(re, fix) : result;
-    }
-  });
-}if (!path.JSON) path.JSON = { stringify: JSON.stringify };
-
-// eslint-disable-next-line no-unused-vars -- required for `.length`
-var stringify = function stringify(it, replacer, space) {
-  return path.JSON.stringify.apply(null, arguments);
-};var stringify$1 = stringify;var stringify$2 = stringify$1;var FAILS_ON_PRIMITIVES = fails(function () { objectKeys(1); });
+}var FAILS_ON_PRIMITIVES = fails(function () { objectKeys(1); });
 
 // `Object.keys` method
 // https://tc39.es/ecma262/#sec-object.keys
@@ -6401,15 +6401,18 @@ function getAccessToken(params) {
 
     this.config = config;
     this._token = void 0;
-    this.logger = getLogger();
+    this._userInfo = void 0;
+    this.logger = getLogger(); // public
+
     this.getContext = bind$3(_context = this.getContext).call(_context, this);
     this.reloadTheme = bind$3(_context2 = this.reloadTheme).call(_context2, this);
     this.playlist = bind$3(_context3 = this.playlist).call(_context3, this);
     this.login = bind$3(_context4 = this.login).call(_context4, this);
     this.logout = bind$3(_context5 = this.logout).call(_context5, this);
     this.requestToken = bind$3(_context6 = this.requestToken).call(_context6, this);
-    this.getCode = bind$3(_context7 = this.getCode).call(_context7, this);
-    this.getUserInfo = bind$3(_context8 = this.getUserInfo).call(_context8, this);
+    this.getUserInfo = bind$3(_context7 = this.getUserInfo).call(_context7, this); // private
+
+    this.getCode = bind$3(_context8 = this.getCode).call(_context8, this);
     this.handlerError = bind$3(_context9 = this.handlerError).call(_context9, this);
   }
   /**
@@ -6487,6 +6490,7 @@ function getAccessToken(params) {
       var reload = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
       localStorage.removeItem('$_mixin-token');
       localStorage.removeItem('$_mixin-code-verifier');
+      localStorage.removeItem('$_mixin-user-info');
       if (reload) window.location.reload();
     }
     /**
@@ -6538,15 +6542,25 @@ function getAccessToken(params) {
   }, {
     key: "getUserInfo",
     value: function getUserInfo(token) {
-      var _a;
+      var _this2 = this;
+
+      var _a, _b;
 
       if (token === void 0) {
         token = (_a = this.token) !== null && _a !== void 0 ? _a : '';
       }
 
       if (!token) {
-        this.logger('getToken').warn('The access_token is invalid!');
+        this.logger('getUserInfo').warn('The access_token is invalid!');
         return promise$3.resolve(null);
+      }
+
+      try {
+        var cache = localStorage.getItem('$_mixin-user-info');
+        var userInfo = ((_b = this._userInfo) !== null && _b !== void 0 ? _b : cache) ? JSON.parse(cache) : '';
+        if (userInfo) return promise$3.resolve(userInfo);
+      } catch (err) {
+        this.logger('getUserInfo').info(err);
       }
 
       return request({
@@ -6558,7 +6572,14 @@ function getAccessToken(params) {
         },
         withCredentials: false
       }).then(function (res) {
-        return res.data;
+        var data = res.data;
+
+        if (data) {
+          _this2._userInfo = data;
+          localStorage.setItem('$_mixin-user-info', stringify$2(data));
+        }
+
+        return data;
       });
     }
   }, {

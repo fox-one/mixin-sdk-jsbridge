@@ -1,4 +1,5 @@
-# mixin-jsbridge-demo
+# mixin-jsbridge-rebot
+基于 Mixin 的 JSBridge debug 机器人
 
 ## 快速开始 (quick start)
 ### 安装依赖 (Install dependencies)

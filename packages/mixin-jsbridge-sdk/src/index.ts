@@ -12,21 +12,26 @@ interface Config {
 export class Bridge {
   private config?: Config;
   private _token?: string;
+  private _userInfo?: Record<string, any>;
   private logger: ReturnType<typeof getLogger>;
 
   public constructor(config?: Config) {
     this.config = config;
     this._token = void 0;
+    this._userInfo = void 0;
     this.logger = getLogger();
 
+    // public
     this.getContext = this.getContext.bind(this);
     this.reloadTheme = this.reloadTheme.bind(this);
     this.playlist = this.playlist.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.requestToken = this.requestToken.bind(this);
-    this.getCode = this.getCode.bind(this);
     this.getUserInfo = this.getUserInfo.bind(this);
+
+    // private
+    this.getCode = this.getCode.bind(this);
     this.handlerError = this.handlerError.bind(this);
   }
 
@@ -90,6 +95,7 @@ export class Bridge {
   public logout(reload = true) {
     localStorage.removeItem('$_mixin-token');
     localStorage.removeItem('$_mixin-code-verifier');
+    localStorage.removeItem('$_mixin-user-info');
     if (reload) window.location.reload();
   }
 
@@ -134,9 +140,19 @@ export class Bridge {
 
   public getUserInfo(token: string = this.token ?? ''): Promise<Record<string, any> | null> {
     if (!token) {
-      this.logger('getToken').warn('The access_token is invalid!');
+      this.logger('getUserInfo').warn('The access_token is invalid!');
       return Promise.resolve(null);
     }
+
+    try {
+      const cache = localStorage.getItem('$_mixin-user-info');
+      const userInfo = this._userInfo ?? cache ? JSON.parse(cache!) : '';
+      if (userInfo) return Promise.resolve(userInfo);
+    } catch (err) {
+      this.logger('getUserInfo').info(err);
+    }
+
+
     return request({
       url: 'https://api.mixin.one/me',
       method: 'GET',
@@ -145,7 +161,14 @@ export class Bridge {
         Authorization: `Bearer ${token}`
       },
       withCredentials: false
-    }).then(res => res.data);
+    }).then(res => {
+      const data = res.data;
+      if (data) {
+        this._userInfo = data;
+        localStorage.setItem('$_mixin-user-info', JSON.stringify(data));
+      }
+      return data;
+    });
   }
 
   private getCode() {
