@@ -7,9 +7,6 @@ async function autoGit () {
   try {
     gitStatus = await git.checkout('debug/main', () => {
       shell.exec('./script.sh');
-      git.add();
-      git.commit('update: docs');
-      git.push();
     })
     console.info(`[git - status]: ${gitStatus}`)
   } catch (e) {
