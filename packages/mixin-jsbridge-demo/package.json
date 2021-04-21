@@ -15,7 +15,7 @@
     "lint:style_fix": "stylelint src/**/*.{css,less,scss,sass} --fix --allow-empty-input",
     "new": "omni new",
     "build": "omni build",
-    "release": "omni release && node configs/release.js"
+    "release": "omni release"
   },
   "keywords": [],
   "author": "",

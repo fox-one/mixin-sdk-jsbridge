@@ -15,7 +15,7 @@
     "build:demo": "omni build -P ./packages/mixin-jsbridge-demo",
     "build:doc": "cd ./packages/mixin-jsbridge-sdk && yarn build:demo",
     "release": "omni release -P ./packages/mixin-jsbridge-sdk",
-    "release:demo": "omni release -P ./packages/mixin-jsbridge-demo"
+    "release:demo": "omni release -P ./packages/mixin-jsbridge-demo && node ./packages/mixin-jsbridge-demo/configs/release.js"
   },
   "devDependencies": {
     "@omni-door/cli": "^2.3.7",
