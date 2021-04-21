@@ -9,7 +9,7 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item>登出</el-dropdown-item>
+              <el-dropdown-item @click="goLogout">登出</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -122,6 +122,9 @@ export default defineComponent({
         const res = bridge[this.currentBridge]?.(this.playlists);
         this.result = res;
       }
+    },
+    goLogout() {
+      bridge.logout();
     }
   }
 });
