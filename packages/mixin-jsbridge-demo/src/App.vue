@@ -9,7 +9,7 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="goLogout">登出</el-dropdown-item>
+              <el-dropdown-item @click="goLogout">logout</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -21,7 +21,7 @@
           type="info"
           @click="goLogin"
         >
-          登录
+          login
         </el-button>
       </template>
     </el-header>
@@ -32,7 +32,7 @@
         <el-select
           v-model="currentBridge"
           class="main-operation-selector"
-          placeholder="选择调用的 Bridge"
+          placeholder="Select a Bridge"
         >
           <el-option
             v-for="bridge in bridgeOptions"
@@ -44,8 +44,8 @@
           v-model="result"
           class="main-operation-textarea"
           type="textarea"
-          :rows="10"
-          placeholder="暂无数据……"
+          :rows="12"
+          placeholder="No data available……"
         />
         <el-button
           class="main-operation-btn"
@@ -53,7 +53,7 @@
           round
           @click="callBridge"
         >
-          快猛戳我
+          Click Me
         </el-button>
       </div>
     </el-main>
@@ -98,7 +98,6 @@ export default defineComponent({
       try {
         const { avatar_url, full_name } = await bridge.getUserInfo();
         this.avatarUrl = avatar_url;
-        console.info(123, this.avatarUrl);
         this.userName = full_name;
       } catch (err) {
         console.error(err);
@@ -117,10 +116,16 @@ export default defineComponent({
         // represent: false
       });
     },
-    callBridge: function () {
+    callBridge: async function () {
       if (this.currentBridge) {
-        const res = bridge[this.currentBridge]?.(this.playlists);
-        this.result = JSON.stringify(res);
+        const res = await bridge[this.currentBridge]?.(this.playlists);
+        let txt = '';
+        if (res) {
+          Object.keys(res).forEach(v => {
+            txt += `${v}: ${res[v]}; \n\n`;
+          });
+        }
+        this.result = txt;
       }
     },
     goLogout() {

@@ -1,6 +1,6 @@
 {
   "name": "mixin-jsbridge-rebot",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "scripts": {
     "start": "omni dev",
@@ -15,7 +15,7 @@
     "lint:style_fix": "stylelint src/**/*.{css,less,scss,sass} --fix --allow-empty-input",
     "new": "omni new",
     "build": "omni build",
-    "release": "omni release"
+    "release": "omni release && node configs/release.js"
   },
   "keywords": [],
   "author": "",
@@ -31,7 +31,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@foxone/mixin-sdk-jsbridge": "0.1.0-4",
+    "@foxone/mixin-sdk-jsbridge": "0.1.0-5",
     "core-js": "^3.6.4",
     "element-plus": "^1.0.2-beta.35",
     "regenerator-runtime": "^0.13.5",
@@ -78,6 +78,8 @@
     "postcss-px-to-viewport": "1.1.1",
     "prettier": "~2.1.2",
     "serve-favicon": "~2.5.0",
+    "shelljs": "^0.8.4",
+    "simple-git": "^2.38.0",
     "style-loader": "~2.0.0",
     "stylelint": "13.2.0",
     "stylelint-config-css-modules": "2.2.0",
