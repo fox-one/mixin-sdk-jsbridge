@@ -124,7 +124,9 @@ export default defineComponent({
           this.currentBridge === 'playlist' ? this.playlists : void 0;
         const res = await bridge[this.currentBridge]?.(params);
         let txt =
-          this.currentBridge === 'getUserInfo' ? 'Please login first!' : '';
+          this.currentBridge === 'getUserInfo' && !this.userName
+            ? 'Please login first!'
+            : '';
         if (res) {
           Object.keys(res).forEach(v => {
             txt += `${v}: ${res[v]}; \n\n`;
