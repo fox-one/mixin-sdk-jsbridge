@@ -3,6 +3,7 @@ import messager from './messager';
 import { getAccessCode, getAccessToken } from './token';
 import { getLogger, parseError, env } from '@utils/index';
 import { request } from '@utils/index';
+import pkj from '../package.json';
 /** import types */
 import type { AUTH } from './token';
 
@@ -33,6 +34,10 @@ export class Bridge {
     // private
     this.getCode = this.getCode.bind(this);
     this.handlerError = this.handlerError.bind(this);
+  }
+
+  public get version() {
+    return pkj?.version ?? 'unknown';
   }
 
   /**

@@ -24,6 +24,7 @@
           login
         </el-button>
       </template>
+      <span class="header-version">version: {{ bridgeVersion }}</span>
     </el-header>
 
     <el-main class="main">
@@ -32,7 +33,7 @@
         <el-select
           v-model="currentBridge"
           class="main-operation-selector"
-          placeholder="Select a Bridge"
+          placeholder="Select Bridge"
         >
           <el-option
             v-for="bridge in bridgeOptions"
@@ -54,7 +55,7 @@
           :disabled="!currentBridge"
           @click="callBridge"
         >
-          Click Me
+          {{ currentBridge ? 'Click Me' : 'Select Bridge' }}
         </el-button>
       </div>
     </el-main>
@@ -84,6 +85,7 @@ export default defineComponent({
         'https://dev-courses-storage.firesbox.com/7000103418/replay/0e43761b-4065-46ee-b0a1-a96aea13414a.mp3'
       ],
       currentBridge: '',
+      bridgeVersion: bridge.version,
       result: ''
     };
   },
