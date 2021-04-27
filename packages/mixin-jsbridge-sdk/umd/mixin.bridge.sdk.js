@@ -6321,8 +6321,7 @@ var base64Js = {
   contacts: 'CONTACTS:READ',
   assets: 'ASSETS:READ',
   snapshots: 'SNAPSHOTS:READ',
-  messages: 'MESSAGES:READ',
-  represent: 'REPRESENT:READ'
+  messages: 'MESSAGES:REPRESENT'
 };
 
 function base64URLEncode(str) {

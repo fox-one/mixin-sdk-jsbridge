@@ -111,11 +111,10 @@ export default defineComponent({
       bridge.login({
         profile: true,
         phone: true,
-        contacts: false,
+        contacts: true,
         assets: true,
-        snapshots: false
-        // messages: false,
-        // represent: false
+        snapshots: true,
+        messages: true
       });
     },
     callBridge: async function () {

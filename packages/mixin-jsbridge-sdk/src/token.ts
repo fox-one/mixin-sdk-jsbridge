@@ -5,13 +5,12 @@ import { request, strToUnitArray } from '@utils/index';
 
 
 export type AUTH = {
-  phone?: boolean;
-  profile?: boolean;
-  contacts?: boolean;
-  assets?: boolean;
-  snapshots?: boolean;
-  messages?: boolean;
-  represent?: boolean;
+  phone?: boolean | number;
+  profile?: boolean | number;
+  contacts?: boolean | number;
+  assets?: boolean | number;
+  snapshots?: boolean | number;
+  messages?: boolean | number;
 };
 
 export type SCOPE = keyof typeof AUTHSCOPE;
@@ -22,8 +21,7 @@ const AUTHSCOPE = {
   contacts: 'CONTACTS:READ',
   assets: 'ASSETS:READ',
   snapshots: 'SNAPSHOTS:READ',
-  messages: 'MESSAGES:READ',
-  represent: 'REPRESENT:READ'
+  messages: 'MESSAGES:REPRESENT'
 };
 
 function base64URLEncode(str: string) {
