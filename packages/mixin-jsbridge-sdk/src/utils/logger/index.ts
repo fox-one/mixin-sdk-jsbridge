@@ -7,7 +7,7 @@ const logger = new Logger({
 });
 
 function getPrefix(scope?: string, suffix?: string) {
-  let str = 'FOX-ONE-JSBridge';
+  let str = 'Mixin-JSBridge';
   if (scope && suffix) {
     str = `${str} ${scope}-${suffix}`;
   } else if (scope) {

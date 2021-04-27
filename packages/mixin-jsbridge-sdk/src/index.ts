@@ -40,16 +40,32 @@ export class Bridge {
    * @returns 
    */
   public getContext() {
-    const ctx = messager('getContext')();
-    if (ctx) ctx.platform = ctx?.platform || (env().isIOS ? 'iOS' : 'Android');
-    return ctx;
+    try {
+      let ctx = messager('getContext')();
+      if (typeof ctx === 'string') {
+        try {
+          ctx = JSON.parse(ctx);
+        } catch (e) {
+          this.logger('getContext').info(e);
+        }
+      }
+      if (ctx) ctx.platform = ctx?.platform || (env().isIOS ? 'iOS' : 'Android');
+      return ctx;
+    } catch (err) {
+      this.handlerError(err, 'getContext');
+      return null;
+    }
   }
 
   /**
    * 重载
    */
   public reloadTheme() {
-    messager('reloadTheme')();
+    try {
+      messager('reloadTheme')();
+    } catch (err) {
+      this.handlerError(err, 'reloadTheme');
+    }
   }
 
   /**
@@ -58,7 +74,11 @@ export class Bridge {
    * @returns 
    */
   public playlist(src: string[]) {
-    return messager('playlist')(src);
+    try {
+      messager('playlist')(src);
+    } catch (err) {
+      this.handlerError(err, 'playlist');
+    }
   }
 
   /**

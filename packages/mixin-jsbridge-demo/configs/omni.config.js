@@ -18,7 +18,7 @@ module.exports = {
       // }
     ], // 开发服务代理配置 (dev-server proxy config)
     port: 6201, // 开发服务端口号 (dev-server port)
-    host: 'dev.jsbridge.com', // 开发服务端host (dev-server host)
+    // host: 'dev.jsbridge.com', // 开发服务端host (dev-server host)
     // https: true, // 以https协议启动开发服务 (start dev-server with https)
     devMiddlewareOptions: {
       headers: { 'Access-Control-Allow-Origin': '*' }

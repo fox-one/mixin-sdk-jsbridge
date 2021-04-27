@@ -49,8 +49,9 @@
         />
         <el-button
           class="main-operation-btn"
-          type="danger"
+          :type="currentBridge ? 'danger' : 'info'"
           round
+          :disabled="!currentBridge"
           @click="callBridge"
         >
           Click Me
@@ -79,9 +80,8 @@ export default defineComponent({
       userName: '',
       bridgeOptions: ['getUserInfo', 'getContext', 'reloadTheme', 'playlist'],
       playlists: [
-        'https://dev-courses-storage.firesbox.com/7000103418/replay/0880eec2-baaa-41be-b7c7-3c4cbaab411d.mp4',
-        'https://dev-courses-storage.firesbox.com/7000103418/replay/ab1984c4-1d3f-46fd-8108-f0698d502a3f.mp4',
-        'https://dev-courses-storage.firesbox.com/7000103418/replay/304c4e1f-16c2-4611-803c-b8aa64febd44.mp4'
+        'https://dev-courses-storage.firesbox.com/7000103418/replay/82480598-1d75-40d9-9317-d4850c980eb6.mp3',
+        'https://dev-courses-storage.firesbox.com/7000103418/replay/0e43761b-4065-46ee-b0a1-a96aea13414a.mp3'
       ],
       currentBridge: '',
       result: ''
@@ -118,8 +118,11 @@ export default defineComponent({
     },
     callBridge: async function () {
       if (this.currentBridge) {
-        const res = await bridge[this.currentBridge]?.(this.playlists);
-        let txt = '';
+        const params =
+          this.currentBridge === 'playlist' ? this.playlists : void 0;
+        const res = await bridge[this.currentBridge]?.(params);
+        let txt =
+          this.currentBridge === 'getUserInfo' ? 'Please login first!' : '';
         if (res) {
           Object.keys(res).forEach(v => {
             txt += `${v}: ${res[v]}; \n\n`;

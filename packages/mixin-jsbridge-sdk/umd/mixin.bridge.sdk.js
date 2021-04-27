@@ -2165,7 +2165,7 @@ function createCommonjsModule(e,t){return e(t={exports:{}},t.exports),t.exports}
 });
 
 function getPrefix(scope, suffix) {
-  var str = 'FOX-ONE-JSBridge';
+  var str = 'Mixin-JSBridge';
 
   if (scope && suffix) {
     var _context, _context2;
@@ -4945,7 +4945,7 @@ function messager(type) {
     return JSON.parse(prompt('MixinContext.getContext()'));
   } : (_c = (_b = (_a = window === null || window === void 0 ? void 0 : window.webkit) === null || _a === void 0 ? void 0 : _a.messageHandlers) === null || _b === void 0 ? void 0 : _b[type]) === null || _c === void 0 ? void 0 : bind$3(_context = _c.postMessage).call(_context, (_e = (_d = window === null || window === void 0 ? void 0 : window.webkit) === null || _d === void 0 ? void 0 : _d.messageHandlers) === null || _e === void 0 ? void 0 : _e[type]) : (_g = (_f = window === null || window === void 0 ? void 0 : window.MixinContext) === null || _f === void 0 ? void 0 : _f[type]) === null || _g === void 0 ? void 0 : bind$3(_g).call(_g, window === null || window === void 0 ? void 0 : window.MixinContext);
   return handler !== null && handler !== void 0 ? handler : function () {
-    return logger$3().warn('Please call in mixin app!');
+    return logger$3().warn("The messager\u300C ".concat(type, "] \u300Dis not support yet!"));
   };
 }var FAILS_ON_PRIMITIVES = fails(function () { objectKeys(1); });
 
@@ -6424,9 +6424,23 @@ function getAccessToken(params) {
   createClass(Bridge, [{
     key: "getContext",
     value: function getContext() {
-      var ctx = messager('getContext')();
-      if (ctx) ctx.platform = (ctx === null || ctx === void 0 ? void 0 : ctx.platform) || (env().isIOS ? 'iOS' : 'Android');
-      return ctx;
+      try {
+        var ctx = messager('getContext')();
+
+        if (typeof ctx === 'string') {
+          try {
+            ctx = JSON.parse(ctx);
+          } catch (e) {
+            this.logger('getContext').info(e);
+          }
+        }
+
+        if (ctx) ctx.platform = (ctx === null || ctx === void 0 ? void 0 : ctx.platform) || (env().isIOS ? 'iOS' : 'Android');
+        return ctx;
+      } catch (err) {
+        this.handlerError(err, 'getContext');
+        return null;
+      }
     }
     /**
      * 重载
@@ -6435,7 +6449,11 @@ function getAccessToken(params) {
   }, {
     key: "reloadTheme",
     value: function reloadTheme() {
-      messager('reloadTheme')();
+      try {
+        messager('reloadTheme')();
+      } catch (err) {
+        this.handlerError(err, 'reloadTheme');
+      }
     }
     /**
      * 打开播放列表
@@ -6446,7 +6464,11 @@ function getAccessToken(params) {
   }, {
     key: "playlist",
     value: function playlist(src) {
-      return messager('playlist')(src);
+      try {
+        messager('playlist')(src);
+      } catch (err) {
+        this.handlerError(err, 'playlist');
+      }
     }
     /**
      * 获取 access token

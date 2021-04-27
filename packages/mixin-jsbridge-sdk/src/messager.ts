@@ -31,7 +31,7 @@ export function messager<T extends keyof Messagers>(type: T) {
       : window?.webkit?.messageHandlers?.[type as Exclude<T, 'getContext'>]?.postMessage.bind(window?.webkit?.messageHandlers?.[type as Exclude<T, 'getContext'>]) as Messagers[Exclude<T, 'getContext'>]
     : window?.MixinContext?.[type]?.bind(window?.MixinContext) as Messagers[T];
 
-  return handler ?? (() => logger().warn('Please call in mixin app!'));
+  return handler ?? (() => logger().warn(`The messager「 ${type}] 」is not support yet!`));
 }
 
 export default messager;

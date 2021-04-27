@@ -1,11 +1,11 @@
-# @foxone/mixin-sdk-jsbridge
+# Mixin JSBridge
 
 **Mixin-JSBridge SDK for FE developer**
 
 ## Nav
-- [Quick Start](https://fox-one.github.io/mixin-sdk-jsbridge/#/1)
+- [Quick Start](/1)
 
-- [API](https://fox-one.github.io/mixin-sdk-jsbridge/#/2)
+- [API](/2)
 
 - [rebot](https://fox-one.github.io/mixin-sdk-jsbridge-debug/#/)
 

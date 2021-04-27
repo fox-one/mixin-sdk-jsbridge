@@ -1,6 +1,6 @@
 export default {
   title: 'JSBridge',
-  description: 'Mixin JSBridge SDK for FE developer',
+  description: 'Mixin-JSBridge SDK',
   mode: 'doc',
   publicPath: './',
   history: { type: 'hash' },

@@ -1,9 +1,20 @@
 # @foxone/mixin-sdk-jsbridge
 
-https://fox-one.github.io/mixin-sdk-jsbridge/#/
+[Documentation](https://fox-one.github.io/mixin-sdk-jsbridge/#/)
 
+English | [简体中文](./README.zh-CN.md)
 
-请使用 [lerna](https://lerna.js.org/) 结合 npm script 进行项目管理和开发
+## Nav
+- [Quick Start](https://fox-one.github.io/mixin-sdk-jsbridge/#/1)
+
+- [API](https://fox-one.github.io/mixin-sdk-jsbridge/#/2)
+
+- [rebot](https://fox-one.github.io/mixin-sdk-jsbridge-debug/#/)
+
+- [github](https://github.com/fox-one/mixin-sdk-jsbridge/tree/master/packages/mixin-jsbridge-sdk)
+
+## Dev
+Please use [lerna](https://lerna.js.org/) and `npm script` to management and development the project
 
 ## install dependencies to global
   ```shell
@@ -21,7 +32,7 @@ https://fox-one.github.io/mixin-sdk-jsbridge/#/
     yarn dev
     ```
 
-  - server demo server
+  - start demo server
     ```sh
     yarn dev:demo
     ```
@@ -43,6 +54,11 @@ https://fox-one.github.io/mixin-sdk-jsbridge/#/
     yarn build
     ```
 
+    - build sdk project document
+    ```sh
+    yarn build:doc
+    ```
+
   - build demo project
     ```sh
     yarn build:demo
@@ -54,7 +70,7 @@ https://fox-one.github.io/mixin-sdk-jsbridge/#/
     yarn release
     ```
 
-  - build demo project
+  - release demo project
     ```sh
     yarn release:demo
     ```
