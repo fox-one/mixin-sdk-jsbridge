@@ -6393,7 +6393,7 @@ function getAccessToken(params) {
     return res.data.access_token;
   });
 }var name = "@foxone/mixin-sdk-jsbridge";
-var version$1 = "0.1.1";
+var version$1 = "0.1.2";
 var description = "";
 var main = "lib/index.js";
 var module = "es/index.js";
