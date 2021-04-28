@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <h1 class="home-title">JSBridge-Debug</h1>
-    <p class="home-description">The JSBridge-Debug-Robot Based On Mixin Eco</p>
+    <h1 class="home-title">JSBridge-Robot</h1>
+    <p class="home-description">The JSBridge-Robot Based On Mixin Eco</p>
   </div>
 </template>
 

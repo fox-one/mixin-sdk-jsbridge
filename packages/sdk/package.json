@@ -99,5 +99,12 @@
     "base64-js": "^1.5.1",
     "crypto-js": "^4.0.0",
     "peeler-js": "^0.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fox-one/mixin-sdk-jsbridge.git",
+    "directory": "packages/sdk",
+    "branch": "master",
+    "platform": "github"
   }
 }

@@ -5,17 +5,17 @@
   "main": "./index.js",
   "scripts": {
     "bootstrap": "yarn && lerna bootstrap",
-    "dev": "omni dev -P ./packages/mixin-jsbridge-sdk",
-    "dev:demo": "omni dev -P ./packages/mixin-jsbridge-demo",
-    "new": "omni new -P ./packages/mixin-jsbridge-sdk",
-    "new:demo": "omni new -P ./packages/mixin-jsbridge-demo",
+    "dev": "omni dev -P ./packages/sdk",
+    "dev:robot": "omni dev -P ./packages/robot",
+    "new": "omni new -P ./packages/sdk",
+    "new:robot": "omni new -P ./packages/robot",
     "lint": "lerna run lint",
-    "build": "omni build -P ./packages/mixin-jsbridge-sdk",
-    "build:quick": "omni build -n -P ./packages/mixin-jsbridge-sdk",
-    "build:demo": "omni build -P ./packages/mixin-jsbridge-demo",
-    "build:doc": "cd ./packages/mixin-jsbridge-sdk && yarn build:demo",
-    "release": "omni release -P ./packages/mixin-jsbridge-sdk",
-    "release:demo": "omni release -P ./packages/mixin-jsbridge-demo && node ./packages/mixin-jsbridge-demo/configs/release.js"
+    "build": "omni build -P ./packages/sdk",
+    "build:quick": "omni build -n -P ./packages/sdk",
+    "build:robot": "omni build -P ./packages/robot",
+    "build:doc": "cd ./packages/sdk && yarn build:demo",
+    "release": "omni release -P ./packages/sdk",
+    "release:robot": "omni release -P ./packages/robot && node ./packages/robot/configs/release.js"
   },
   "devDependencies": {
     "@omni-door/cli": "^2.3.10",

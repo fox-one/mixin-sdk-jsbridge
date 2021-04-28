@@ -6485,6 +6485,13 @@ var dependencies = {
 	"crypto-js": "^4.0.0",
 	"peeler-js": "^0.4.0"
 };
+var repository = {
+	type: "git",
+	url: "https://github.com/fox-one/mixin-sdk-jsbridge.git",
+	directory: "packages/sdk",
+	branch: "master",
+	platform: "github"
+};
 var pkj = {
 	name: name,
 	version: version$1,
@@ -6507,7 +6514,8 @@ var pkj = {
 	author: author,
 	license: license,
 	devDependencies: devDependencies,
-	dependencies: dependencies
+	dependencies: dependencies,
+	repository: repository
 };var Bridge = /*#__PURE__*/function () {
   function Bridge(config) {
     var _context, _context2, _context3, _context4, _context5, _context6, _context7, _context8, _context9;

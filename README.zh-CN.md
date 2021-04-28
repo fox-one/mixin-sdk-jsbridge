@@ -9,9 +9,9 @@
 
 - [API](https://fox-one.github.io/mixin-sdk-jsbridge/#/zh-CN/2)
 
-- [机器人](https://fox-one.github.io/mixin-sdk-jsbridge-debug/#/)
+- [机器人](https://fox-one.github.io/mixin-sdk-jsbridge-rebot/#/)
 
-- [github](https://github.com/fox-one/mixin-sdk-jsbridge/tree/master/packages/mixin-jsbridge-sdk)
+- [github](https://github.com/fox-one/mixin-sdk-jsbridge/tree/master/packages/sdk)
 
 ## 开发
 请使用 [lerna](https://lerna.js.org/) 结合 npm script 进行项目管理和开发
@@ -32,9 +32,9 @@
     yarn dev
     ```
 
-  - 启动 demo 开发服务
+  - 启动 robot 开发服务
     ```sh
-    yarn dev:demo
+    yarn dev:robot
     ```
 
 ## 新建模板
@@ -43,9 +43,9 @@
     yarn new
     ```
 
-  - 在 demo 中新建一个组件
+  - 在 robot 中新建一个组件
     ```sh
-    yarn new:demo
+    yarn new:robot
     ```
 
 ## 构建项目
@@ -59,9 +59,9 @@
     yarn build:doc
     ```
 
-  - 构建 demo 项目
+  - 构建 robot 项目
     ```sh
-    yarn build:demo
+    yarn build:robot
     ```
 
 ## 发布项目
@@ -70,7 +70,7 @@
     yarn release
     ```
 
-  - 发布 demo 项目
+  - 发布 robot 项目
     ```sh
-    yarn release:demo
+    yarn release:robot
     ```

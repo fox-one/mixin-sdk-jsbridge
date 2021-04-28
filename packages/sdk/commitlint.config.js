@@ -8,7 +8,7 @@ const Configuration = {
   rules: {
     'type-enum': [2, 'always', [
       '[OMNI-DOOR]',
-      '[MIXIN-JSBRIDGE-SDK]',
+      '[MIXIN-SDK-JSBRIDGE]',
       'feat',
       'feature',
       'fix',

@@ -9,9 +9,9 @@ English | [简体中文](./README.zh-CN.md)
 
 - [API](https://fox-one.github.io/mixin-sdk-jsbridge/#/2)
 
-- [rebot](https://fox-one.github.io/mixin-sdk-jsbridge-debug/#/)
+- [rebot](https://fox-one.github.io/mixin-sdk-jsbridge-rebot/#/)
 
-- [github](https://github.com/fox-one/mixin-sdk-jsbridge/tree/master/packages/mixin-jsbridge-sdk)
+- [github](https://github.com/fox-one/mixin-sdk-jsbridge/tree/master/packages/sdk)
 
 ## Dev
 Please use [lerna](https://lerna.js.org/) and `npm script` to management and development the project
@@ -32,9 +32,9 @@ Please use [lerna](https://lerna.js.org/) and `npm script` to management and dev
     yarn dev
     ```
 
-  - start demo server
+  - start robot server
     ```sh
-    yarn dev:demo
+    yarn dev:robot
     ```
 
 ## new
@@ -43,9 +43,9 @@ Please use [lerna](https://lerna.js.org/) and `npm script` to management and dev
     yarn new
     ```
 
-  - create a component for demo
+  - create a component for robot
     ```sh
-    yarn new:demo
+    yarn new:robot
     ```
 
 ## build
@@ -59,9 +59,9 @@ Please use [lerna](https://lerna.js.org/) and `npm script` to management and dev
     yarn build:doc
     ```
 
-  - build demo project
+  - build robot project
     ```sh
-    yarn build:demo
+    yarn build:robot
     ```
 
 ## release
@@ -70,7 +70,7 @@ Please use [lerna](https://lerna.js.org/) and `npm script` to management and dev
     yarn release
     ```
 
-  - release demo project
+  - release robot project
     ```sh
-    yarn release:demo
+    yarn release:robot
     ```
