@@ -57,5 +57,14 @@
 
   - 发布 robot 项目
     ```sh
+    git remote add rebot git@github.com:fox-one/mixin-sdk-jsbridge-rebot.git
+
+    git fetch rebot
+
+    git checkout -b rebot rebot/main && git checkout master
+    
     yarn release:robot
+
+    # 当切换到 rebot 分支后
+    yarn release
     ```

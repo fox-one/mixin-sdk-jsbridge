@@ -57,5 +57,14 @@ Please use [lerna](https://lerna.js.org/) and `npm script` to management and dev
 
   - release robot project
     ```sh
+    git remote add rebot git@github.com:fox-one/mixin-sdk-jsbridge-rebot.git
+
+    git fetch rebot
+
+    git checkout -b rebot rebot/main && git checkout master
+    
     yarn release:robot
+
+    # when check into rebot branch
+    yarn release
     ```
