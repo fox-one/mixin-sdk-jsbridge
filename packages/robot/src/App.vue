@@ -60,7 +60,18 @@
       </div>
     </el-main>
 
-    <el-footer class="footer"> © Fox.ONE FED </el-footer>
+    <el-footer class="footer">
+      <el-link
+        type="primary"
+        href="https://fox-one.github.io/mixin-sdk-jsbridge/#/"
+      >
+        Docs
+      </el-link>
+      <el-divider direction="vertical" />
+      <el-link type="primary" href="https://www.fox.one/#/">
+        © Fox.ONE
+      </el-link>
+    </el-footer>
   </el-container>
 </template>
 
