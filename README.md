@@ -1,76 +1,49 @@
 # @foxone/mixin-sdk-jsbridge
 
-[Documentation](https://fox-one.github.io/mixin-sdk-jsbridge/#/)
-
 English | [简体中文](./README.zh-CN.md)
 
-## Nav
-- [Quick Start](https://fox-one.github.io/mixin-sdk-jsbridge/#/1)
+### Introduction
+The Mixin-JSBridge SDK For FE Developer.
 
-- [API](https://fox-one.github.io/mixin-sdk-jsbridge/#/2)
+There is a [rebot](https://fox-one.github.io/mixin-sdk-jsbridge-rebot/#/) which use the sdk.
 
-- [rebot](https://fox-one.github.io/mixin-sdk-jsbridge-rebot/#/)
+You can search `7000103847` in Mixin Messenger or Reborn App to find it.
 
-- [github](https://github.com/fox-one/mixin-sdk-jsbridge/tree/master/packages/sdk)
+For more details, please read the [Documentation](https://fox-one.github.io/mixin-sdk-jsbridge/#/)
 
-## Dev
-Please use [lerna](https://lerna.js.org/) and `npm script` to management and development the project
+### Install
 
-## install dependencies to global
-  ```shell
-  npm i -g lerna yarn
-  ```
+```shell
+yarn add @foxone/mixin-sdk-jsbridge
+```
 
-## init
-  ```shell
-  lerna bootstrap && yarn
-  ```
+### Usage
+`src/index.ts`：
+```typescript
+import Bridge from '@foxone/mixin-sdk-jsbridge';
 
-## dev
-  - start sdk server
-    ```sh
-    yarn dev
-    ```
+const bridge = new Bridge({
+  client_id: 'your mixin rebot id'
+});
 
-  - start robot server
-    ```sh
-    yarn dev:robot
-    ```
+bridge.getContext();
 
-## new
-  - create a module for sdk
-    ```sh
-    yarn new
-    ```
+// ……
+```
 
-  - create a component for robot
-    ```sh
-    yarn new:robot
-    ```
+### Dev
+For debugging or maintenance, you can clone the whole git repository and then start the project.
 
-## build
-  - build sdk project
-    ```sh
-    yarn build
-    ```
+```shell
+git clone --depth 1 git@github.com:fox-one/mixin-sdk-jsbridge.git
 
-    - build sdk project document
-    ```sh
-    yarn build:doc
-    ```
+cd mixin-sdk-jsbridge
 
-  - build robot project
-    ```sh
-    yarn build:robot
-    ```
+npm i -g lerna yarn
 
-## release
-  - release sdk project
-    ```sh
-    yarn release
-    ```
+yarn bootstrap
 
-  - release robot project
-    ```sh
-    yarn release:robot
-    ```
+yarn dev
+```
+
+[More Detials](./DEV.md)

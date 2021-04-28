@@ -1,76 +1,50 @@
 # @foxone/mixin-sdk-jsbridge
 
-[文档地址](https://fox-one.github.io/mixin-sdk-jsbridge/#/zh-CN)
-
 [English](./README.md) | 简体中文
 
-## 导航
-- [快速开始](https://fox-one.github.io/mixin-sdk-jsbridge/#/zh-CN/1)
+### 介绍
+为前端开发者打造的 Mixin-JSBridge SDK。
 
-- [API](https://fox-one.github.io/mixin-sdk-jsbridge/#/zh-CN/2)
+有一个 [机器人](https://fox-one.github.io/mixin-sdk-jsbridge-rebot/#/) 使用了这个 SDK 为例子。
 
-- [机器人](https://fox-one.github.io/mixin-sdk-jsbridge-rebot/#/)
+在 Mixin 或者 新生 App 中，搜索 `7000103847` 可以找到它。
 
-- [github](https://github.com/fox-one/mixin-sdk-jsbridge/tree/master/packages/sdk)
+更多的细节, 可以阅读 [文档](https://fox-one.github.io/mixin-sdk-jsbridge/#/zh-CN)
 
-## 开发
-请使用 [lerna](https://lerna.js.org/) 结合 npm script 进行项目管理和开发
 
-## 全局安装依赖
-  ```shell
-  npm i -g lerna yarn
-  ```
+### 安装
 
-## 初始化项目
-  ```shell
-  lerna bootstrap && yarn
-  ```
+```shell
+yarn add @foxone/mixin-sdk-jsbridge
+```
 
-## 开发服务
-  - 启动 sdk 开发服务
-    ```sh
-    yarn dev
-    ```
+### 使用
+`src/index.ts`：
+```typescript
+import Bridge from '@foxone/mixin-sdk-jsbridge';
 
-  - 启动 robot 开发服务
-    ```sh
-    yarn dev:robot
-    ```
+const bridge = new Bridge({
+  client_id: '此处填你的 mixin 机器人 id'
+});
 
-## 新建模板
-  - 在 sdk 中新建一个模块
-    ```sh
-    yarn new
-    ```
+bridge.getContext();
 
-  - 在 robot 中新建一个组件
-    ```sh
-    yarn new:robot
-    ```
+// ……
+```
 
-## 构建项目
-  - 构建 sdk 项目
-    ```sh
-    yarn build
-    ```
+### 开发
+对于调试或维护，可以将项目 clone 到本地，然后启动项目：
 
-    - 构建 sdk 文档
-    ```sh
-    yarn build:doc
-    ```
+```shell
+git clone --depth 1 git@github.com:fox-one/mixin-sdk-jsbridge.git
 
-  - 构建 robot 项目
-    ```sh
-    yarn build:robot
-    ```
+cd mixin-sdk-jsbridge
 
-## 发布项目
-  - 发布 sdk 项目
-    ```sh
-    yarn release
-    ```
+npm i -g lerna yarn
 
-  - 发布 robot 项目
-    ```sh
-    yarn release:robot
-    ```
+yarn bootstrap
+
+yarn dev
+```
+
+[更多详情](./DEV.zh-CN.md)
