@@ -3,7 +3,7 @@
 [English](./README.md) | 简体中文
 
 ### 介绍
-为前端开发者打造的 Mixin-JSBridge SDK。
+一个基于 Mixin 生态的 JSBridge SDK。
 
 有一个 [机器人](https://fox-one.github.io/mixin-sdk-jsbridge-rebot/#/) 使用了这个 SDK 为例子。
 

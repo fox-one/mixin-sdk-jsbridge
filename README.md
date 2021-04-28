@@ -3,7 +3,7 @@
 English | [简体中文](./README.zh-CN.md)
 
 ### Introduction
-The Mixin-JSBridge SDK For FE Developer.
+The Js Bridge SDK base on Mixin Eco.
 
 There is a [rebot](https://fox-one.github.io/mixin-sdk-jsbridge-rebot/#/) which use the sdk.
 
