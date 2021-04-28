@@ -36,7 +36,7 @@ module.exports = {
 
     // 输出路径 (the directory for compiled project)
     // 务必使用绝对路径 (must be a absolute path)
-    outDir: path.resolve(__dirname, '../../../demo'),
+    outDir: path.resolve(__dirname, '../dist'),
 
     // 构建的资源是否加上hash，可选 'hash'、'contenthash'、'chunkhash' (whether the hash tag add to building result)
     hash: true,
