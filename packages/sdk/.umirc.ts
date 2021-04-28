@@ -5,6 +5,5 @@ export default {
   publicPath: './',
   history: { type: 'hash' },
   logo: 'https://www.fox.one/logo.png',
-  favicon: 'https://www.fox.one/logo.png',
-  outputPath: '../../docs'
+  favicon: 'https://www.fox.one/logo.png'
 };
