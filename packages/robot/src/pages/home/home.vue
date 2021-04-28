@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1 class="home-title">Mixin-JSBridge</h1>
-    <p class="home-description">The Mixin-JSBridge Robot Based On Mixin Eco</p>
+    <p class="home-description">The Robot For Mixin-JSBridge Debugging</p>
   </div>
 </template>
 

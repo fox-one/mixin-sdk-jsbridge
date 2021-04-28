@@ -6,7 +6,7 @@ async function autoGit () {
   let gitStatus = null
   try {
     gitStatus = await git.checkout('rebot/main', () => {
-      shell.exec('./script.sh');
+      shell.exec('yarn release');
     })
     console.info(`[git - status]: ${gitStatus}`)
   } catch (e) {

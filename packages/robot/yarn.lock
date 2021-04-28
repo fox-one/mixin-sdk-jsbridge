@@ -864,14 +864,6 @@
     "@babel/helper-validator-option" "^7.12.17"
     "@babel/plugin-transform-typescript" "^7.12.17"
 
-"@babel/runtime-corejs2@^7.5.4":
-  version "7.13.17"
-  resolved "https://registry.npmjs.org/@babel/runtime-corejs2/-/runtime-corejs2-7.13.17.tgz#13d965ee876a30b290df6d8b4842dbe3f56f73e7"
-  integrity sha512-uvDSI/cLYd3G7S/iFd635tVkIwPji2CjEZzCXznL/lTFDMevIhoIjxSeKQ+AUDaX7D6L4Y1dIGvN4ZtA32m6IA==
-  dependencies:
-    core-js "^2.6.5"
-    regenerator-runtime "^0.13.4"
-
 "@babel/runtime@^7.8.4":
   version "7.13.10"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
@@ -932,16 +924,6 @@
     lodash "^4.17.20"
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
-
-"@foxone/mixin-sdk-jsbridge@^0.1.1":
-  version "0.1.2"
-  resolved "https://registry.npmjs.org/@foxone/mixin-sdk-jsbridge/-/mixin-sdk-jsbridge-0.1.2.tgz#7b121b5413d7af036457d3206266f1b9915257b1"
-  integrity sha512-4Z3pCwVJmYjGHI9ZOmofFoJ9wCV0+FgxMpUg3HsZKeeGJVgysw2h9rjcLmrAreEqyonEI2Z+SYqJCqZwloLwdQ==
-  dependencies:
-    ajax-maker "^0.0.19"
-    base64-js "^1.5.1"
-    crypto-js "^4.0.0"
-    peeler-js "^0.4.0"
 
 "@kwsites/file-exists@^1.1.1":
   version "1.1.1"
@@ -1733,14 +1715,6 @@ aggregate-error@^3.0.0:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
 
-ajax-maker@^0.0.19:
-  version "0.0.19"
-  resolved "https://registry.npmjs.org/ajax-maker/-/ajax-maker-0.0.19.tgz#d420b3b2fa82df0eaa3744b3422d8105603259f9"
-  integrity sha512-BUOdrB6p9ijowhBFfgLrCpuBtOaDoipADVgoesGRISJ5/sgL7fQWvsfearOvOxyS2d/40uvakCV8c44KMShk6g==
-  dependencies:
-    axios "~0.21.0"
-    peeler-js "~0.3.9"
-
 ajv-keywords@^3.4.1, ajv-keywords@^3.5.2:
   version "3.5.2"
   resolved "https://registry.npmjs.org/ajv-keywords/-/ajv-keywords-3.5.2.tgz#31f29da5ab6e00d1c2d329acf7b5929614d5014d"
@@ -1963,13 +1937,6 @@ autoprefixer@~10.2.1:
     normalize-range "^0.1.2"
     postcss-value-parser "^4.1.0"
 
-axios@~0.21.0:
-  version "0.21.1"
-  resolved "https://registry.npmjs.org/axios/-/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
-  integrity sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==
-  dependencies:
-    follow-redirects "^1.10.0"
-
 babel-loader@~8.2.2:
   version "8.2.2"
   resolved "https://registry.npmjs.org/babel-loader/-/babel-loader-8.2.2.tgz#9363ce84c10c9a40e6c753748e1441b60c8a0b81"
@@ -1996,11 +1963,6 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
-
-base64-js@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
-  integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
 
 base@^0.11.1:
   version "0.11.2"
@@ -2645,11 +2607,6 @@ core-js-compat@^3.8.0:
     browserslist "^4.16.3"
     semver "7.0.0"
 
-core-js@^2.6.5:
-  version "2.6.12"
-  resolved "https://registry.npmjs.org/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
-  integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
-
 core-js@^3.6.4:
   version "3.9.1"
   resolved "https://registry.npmjs.org/core-js/-/core-js-3.9.1.tgz#cec8de593db8eb2a85ffb0dbdeb312cb6e5460ae"
@@ -2705,11 +2662,6 @@ cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
-
-crypto-js@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/crypto-js/-/crypto-js-4.0.0.tgz#2904ab2677a9d042856a2ea2ef80de92e4a36dcc"
-  integrity sha512-bzHZN8Pn+gS7DQA6n+iUmBfl0hO5DJq++QP3U6uTucDtk/0iGpXd/Gg7CGR0p8tJhofJyaKoWBuJI4eAO00BBg==
 
 crypto-random-string@^2.0.0:
   version "2.0.0"
@@ -3784,11 +3736,6 @@ follow-redirects@^1.0.0:
   version "1.13.3"
   resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.13.3.tgz#e5598ad50174c1bc4e872301e82ac2cd97f90267"
   integrity sha512-DUgl6+HDzB0iEptNQEXLx/KhTmDb8tZUHSeLqpnjpknR70H0nC2t9N73BK6fN4hOvJ84pKlIQVQ4k5FFlBedKA==
-
-follow-redirects@^1.10.0:
-  version "1.14.0"
-  resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.0.tgz#f5d260f95c5f8c105894491feee5dc8993b402fe"
-  integrity sha512-0vRwd7RKQBTt+mgu87mtYeofLFZpTas2S9zY+jIeuLJMNvudIgF52nr19q40HOwH5RrhWIPuj9puybzSJiRrVg==
 
 for-in@^1.0.2:
   version "1.0.2"
@@ -6092,20 +6039,6 @@ path-type@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
-
-peeler-js@^0.4.0:
-  version "0.4.1"
-  resolved "https://registry.npmjs.org/peeler-js/-/peeler-js-0.4.1.tgz#0c186a2bc90af41a67d645e0559b6e597b905c32"
-  integrity sha512-hKak8oVGsWZDUilS4KVYm8Ew2RNDi4KJ/Blwlj6Kvglchz6rw8aCReBdJV9EgC4N7RJhWMoLWaxlFt/51G6JOw==
-  dependencies:
-    "@babel/runtime-corejs2" "^7.5.4"
-
-peeler-js@~0.3.9:
-  version "0.3.10"
-  resolved "https://registry.npmjs.org/peeler-js/-/peeler-js-0.3.10.tgz#c2d340a201d9a7ccb6c8e6c2c6ce7c4bdcc6cc73"
-  integrity sha512-wa/UWHtg58L+9qjLZijMmCo7Yt1QvpiiTvkcl0j9/D7S4czr5qIuq25pTCizi/zhJnytymUPfPoh+9b+qARQxA==
-  dependencies:
-    "@babel/runtime-corejs2" "^7.5.4"
 
 picomatch@^2.0.4, picomatch@^2.0.5, picomatch@^2.2.1:
   version "2.2.2"
