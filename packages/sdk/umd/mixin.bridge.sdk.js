@@ -6392,131 +6392,7 @@ function getAccessToken(params) {
   }).then(function (res) {
     return res.data.access_token;
   });
-}var name = "@foxone/mixin-sdk-jsbridge";
-var version$1 = "0.1.2";
-var description = "";
-var main = "lib/index.js";
-var module = "es/index.js";
-var typings = "lib/index.d.ts";
-var scripts = {
-	start: "omni dev",
-	dev: "omni dev",
-	test: "karma start --single-run && npm run test:mocha",
-	"test:mocha": "nyc mocha --opts mocha.opts",
-	"test:headless": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
-	"test:browser": "karma start --browsers Chrome",
-	lint: "npm run lint:prettier && npm run lint:es",
-	"lint:fix": "npm run lint:prettier_fix && npm run lint:es_fix",
-	"lint:es": "eslint src/ --ext .ts",
-	"lint:es_fix": "eslint src/ --ext .ts --fix",
-	"lint:prettier": "prettier --check src/",
-	"lint:prettier_fix": "prettier --write src/",
-	"lint:commit": "commitlint -e $HUSKY_GIT_PARAMS",
-	"new": "omni new",
-	build: "omni build",
-	"build:demo": "dumi build",
-	release: "omni release"
-};
-var husky = {
-	hooks: {
-		"pre-commit": "lint-staged",
-		"pre-push": "npm run lint && npm run test:headless",
-		"commit-msg": "npm run lint:commit"
-	}
-};
-var keywords = [
-];
-var author = "";
-var license = "ISC";
-var devDependencies = {
-	"@babel/core": "~7.10.0",
-	"@babel/plugin-transform-runtime": "~7.10.0",
-	"@babel/preset-env": "~7.10.0",
-	"@babel/preset-typescript": "~7.10.0",
-	"@babel/runtime-corejs3": "~7.10.0",
-	"@commitlint/cli": "8.3.5",
-	"@rollup/plugin-alias": "~3.1.1",
-	"@rollup/plugin-babel": "~5.2.2",
-	"@rollup/plugin-commonjs": "~17.0.0",
-	"@rollup/plugin-json": "~4.1.0",
-	"@rollup/plugin-node-resolve": "~11.0.0",
-	"@types/base64-js": "^1.3.0",
-	"@types/chai": "4.2.9",
-	"@types/crypto-js": "^4.0.1",
-	"@types/mocha": "7.0.1",
-	"@typescript-eslint/eslint-plugin": "~3.8.0",
-	"@typescript-eslint/parser": "~3.8.0",
-	chai: "4.2.0",
-	del: "5.1.0",
-	"detect-port": "1.3.0",
-	dumi: "^1.1.16",
-	eslint: "~7.6.0",
-	"eslint-config-prettier": "~6.13.0",
-	"eslint-plugin-prettier": "~3.1.4",
-	husky: "4.2.3",
-	ip: "1.1.5",
-	karma: "4.4.1",
-	"karma-chrome-launcher": "3.1.0",
-	"karma-coverage": "2.0.1",
-	"karma-firefox-launcher": "1.3.0",
-	"karma-mocha": "1.3.0",
-	"karma-opera-launcher": "1.0.0",
-	"karma-safari-launcher": "1.0.0",
-	"karma-typescript": "4.1.1",
-	"karma-webpack": "4.0.2",
-	"lint-staged": "10.0.7",
-	mocha: "7.0.1",
-	nyc: "15.0.0",
-	prettier: "~2.1.2",
-	rollup: "~2.34.1",
-	"rollup-plugin-typescript": "~1.0.1",
-	"rollup-plugin-typescript2": "~0.26.0",
-	"ts-loader": "6.2.1",
-	"ts-node": "8.6.2",
-	"tsconfig-paths": "~3.9.0",
-	ttypescript: "~1.5.12",
-	typescript: "~3.9.7",
-	"typescript-transform-paths": "~2.0.3",
-	webpack: "^4.0.0"
-};
-var dependencies = {
-	"ajax-maker": "^0.0.19",
-	"base64-js": "^1.5.1",
-	"crypto-js": "^4.0.0",
-	"peeler-js": "^0.4.0"
-};
-var repository = {
-	type: "git",
-	url: "https://github.com/fox-one/mixin-sdk-jsbridge.git",
-	directory: "packages/sdk",
-	branch: "master",
-	platform: "github"
-};
-var pkj = {
-	name: name,
-	version: version$1,
-	description: description,
-	main: main,
-	module: module,
-	typings: typings,
-	scripts: scripts,
-	husky: husky,
-	"lint-staged": {
-	"src/**/*.{js,jsx,ts,tsx}": [
-		"npm run lint:es_fix",
-		"npm run lint:prettier_fix"
-	],
-	"src/**/*.{css,scss,sass,less}": [
-		"npm run lint:prettier_fix"
-	]
-},
-	keywords: keywords,
-	author: author,
-	license: license,
-	devDependencies: devDependencies,
-	dependencies: dependencies,
-	repository: repository
-};var Bridge = /*#__PURE__*/function () {
+}var Bridge = /*#__PURE__*/function () {
   function Bridge(config) {
     var _context, _context2, _context3, _context4, _context5, _context6, _context7, _context8, _context9;
 
@@ -6543,6 +6419,14 @@ var pkj = {
     key: "version",
     get: function get() {
       var _a;
+
+      var pkj;
+
+      try {
+        pkj = require('../package.json');
+      } catch (err) {
+        this.logger('version').info(err);
+      }
 
       return (_a = pkj === null || pkj === void 0 ? void 0 : pkj.version) !== null && _a !== void 0 ? _a : 'unknown';
     }

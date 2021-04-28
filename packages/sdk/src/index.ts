@@ -3,7 +3,6 @@ import messager from './messager';
 import { getAccessCode, getAccessToken } from './token';
 import { getLogger, parseError, env } from '@utils/index';
 import { request } from '@utils/index';
-import pkj from '../package.json';
 /** import types */
 import type { AUTH } from './token';
 
@@ -37,6 +36,13 @@ export class Bridge {
   }
 
   public get version() {
+    let pkj;
+    try {
+      pkj = require('../package.json');
+    } catch (err) {
+      this.logger('version').info(err);
+    }
+
     return pkj?.version ?? 'unknown';
   }
 
