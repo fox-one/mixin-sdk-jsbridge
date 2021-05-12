@@ -24,7 +24,10 @@
           login
         </el-button>
       </template>
-      <span class="header-version">version: {{ bridgeVersion }}</span>
+      <div class="header-right">
+        <span class="right__version"> version: {{ bridgeVersion }} </span>
+        <span class="right__mixin"> inMixin: {{ isMixin }} </span>
+      </div>
     </el-header>
 
     <el-main class="main">
@@ -97,6 +100,7 @@ export default defineComponent({
       ],
       currentBridge: '',
       bridgeVersion: bridge.version,
+      isMixin: bridge.isMixin,
       result: ''
     };
   },

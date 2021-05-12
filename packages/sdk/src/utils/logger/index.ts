@@ -2,7 +2,7 @@ import { Logger } from 'peeler-js/dist/logger';
 
 const logger = new Logger({
   debug: true,
-  logLevel: 'warn',
+  logLevel: 'detail',
   logPrefix: getPrefix()
 });
 
@@ -12,6 +12,8 @@ function getPrefix(scope?: string, suffix?: string) {
     str = `${str} ${scope}-${suffix}`;
   } else if (scope) {
     str = `${str} ${scope}`;
+  } else if (suffix) {
+    str = `${str} ${suffix}`;
   }
   return str;
 }

@@ -1,8 +1,7 @@
 import { parseUrl } from 'peeler-js';
 import messager from './messager';
 import { getAccessCode, getAccessToken } from './token';
-import { getLogger, parseError, env } from '@utils/index';
-import { request } from '@utils/index';
+import { getLogger, parseError, env, request } from '@utils/index';
 /** import types */
 import type { AUTH } from './token';
 
@@ -35,7 +34,10 @@ export class Bridge {
     this.handlerError = this.handlerError.bind(this);
   }
 
-  public get version() {
+  /**
+   * 获取当前 jsbridge 版本号
+   */
+  public get version(): string {
     let pkj;
     try {
       pkj = require('../package.json');
@@ -47,10 +49,32 @@ export class Bridge {
   }
 
   /**
+   * 获取 conversation id
+   */
+  public get conversationId(): string | undefined {
+    return this.getContext()?.conversation_id ?? void 0;
+  }
+
+  /**
+   * 判断 Mixin 环境
+   */
+  public get isMixin(): boolean {
+    const isIOS = env().isIOS;
+    return !!(isIOS
+      ? window?.webkit?.messageHandlers?.MixinContext
+      : window?.MixinContext && typeof window?.MixinContext?.getContext === 'function');
+  }
+
+  /**
    * 获取 app 上下文
    * @returns 
    */
   public getContext() {
+    if (!this.isMixin) {
+      this.logger('getContext').log('Please call in reborn or mixin app!');
+      return;
+    }
+
     try {
       let ctx = messager('getContext')();
       if (typeof ctx === 'string') {
@@ -72,6 +96,11 @@ export class Bridge {
    * 重载
    */
   public reloadTheme() {
+    if (!this.isMixin) {
+      this.logger('reloadTheme').log('Please call in reborn or mixin app!');
+      return;
+    }
+
     try {
       messager('reloadTheme')();
     } catch (err) {
@@ -85,6 +114,11 @@ export class Bridge {
    * @returns 
    */
   public playlist(src: string[]) {
+    if (!this.isMixin) {
+      this.logger('playlist').log('Please call in reborn or mixin app!');
+      return;
+    }
+
     try {
       messager('playlist')(src);
     } catch (err) {
@@ -123,6 +157,10 @@ export class Bridge {
     });
   }
 
+  /**
+   * 登出
+   * @param reload 是否重载页面
+   */
   public logout(reload = true) {
     localStorage.removeItem('$_mixin-token');
     localStorage.removeItem('$_mixin-code-verifier');
