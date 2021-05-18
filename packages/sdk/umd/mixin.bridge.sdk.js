@@ -6645,11 +6645,16 @@ function getAccessToken(params) {
       try {
         var cache = localStorage.getItem('$_mixin-user-info');
         var userInfo = ((_b = this._userInfo) !== null && _b !== void 0 ? _b : cache) ? JSON.parse(cache) : '';
-        if (userInfo) return promise$3.resolve(userInfo);
+
+        if (userInfo) {
+          this.logger('getUserInfo').log('through cache!');
+          return promise$3.resolve(userInfo);
+        }
       } catch (err) {
         this.logger('getUserInfo').info(err);
       }
 
+      this.logger('getUserInfo').log('http request!');
       return request({
         url: 'https://api.mixin.one/me',
         method: 'GET',

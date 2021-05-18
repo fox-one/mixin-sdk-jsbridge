@@ -216,12 +216,15 @@ export class Bridge {
     try {
       const cache = localStorage.getItem('$_mixin-user-info');
       const userInfo = this._userInfo ?? cache ? JSON.parse(cache!) : '';
-      if (userInfo) return Promise.resolve(userInfo);
+      if (userInfo) {
+        this.logger('getUserInfo').log('through cache!');
+        return Promise.resolve(userInfo);
+      }
     } catch (err) {
       this.logger('getUserInfo').info(err);
     }
 
-
+    this.logger('getUserInfo').log('http request!');
     return request({
       url: 'https://api.mixin.one/me',
       method: 'GET',

@@ -882,10 +882,10 @@
   dependencies:
     "@octokit/openapi-types" "^5.3.2"
 
-"@omni-door/cli@^2.3.11":
-  version "2.3.11"
-  resolved "https://registry.npmjs.org/@omni-door/cli/-/cli-2.3.11.tgz#1b28f4ecfc7d0942c4f83828312d39d18af0ab33"
-  integrity sha512-5FvKSoeCz4K0WuGpjPSJAw+lk82VlXk05spY1uBJVXYF3QXfOtr3dCFRkToyDLPMJSKki556yK8FbpqwFbT0lw==
+"@omni-door/cli@^2.4.3":
+  version "2.4.3"
+  resolved "https://registry.npmjs.org/@omni-door/cli/-/cli-2.4.3.tgz#7622bd89332db2646c7d8ecdbf118b47addf6c87"
+  integrity sha512-ovMa8A1i4oSDU12S+rrVCOkvyXB9dzWLhXeLjh8YRB0H0BNfC0K3q2/+xnSe3o4vf8uFJyCWjJ5grVWY7IYA2Q==
   dependencies:
     "@omni-door/utils" "~1.2.5"
     "@types/express" "4.17.8"
