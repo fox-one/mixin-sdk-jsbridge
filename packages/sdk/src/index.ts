@@ -140,7 +140,7 @@ export class Bridge {
    * @returns 
    */
   public login(auth: AUTH, params?: {
-    login_host?: string;
+    oauth_url?: string;
     client_id?: string;
     redirect_url?: string;
     state?: string;
