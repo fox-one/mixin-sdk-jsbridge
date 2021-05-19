@@ -6348,8 +6348,8 @@ function getAccessCode(params) {
 
   // eslint-disable-next-line prefer-const
   var client_id = params.client_id,
-      _params$login_host = params.login_host,
-      login_host = _params$login_host === void 0 ? 'https://mixin-oauth.firesbox.com' : _params$login_host,
+      _params$oauth_url = params.oauth_url,
+      oauth_url = _params$oauth_url === void 0 ? 'https://mixin-oauth.firesbox.com' : _params$oauth_url,
       _params$redirect_url = params.redirect_url,
       redirect_url = _params$redirect_url === void 0 ? window.location.href : _params$redirect_url,
       state = params.state,
@@ -6378,7 +6378,7 @@ function getAccessCode(params) {
   SCOPESTR = SCOPESTR ? "&scope=".concat(SCOPESTR) : '';
   challenge = challenge ? "&code_challenge=".concat(challenge) : '';
 
-  var url = concat$2(_context2 = concat$2(_context3 = concat$2(_context4 = concat$2(_context5 = "".concat(login_host, "/?response_type=code")).call(_context5, client_id)).call(_context4, redirect_url)).call(_context3, SCOPESTR)).call(_context2, challenge);
+  var url = concat$2(_context2 = concat$2(_context3 = concat$2(_context4 = concat$2(_context5 = "".concat(oauth_url, "/?response_type=code")).call(_context5, client_id)).call(_context4, redirect_url)).call(_context3, SCOPESTR)).call(_context2, challenge);
 
   if (state) {
     var str = encodeURIComponent(stringify$2(state));
