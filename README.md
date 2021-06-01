@@ -5,7 +5,7 @@ English | [简体中文](./README.zh-CN.md)
 ### Introduction
 The Js Bridge SDK base on Mixin Eco.
 
-There is a [rebot](https://fox-one.github.io/mixin-sdk-jsbridge-rebot/#/) which use the sdk.
+There is a [bot](https://fox-one.github.io/mixin-sdk-jsbridge-bot/#/) which use the sdk.
 
 You can search `7000103847` in Mixin Messenger or Reborn App to find it.
 
@@ -23,7 +23,7 @@ yarn add @foxone/mixin-sdk-jsbridge
 import Bridge from '@foxone/mixin-sdk-jsbridge';
 
 const bridge = new Bridge({
-  client_id: 'your mixin rebot id'
+  client_id: 'your mixin bot id'
 });
 
 bridge.getContext();

@@ -17,9 +17,9 @@ Please use [lerna](https://lerna.js.org/) and `npm script` to management and dev
     yarn dev
     ```
 
-  - start robot server
+  - start bot server
     ```sh
-    yarn dev:robot
+    yarn dev:bot
     ```
 
 ## new
@@ -28,9 +28,9 @@ Please use [lerna](https://lerna.js.org/) and `npm script` to management and dev
     yarn new
     ```
 
-  - create a component for robot
+  - create a component for bot
     ```sh
-    yarn new:robot
+    yarn new:bot
     ```
 
 ## build
@@ -44,9 +44,9 @@ Please use [lerna](https://lerna.js.org/) and `npm script` to management and dev
     yarn build:doc
     ```
 
-  - build robot project
+  - build bot project
     ```sh
-    yarn build:robot
+    yarn build:bot
     ```
 
 ## release
@@ -55,16 +55,16 @@ Please use [lerna](https://lerna.js.org/) and `npm script` to management and dev
     yarn release
     ```
 
-  - release robot project
+  - release bot project
     ```sh
-    git remote add rebot git@github.com:fox-one/mixin-sdk-jsbridge-rebot.git
+    git remote add bot git@github.com:fox-one/mixin-sdk-jsbridge-bot.git
 
-    git fetch rebot
+    git fetch bot
 
-    git checkout -b rebot rebot/main && git checkout master
+    git checkout -b bot bot/main && git checkout master
     
-    yarn release:robot
+    yarn release:bot
 
-    # when check into rebot branch
+    # when check into bot branch
     yarn release
     ```

@@ -5,7 +5,7 @@
 ### 介绍
 一个基于 Mixin 生态的 JSBridge SDK。
 
-有一个 [机器人](https://fox-one.github.io/mixin-sdk-jsbridge-rebot/#/) 使用了这个 SDK 为例子。
+有一个 [机器人](https://fox-one.github.io/mixin-sdk-jsbridge-bot/#/) 使用了这个 SDK 为例子。
 
 在 Mixin 或者 新生 App 中，搜索 `7000103847` 可以找到它。
 

@@ -7,6 +7,6 @@
 
 - [API](/zh-CN/2)
 
-- [机器人](https://fox-one.github.io/mixin-sdk-jsbridge-rebot/#/)
+- [机器人](https://fox-one.github.io/mixin-sdk-jsbridge-bot/#/)
 
 - [github](https://github.com/fox-one/mixin-sdk-jsbridge/tree/master/packages/sdk)

@@ -1,6 +1,6 @@
 {
-  "name": "mixin-jsbridge-rebot",
-  "version": "0.0.8",
+  "name": "mixin-jsbridge-bot",
+  "version": "0.1.0",
   "description": "",
   "scripts": {
     "start": "omni dev",

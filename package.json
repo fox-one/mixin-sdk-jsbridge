@@ -6,16 +6,16 @@
   "scripts": {
     "bootstrap": "yarn && lerna bootstrap",
     "dev": "omni dev -P ./packages/sdk",
-    "dev:robot": "omni dev -P ./packages/robot",
+    "dev:bot": "omni dev -P ./packages/bot",
     "new": "omni new -P ./packages/sdk",
-    "new:robot": "omni new -P ./packages/robot",
+    "new:bot": "omni new -P ./packages/bot",
     "lint": "lerna run lint",
     "build": "omni build -P ./packages/sdk",
     "build:quick": "omni build -n -P ./packages/sdk",
-    "build:robot": "omni build -P ./packages/robot",
+    "build:bot": "omni build -P ./packages/bot",
     "build:doc": "cd ./packages/sdk && yarn build:demo",
     "release": "omni release -P ./packages/sdk",
-    "release:robot": "omni release -P ./packages/robot && node ./packages/robot/configs/release.js"
+    "release:bot": "omni release -P ./packages/bot && node ./packages/bot/configs/release.js"
   },
   "devDependencies": {
     "@omni-door/cli": "^2.4.5",

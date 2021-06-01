@@ -5,7 +5,7 @@ async function autoGit () {
   const git = simpleGit(__dirname);
   let gitStatus = null
   try {
-    gitStatus = await git.checkout('rebot/main', () => {
+    gitStatus = await git.checkout('bot/main', () => {
       shell.exec('yarn release');
     })
     console.info(`[git - status]: ${gitStatus}`)

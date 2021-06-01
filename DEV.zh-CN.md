@@ -17,9 +17,9 @@
     yarn dev
     ```
 
-  - 启动 robot 开发服务
+  - 启动 bot 开发服务
     ```sh
-    yarn dev:robot
+    yarn dev:bot
     ```
 
 ## 新建模板
@@ -28,9 +28,9 @@
     yarn new
     ```
 
-  - 在 robot 中新建一个组件
+  - 在 bot 中新建一个组件
     ```sh
-    yarn new:robot
+    yarn new:bot
     ```
 
 ## 构建项目
@@ -44,9 +44,9 @@
     yarn build:doc
     ```
 
-  - 构建 robot 项目
+  - 构建 bot 项目
     ```sh
-    yarn build:robot
+    yarn build:bot
     ```
 
 ## 发布项目
@@ -55,16 +55,16 @@
     yarn release
     ```
 
-  - 发布 robot 项目
+  - 发布 bot 项目
     ```sh
-    git remote add rebot git@github.com:fox-one/mixin-sdk-jsbridge-rebot.git
+    git remote add bot git@github.com:fox-one/mixin-sdk-jsbridge-bot.git
 
-    git fetch rebot
+    git fetch bot
 
-    git checkout -b rebot rebot/main && git checkout master
+    git checkout -b bot bot/main && git checkout master
     
-    yarn release:robot
+    yarn release:bot
 
-    # 当切换到 rebot 分支后
+    # 当切换到 bot 分支后
     yarn release
     ```
