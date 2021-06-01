@@ -6433,7 +6433,7 @@ function getAccessToken(params) {
   });
 }var logger$5 = getLogger('schema');
 var SCHEMA = {
-  prefix: 'mixin://',
+  prefix: 'mixin',
   loadSchema: function loadSchema(url) {
     if (!url) {
       logger$5('loadSchema').error('The URL cannot be a falsy value!');
@@ -6465,19 +6465,20 @@ var SCHEMA = {
 
     var _url = concat$2(_context2 = "".concat(this.prefix, "://pay")).call(_context2, _params);
 
+    logger$5().log(_url);
     return this.loadSchema(_url);
   }
 };
 var schema = {
   prefix: SCHEMA.prefix,
   pay: function pay(params) {
-    if (!params.recipient || !params.assetId || !params.amount) {
-      logger$5('pay').error('The "recipient", "assetId" and "amount" is required!');
+    if (!params.recipient || !params.asset || !params.amount) {
+      logger$5('pay').error('The "recipient", "asset" and "amount" is required!');
       return;
     }
 
     try {
-      if (!params.traceId) params.traceId = uuid$1();
+      if (!params.trace) params.trace = uuid$1();
 
       if (params.memo) {
         if (isObject$2(params.memo)) {

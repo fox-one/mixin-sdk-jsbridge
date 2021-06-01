@@ -106,7 +106,7 @@ export default defineComponent({
       ],
       payment: {
         recipient: '0286485f-14a5-4d82-b4de-56a3b8b9f044',
-        assetId: '965e5c6e-434c-3fa9-b780-c50f43cd955c',
+        asset: '965e5c6e-434c-3fa9-b780-c50f43cd955c',
         amount: 1
       },
       currentBridge: '',

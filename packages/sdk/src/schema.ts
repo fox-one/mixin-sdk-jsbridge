@@ -8,7 +8,7 @@ import {
 
 const logger = getLogger('schema');
 const SCHEMA = {
-  prefix: 'mixin://',
+  prefix: 'mixin',
   loadSchema: function (url: string) {
     if (!url) {
       logger('loadSchema').error('The URL cannot be a falsy value!');
@@ -33,28 +33,29 @@ const SCHEMA = {
     const _params = this.getQuery(params);
     const _url = `${this.prefix}://pay${_params}`;
 
+    logger().log(_url);
     return this.loadSchema(_url);
   }
 };
 
 export type PARAMS_PAYMENT = {
   recipient: string;
-  assetId: string;
+  asset: string;
   amount: string;
-  traceId?: string;
+  trace?: string;
   memo?: string | Record<string, string>;
 };
 
 export default {
   prefix: SCHEMA.prefix,
   pay: function (params: PARAMS_PAYMENT) {
-    if (!params.recipient || !params.assetId || !params.amount) {
-      logger('pay').error('The "recipient", "assetId" and "amount" is required!');
+    if (!params.recipient || !params.asset || !params.amount) {
+      logger('pay').error('The "recipient", "asset" and "amount" is required!');
       return;
     }
 
     try {
-      if (!params.traceId) params.traceId = uuid();
+      if (!params.trace) params.trace = uuid();
 
       if (params.memo) {
         if (isObject(params.memo)) {
