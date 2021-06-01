@@ -257,6 +257,17 @@ export class Bridge {
     return !!url;
   }
 
+  public transfer(recipient: string): boolean {
+    if (!this.isMixin) {
+      this.logger('transfer').log('Please call in reborn or mixin app!');
+      return false;
+    }
+
+    const url = scheme.transfer(recipient);
+
+    return !!url;
+  }
+
   private getCode() {
     const parseData = parseUrl(window.location.href);
     if (typeof parseData !== 'string') {

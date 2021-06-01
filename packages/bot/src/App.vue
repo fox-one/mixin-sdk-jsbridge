@@ -98,7 +98,8 @@ export default defineComponent({
         'getContext',
         'reloadTheme',
         'playlist',
-        'payment'
+        'payment',
+        'transfer'
       ],
       playlists: [
         'https://dev-courses-storage.firesbox.com/7000103418/replay/82480598-1d75-40d9-9317-d4850c980eb6.mp3',
@@ -150,6 +151,8 @@ export default defineComponent({
             ? this.playlists
             : this.currentBridge === 'payment'
             ? this.payment
+            : this.currentBridge === 'transfer'
+            ? this.payment.recipient
             : void 0;
 
         const res = await bridge[this.currentBridge]?.(params);

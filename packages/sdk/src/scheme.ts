@@ -33,7 +33,13 @@ const SCHEME = {
     const _params = this.getQuery(params);
     const _url = `${this.prefix}://pay${_params}`;
 
-    logger().log(_url);
+    logger('pay').log(_url);
+    return this.loadScheme(_url);
+  },
+  transfer: function (recipient: string) {
+    const _url = `${this.prefix}://transfer/${recipient}`;
+
+    logger('transfer').log(_url);
     return this.loadScheme(_url);
   }
 };
@@ -71,6 +77,18 @@ export default {
       return SCHEME.pay(params as Record<string, string>);
     } catch (err) {
       logger('pay').error(err);
+    }
+  },
+  transfer: function (recipient: string) {
+    if (!recipient) {
+      logger('transfer').error('The "recipient" is required!');
+      return;
+    }
+
+    try {
+      return SCHEME.transfer(recipient);
+    } catch (err) {
+      logger('transfer').error(err);
     }
   }
 };

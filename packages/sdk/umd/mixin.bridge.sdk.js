@@ -6465,7 +6465,15 @@ var SCHEME = {
 
     var _url = concat$2(_context2 = "".concat(this.prefix, "://pay")).call(_context2, _params);
 
-    logger$5().log(_url);
+    logger$5('pay').log(_url);
+    return this.loadScheme(_url);
+  },
+  transfer: function transfer(recipient) {
+    var _context3;
+
+    var _url = concat$2(_context3 = "".concat(this.prefix, "://transfer/")).call(_context3, recipient);
+
+    logger$5('transfer').log(_url);
     return this.loadScheme(_url);
   }
 };
@@ -6495,6 +6503,18 @@ var scheme = {
       return SCHEME.pay(params);
     } catch (err) {
       logger$5('pay').error(err);
+    }
+  },
+  transfer: function transfer(recipient) {
+    if (!recipient) {
+      logger$5('transfer').error('The "recipient" is required!');
+      return;
+    }
+
+    try {
+      return SCHEME.transfer(recipient);
+    } catch (err) {
+      logger$5('transfer').error(err);
     }
   }
 };var Bridge = /*#__PURE__*/function () {
@@ -6784,6 +6804,17 @@ var scheme = {
       }
 
       var url = scheme.pay(params);
+      return !!url;
+    }
+  }, {
+    key: "transfer",
+    value: function transfer(recipient) {
+      if (!this.isMixin) {
+        this.logger('transfer').log('Please call in reborn or mixin app!');
+        return false;
+      }
+
+      var url = scheme.transfer(recipient);
       return !!url;
     }
   }, {
