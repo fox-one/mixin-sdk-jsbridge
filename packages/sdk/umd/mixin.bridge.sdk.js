@@ -6431,12 +6431,12 @@ function getAccessToken(params) {
   }).then(function (res) {
     return res.data.access_token;
   });
-}var logger$5 = getLogger('schema');
-var SCHEMA = {
+}var logger$5 = getLogger('scheme');
+var SCHEME = {
   prefix: 'mixin',
-  loadSchema: function loadSchema(url) {
+  loadScheme: function loadScheme(url) {
     if (!url) {
-      logger$5('loadSchema').error('The URL cannot be a falsy value!');
+      logger$5('loadScheme').error('The URL cannot be a falsy value!');
       return;
     }
 
@@ -6466,11 +6466,11 @@ var SCHEMA = {
     var _url = concat$2(_context2 = "".concat(this.prefix, "://pay")).call(_context2, _params);
 
     logger$5().log(_url);
-    return this.loadSchema(_url);
+    return this.loadScheme(_url);
   }
 };
-var schema = {
-  prefix: SCHEMA.prefix,
+var scheme = {
+  prefix: SCHEME.prefix,
   pay: function pay(params) {
     if (!params.recipient || !params.asset || !params.amount) {
       logger$5('pay').error('The "recipient", "asset" and "amount" is required!');
@@ -6492,7 +6492,7 @@ var schema = {
         }
       }
 
-      return SCHEMA.pay(params);
+      return SCHEME.pay(params);
     } catch (err) {
       logger$5('pay').error(err);
     }
@@ -6783,7 +6783,7 @@ var schema = {
         return false;
       }
 
-      var url = schema.pay(params);
+      var url = scheme.pay(params);
       return !!url;
     }
   }, {

@@ -1,10 +1,10 @@
 import { parseUrl } from 'peeler-js';
 import messager from './messager';
 import { getAccessCode, getAccessToken } from './token';
-import schema from './schema';
+import scheme from './scheme';
 import { getLogger, parseError, env, request, store } from '@utils/index';
 /** import types */
-import type { PARAMS_PAYMENT } from './schema';
+import type { PARAMS_PAYMENT } from './scheme';
 import type { AUTH } from './token';
 
 interface Config {
@@ -252,7 +252,7 @@ export class Bridge {
       return false;
     }
 
-    const url = schema.pay(params);
+    const url = scheme.pay(params);
 
     return !!url;
   }

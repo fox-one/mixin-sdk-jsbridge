@@ -6,12 +6,12 @@ import {
   strToUnitArray
 } from '@utils/index';
 
-const logger = getLogger('schema');
-const SCHEMA = {
+const logger = getLogger('scheme');
+const SCHEME = {
   prefix: 'mixin',
-  loadSchema: function (url: string) {
+  loadScheme: function (url: string) {
     if (!url) {
-      logger('loadSchema').error('The URL cannot be a falsy value!');
+      logger('loadScheme').error('The URL cannot be a falsy value!');
       return;
     }
     window.location.href = url;
@@ -34,7 +34,7 @@ const SCHEMA = {
     const _url = `${this.prefix}://pay${_params}`;
 
     logger().log(_url);
-    return this.loadSchema(_url);
+    return this.loadScheme(_url);
   }
 };
 
@@ -47,7 +47,7 @@ export type PARAMS_PAYMENT = {
 };
 
 export default {
-  prefix: SCHEMA.prefix,
+  prefix: SCHEME.prefix,
   pay: function (params: PARAMS_PAYMENT) {
     if (!params.recipient || !params.asset || !params.amount) {
       logger('pay').error('The "recipient", "asset" and "amount" is required!');
@@ -68,7 +68,7 @@ export default {
         }
       }
 
-      return SCHEMA.pay(params as Record<string, string>);
+      return SCHEME.pay(params as Record<string, string>);
     } catch (err) {
       logger('pay').error(err);
     }
