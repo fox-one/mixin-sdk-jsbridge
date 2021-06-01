@@ -93,11 +93,22 @@ export default defineComponent({
       token: '',
       avatarUrl: '',
       userName: '',
-      bridgeOptions: ['getUserInfo', 'getContext', 'reloadTheme', 'playlist'],
+      bridgeOptions: [
+        'getUserInfo',
+        'getContext',
+        'reloadTheme',
+        'playlist',
+        'payment'
+      ],
       playlists: [
         'https://dev-courses-storage.firesbox.com/7000103418/replay/82480598-1d75-40d9-9317-d4850c980eb6.mp3',
         'https://dev-courses-storage.firesbox.com/7000103418/replay/0e43761b-4065-46ee-b0a1-a96aea13414a.mp3'
       ],
+      payment: {
+        recipient: '0286485f-14a5-4d82-b4de-56a3b8b9f044',
+        assetId: '965e5c6e-434c-3fa9-b780-c50f43cd955c',
+        amount: 1
+      },
       currentBridge: '',
       bridgeVersion: bridge.version,
       isMixin: bridge.isMixin,
@@ -135,7 +146,11 @@ export default defineComponent({
     callBridge: async function () {
       if (this.currentBridge) {
         const params =
-          this.currentBridge === 'playlist' ? this.playlists : void 0;
+          this.currentBridge === 'playlist'
+            ? this.playlists
+            : this.currentBridge === 'payment'
+            ? this.payment
+            : void 0;
         const res = await bridge[this.currentBridge]?.(params);
         let txt =
           this.currentBridge === 'getUserInfo' && !this.userName

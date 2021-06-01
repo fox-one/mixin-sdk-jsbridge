@@ -44,7 +44,7 @@ module.exports = {
     'vue/html-quotes': ['warn', 'double', { 'avoidEscape': true }],
     'vue/singleline-html-element-content-newline': ['off'],
     'vue/max-attributes-per-line': ['off'],
-    '@typescript-eslint/indent': ['warn', 2],
+    // '@typescript-eslint/indent': ['warn', 2],
     '@typescript-eslint/no-empty-interface': ['off'],
     '@typescript-eslint/camelcase': ['off'],
     '@typescript-eslint/restrict-plus-operands': ['warn'],
