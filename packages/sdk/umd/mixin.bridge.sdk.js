@@ -6770,6 +6770,11 @@ var schema = {
   }, {
     key: "payment",
     value: function payment(params) {
+      if (!this.isMixin) {
+        this.logger('payment').log('Please call in reborn or mixin app!');
+        return false;
+      }
+
       var url = schema.pay(params);
       return !!url;
     }

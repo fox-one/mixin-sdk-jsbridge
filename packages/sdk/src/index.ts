@@ -247,6 +247,11 @@ export class Bridge {
   }
 
   public payment(params: PARAMS_PAYMENT): boolean {
+    if (!this.isMixin) {
+      this.logger('payment').log('Please call in reborn or mixin app!');
+      return false;
+    }
+
     const url = schema.pay(params);
 
     return !!url;
