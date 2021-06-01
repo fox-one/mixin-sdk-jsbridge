@@ -6472,21 +6472,28 @@ var schema = {
   prefix: SCHEMA.prefix,
   pay: function pay(params) {
     if (!params.recipient || !params.assetId || !params.amount) {
-      logger$5('pay').warn('The "recipient", "assetId" and "amount" is required!');
+      logger$5('pay').error('The "recipient", "assetId" and "amount" is required!');
       return;
     }
 
     try {
       if (!params.traceId) params.traceId = uuid$1();
 
-      if (isObject$2(params.memo)) {
-        stringify$2(params.memo);
+      if (params.memo) {
+        if (isObject$2(params.memo)) {
+          stringify$2(params.memo);
+        }
+
+        params.memo = base64Js.fromByteArray(strToUnitArray(params.memo));
+
+        if (params.memo.length > 140) {
+          logger$5('pay').warn('The memo max length is 140!');
+        }
       }
 
-      params.memo = base64Js.fromByteArray(strToUnitArray(params.memo));
       return SCHEMA.pay(params);
     } catch (err) {
-      logger$5('pay').warn(err);
+      logger$5('pay').error(err);
     }
   }
 };var Bridge = /*#__PURE__*/function () {

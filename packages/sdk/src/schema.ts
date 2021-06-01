@@ -49,22 +49,27 @@ export default {
   prefix: SCHEMA.prefix,
   pay: function (params: PARAMS_PAYMENT) {
     if (!params.recipient || !params.assetId || !params.amount) {
-      logger('pay').warn('The "recipient", "assetId" and "amount" is required!');
+      logger('pay').error('The "recipient", "assetId" and "amount" is required!');
       return;
     }
 
     try {
       if (!params.traceId) params.traceId = uuid();
 
-      if (isObject(params.memo)) {
-        JSON.stringify(params.memo);
-      }
+      if (params.memo) {
+        if (isObject(params.memo)) {
+          JSON.stringify(params.memo);
+        }
 
-      params.memo = base64.fromByteArray(strToUnitArray(params.memo as string)!);
+        params.memo = base64.fromByteArray(strToUnitArray(params.memo as string)!);
+        if (params.memo.length > 140) {
+          logger('pay').warn('The memo max length is 140!');
+        }
+      }
 
       return SCHEMA.pay(params as Record<string, string>);
     } catch (err) {
-      logger('pay').warn(err);
+      logger('pay').error(err);
     }
   }
 };

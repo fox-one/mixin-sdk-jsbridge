@@ -148,9 +148,8 @@ export default defineComponent({
         const params =
           this.currentBridge === 'playlist'
             ? this.playlists
-            : this.currentBridge === 'payment'
-            ? this.payment
-            : void 0;
+            : this.currentBridge === 'payment' ? this.payment : void 0;
+
         const res = await bridge[this.currentBridge]?.(params);
         let txt =
           this.currentBridge === 'getUserInfo' && !this.userName
