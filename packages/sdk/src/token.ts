@@ -1,7 +1,7 @@
 import base64 from 'base64-js';
 import EncBase64 from 'crypto-js/enc-base64';
 import sha256 from 'crypto-js/sha256';
-import { request, strToUnitArray } from '@utils/index';
+import { request, strToUnitArray, store } from '@utils/index';
 
 
 export type AUTH = {
@@ -56,7 +56,7 @@ export function getAccessCode(params: {
   if (randomArr) {
     const verifier = base64URLEncode(base64.fromByteArray(randomArr));
     challenge = base64URLEncode(sha256(randomCode).toString(EncBase64));
-    verifier && localStorage.setItem('$_mixin-code-verifier', verifier);
+    verifier && store.set('$_mixin-code-verifier', verifier);
   }
 
   let SCOPESTR = '';

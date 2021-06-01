@@ -1,8 +1,10 @@
 import { parseUrl } from 'peeler-js';
 import messager from './messager';
 import { getAccessCode, getAccessToken } from './token';
-import { getLogger, parseError, env, request } from '@utils/index';
+import schema from './schema';
+import { getLogger, parseError, env, request, store } from '@utils/index';
 /** import types */
+import type { PARAMS_PAYMENT } from './schema';
 import type { AUTH } from './token';
 
 interface Config {
@@ -130,7 +132,7 @@ export class Bridge {
    * 获取 access token
    */
   public get token() {
-    return this._token ?? localStorage.getItem('$_mixin-token');
+    return this._token ?? store.get('$_mixin-token');
   }
 
   /**
@@ -163,9 +165,9 @@ export class Bridge {
    * @param reload 是否重载页面
    */
   public logout(reload = true) {
-    localStorage.removeItem('$_mixin-token');
-    localStorage.removeItem('$_mixin-code-verifier');
-    localStorage.removeItem('$_mixin-user-info');
+    store.clear('$_mixin-token');
+    store.clear('$_mixin-code-verifier');
+    store.clear('$_mixin-user-info');
     if (reload) window.location.reload();
   }
 
@@ -186,7 +188,7 @@ export class Bridge {
 
     const client_id = client_id_params || client_id_config;
     const code = code_params || code_url;
-    const code_verifier = code_verifier_params || localStorage.getItem('$_mixin-code-verifier');
+    const code_verifier = code_verifier_params || store.get('$_mixin-code-verifier');
 
     if (!client_id || !code_verifier || !code) {
       this.logger('getToken').warn('The request parameters which contain client_id, access_code and code_verifier is not correct!');
@@ -201,7 +203,7 @@ export class Bridge {
       })
         .then(token => {
           this._token = token;
-          if (persistence) localStorage.setItem('$_mixin-token', token);
+          if (persistence) store.set('$_mixin-token', token);
           resolve(token);
         })
         .catch(err => this.handlerError(err, 'getToken', 'get token failed!'));
@@ -215,7 +217,7 @@ export class Bridge {
     }
 
     try {
-      const cache = localStorage.getItem('$_mixin-user-info');
+      const cache = store.get('$_mixin-user-info');
       const userInfo = this._userInfo ?? cache ? JSON.parse(cache!) : '';
       if (userInfo) {
         this.logger('getUserInfo').log('through cache!');
@@ -238,10 +240,16 @@ export class Bridge {
       const data = res.data;
       if (data) {
         this._userInfo = data;
-        localStorage.setItem('$_mixin-user-info', JSON.stringify(data));
+        store.set('$_mixin-user-info', JSON.stringify(data));
       }
       return data;
     });
+  }
+
+  public payment(params: PARAMS_PAYMENT): boolean {
+    const url = schema.pay(params);
+
+    return !!url;
   }
 
   private getCode() {
