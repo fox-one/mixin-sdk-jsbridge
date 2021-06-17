@@ -160,12 +160,12 @@ export default defineComponent({
           this.currentBridge === 'getUserInfo' && !this.userName
             ? 'Please login first!'
             : '';
-        if (res) {
+        if (res && typeof res !== 'string') {
           Object.keys(res).forEach(v => {
             txt += `${v}: ${res[v]}; \n\n`;
           });
         }
-        this.result = txt;
+        this.result = txt || res;
       }
     },
     goLogout() {
