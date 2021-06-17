@@ -246,26 +246,22 @@ export class Bridge {
     });
   }
 
-  public payment(params: PARAMS_PAYMENT): boolean {
+  public payment(params: PARAMS_PAYMENT): string | undefined {
     if (!this.isMixin) {
       this.logger('payment').log('Please call in reborn or mixin app!');
-      return false;
+      return;
     }
 
-    const url = scheme.pay(params);
-
-    return !!url;
+    return scheme.pay(params);
   }
 
-  public transfer(recipient: string): boolean {
+  public transfer(recipient: string): string | undefined {
     if (!this.isMixin) {
       this.logger('transfer').log('Please call in reborn or mixin app!');
-      return false;
+      return;
     }
 
-    const url = scheme.transfer(recipient);
-
-    return !!url;
+    return scheme.transfer(recipient);
   }
 
   private getCode() {
