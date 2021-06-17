@@ -90,7 +90,7 @@ export class Bridge {
       return ctx;
     } catch (err) {
       this.handlerError(err, 'getContext');
-      return null;
+      return;
     }
   }
 

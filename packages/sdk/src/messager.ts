@@ -1,7 +1,17 @@
 import { env, getLogger } from '@utils/index';
 
-type Messagers = {
-  getContext: () => Record<string, any>;
+type CONTEXT = {
+  app_version: string;
+  immersive: boolean;
+  appearance: 'light' | 'dark';
+  currency: string;
+  locale: string;
+  platform: 'iOS' | 'Android' | 'Desktop';
+  conversation_id: string;
+  [props: string]: any;
+};
+interface MESSAGERS {
+  getContext: () => CONTEXT;
   playlist: (audios: string[]) => any;
   reloadTheme: () => void;
 }
@@ -10,26 +20,27 @@ declare global {
     webkit?: {
       messageHandlers?: {
         MixinContext?: any;
-        playlist?: { postMessage: Messagers['playlist'] };
-        reloadTheme?: { postMessage: Messagers['reloadTheme'] };
+        playlist?: { postMessage: MESSAGERS['playlist'] };
+        reloadTheme?: { postMessage: MESSAGERS['reloadTheme'] };
       };
     };
     MixinContext?: {
-      getContext?: Messagers['getContext'];
-      playlist?: Messagers['playlist'];
-      reloadTheme?: Messagers['reloadTheme'];
+      getContext?: MESSAGERS['getContext'];
+      playlist?: MESSAGERS['playlist'];
+      reloadTheme?: MESSAGERS['reloadTheme'];
     };
   }
 }
 
 const logger = getLogger('messager');
-export function messager<T extends keyof Messagers>(type: T) {
+export function messager<T extends keyof MESSAGERS>(type: T) {
   const envInfo = env();
-  const handler = envInfo.isIOS
-    ? type === 'getContext'
-      ? () => JSON.parse(prompt('MixinContext.getContext()') as any) as Record<string, any>
-      : window?.webkit?.messageHandlers?.[type as Exclude<T, 'getContext'>]?.postMessage.bind(window?.webkit?.messageHandlers?.[type as Exclude<T, 'getContext'>]) as Messagers[Exclude<T, 'getContext'>]
-    : window?.MixinContext?.[type]?.bind(window?.MixinContext) as Messagers[T];
+  const handler =
+    envInfo.isIOS
+      ? type === 'getContext'
+        ? () => JSON.parse(prompt('MixinContext.getContext()') as any) as CONTEXT
+        : window?.webkit?.messageHandlers?.[type as Exclude<T, 'getContext'>]?.postMessage.bind(window?.webkit?.messageHandlers?.[type as Exclude<T, 'getContext'>]) as MESSAGERS[Exclude<T, 'getContext'>]
+      : window?.MixinContext?.[type]?.bind(window?.MixinContext) as MESSAGERS[T];
 
   return handler ?? (() => logger().warn(`The messager "${type}" is not support yet!`));
 }
