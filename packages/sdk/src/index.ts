@@ -247,20 +247,10 @@ export class Bridge {
   }
 
   public payment(params: PARAMS_PAYMENT): string | undefined {
-    if (!this.isMixin) {
-      this.logger('payment').log('Please call in reborn or mixin app!');
-      return;
-    }
-
     return scheme.pay(params);
   }
 
   public transfer(recipient: string): string | undefined {
-    if (!this.isMixin) {
-      this.logger('transfer').log('Please call in reborn or mixin app!');
-      return;
-    }
-
     return scheme.transfer(recipient);
   }
 

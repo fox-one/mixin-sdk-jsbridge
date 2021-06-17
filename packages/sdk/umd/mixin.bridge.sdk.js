@@ -6798,21 +6798,11 @@ var scheme = {
   }, {
     key: "payment",
     value: function payment(params) {
-      if (!this.isMixin) {
-        this.logger('payment').log('Please call in reborn or mixin app!');
-        return;
-      }
-
       return scheme.pay(params);
     }
   }, {
     key: "transfer",
     value: function transfer(recipient) {
-      if (!this.isMixin) {
-        this.logger('transfer').log('Please call in reborn or mixin app!');
-        return;
-      }
-
       return scheme.transfer(recipient);
     }
   }, {
