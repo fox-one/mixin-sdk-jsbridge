@@ -6800,22 +6800,20 @@ var scheme = {
     value: function payment(params) {
       if (!this.isMixin) {
         this.logger('payment').log('Please call in reborn or mixin app!');
-        return false;
+        return;
       }
 
-      var url = scheme.pay(params);
-      return !!url;
+      return scheme.pay(params);
     }
   }, {
     key: "transfer",
     value: function transfer(recipient) {
       if (!this.isMixin) {
         this.logger('transfer').log('Please call in reborn or mixin app!');
-        return false;
+        return;
       }
 
-      var url = scheme.transfer(recipient);
-      return !!url;
+      return scheme.transfer(recipient);
     }
   }, {
     key: "getCode",
