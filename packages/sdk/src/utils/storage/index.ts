@@ -27,3 +27,5 @@ export const store = {
   },
   clear: (key: string) => storage.clear(key, storageType)
 };
+
+export default store;
