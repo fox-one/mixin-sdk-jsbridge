@@ -1,4 +1,4 @@
-import { isType } from 'peeler-js/dist/isType';
+import { isType } from 'peeler-js/es/isType';
 
 export function isArray(val: any): val is any[] {
   return isType('array')(val);

@@ -1,4 +1,4 @@
-import { parseUrl } from 'peeler-js';
+import { parseUrl } from 'peeler-js/es/parseUrl';
 import messager from './messager';
 import { getAccessCode, getAccessToken } from './token';
 import scheme from './scheme';

@@ -1943,13 +1943,13 @@ aggregate-error@^3.0.0:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
 
-ajax-maker@^0.0.19:
-  version "0.0.19"
-  resolved "https://registry.npmjs.org/ajax-maker/-/ajax-maker-0.0.19.tgz#d420b3b2fa82df0eaa3744b3422d8105603259f9"
-  integrity sha512-BUOdrB6p9ijowhBFfgLrCpuBtOaDoipADVgoesGRISJ5/sgL7fQWvsfearOvOxyS2d/40uvakCV8c44KMShk6g==
+ajax-maker@~0.0.20:
+  version "0.0.20"
+  resolved "https://registry.npmjs.org/ajax-maker/-/ajax-maker-0.0.20.tgz#5e62b10292f858044bb9407a9696d0a68b1df3e6"
+  integrity sha512-WPi6rAl0xcPRf+64aRJlBXgtWi+euo6k+jcRty9aGZea0we0IG9zbBKT5Xs7ggTRPtS4rLrUAUfFsfIYc0IXrg==
   dependencies:
     axios "~0.21.0"
-    peeler-js "~0.3.9"
+    peeler-js "~0.4.2"
 
 ajv-errors@^1.0.0:
   version "1.0.1"
@@ -7695,17 +7695,10 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-peeler-js@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/peeler-js/-/peeler-js-0.4.0.tgz#80328baee7c2adfe11497185dfda5b4cd2b22a38"
-  integrity sha512-WKzPGCCsYChDm5AEBaSUVLCzMzKtR7Z8WJogn/yX1IHi+lZa/5Wq84oDSQ0q26lfXrGzuNsdE8NbgXQm+fGmUQ==
-  dependencies:
-    "@babel/runtime-corejs2" "^7.5.4"
-
-peeler-js@~0.3.9:
-  version "0.3.10"
-  resolved "https://registry.npmjs.org/peeler-js/-/peeler-js-0.3.10.tgz#c2d340a201d9a7ccb6c8e6c2c6ce7c4bdcc6cc73"
-  integrity sha512-wa/UWHtg58L+9qjLZijMmCo7Yt1QvpiiTvkcl0j9/D7S4czr5qIuq25pTCizi/zhJnytymUPfPoh+9b+qARQxA==
+peeler-js@~0.4.2:
+  version "0.4.2"
+  resolved "https://registry.npmjs.org/peeler-js/-/peeler-js-0.4.2.tgz#d97833283ec7948677b1ef6aabcb7f3f64ebfa94"
+  integrity sha512-/uP6qhytnITt6XngB5iquyKWnV4xjtkJTEv8eWYdmA2O3hJ/CHx1NSmyDl1JRx+zjjnU4VcPMFOIuJcmXV5WqA==
   dependencies:
     "@babel/runtime-corejs2" "^7.5.4"
 

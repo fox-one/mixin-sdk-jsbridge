@@ -1,4 +1,4 @@
-import { storage } from 'peeler-js/dist/storage';
+import { storage } from 'peeler-js/es/storage';
 import getLogger from '../logger';
 
 type StorageType = 'cookie' | 'localStorage' | 'sessionStorage';

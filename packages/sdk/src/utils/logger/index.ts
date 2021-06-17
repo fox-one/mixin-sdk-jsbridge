@@ -1,4 +1,4 @@
-import { Logger } from 'peeler-js/dist/logger';
+import { Logger } from 'peeler-js/es/logger';
 
 const logger = new Logger({
   debug: true,
