@@ -11,7 +11,7 @@ module.exports = function (config) {
 
   config.forEach(v => {
     // just keep the reference for third-party libs
-    v.external = ['peeler-js', 'base64-js', 'crypto', 'crypto-js', 'ajax-maker'];
+    v.external = [/peeler\-js\S*/, 'base64-js', 'crypto', 'crypto-js', 'ajax-maker'];
     v.plugins.push(
       alias({
         entries: [
