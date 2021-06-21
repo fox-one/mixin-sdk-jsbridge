@@ -31,7 +31,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@foxone/mixin-sdk-jsbridge": "^0.2.10",
+    "@foxone/mixin-sdk-jsbridge": "^0.2.11",
     "core-js": "^3.6.4",
     "element-plus": "^1.0.2-beta.35",
     "regenerator-runtime": "^0.13.5",
