@@ -7,8 +7,11 @@ const { babel } = require('@rollup/plugin-babel');
 const json = require('@rollup/plugin-json');
 
 module.exports = function (config) {
+  const extensions = ['.ts', '.js'];
+
   config.forEach(v => {
-    v.plugins.shift();
+    // just keep the reference for third-party libs
+    v.external = ['peeler-js', 'base64-js', 'crypto', 'crypto-js', 'ajax-maker'];
     v.plugins.push(
       alias({
         entries: [
@@ -19,7 +22,6 @@ module.exports = function (config) {
   });
 
   // umd
-  const extensions = ['.ts', '.js'];
   config.push({
     input: 'src/index.ts',
     output: {
