@@ -8,6 +8,7 @@ const json = require('@rollup/plugin-json');
 
 module.exports = function (config) {
   config.forEach(v => {
+    v.plugins.shift();
     v.plugins.push(
       alias({
         entries: [
