@@ -12,6 +12,7 @@ lib
 es
 dist
 dist.zip
+umd
 src/.umi
 
 *.log

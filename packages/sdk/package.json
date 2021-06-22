@@ -1,10 +1,11 @@
 {
   "name": "@foxone/mixin-sdk-jsbridge",
   "version": "0.2.12",
-  "description": "",
+  "description": "Mixin-JSBridge SDK for FE developer",
   "main": "lib/index.js",
   "module": "es/index.js",
   "typings": "lib/index.d.ts",
+  "unpkg": "umd/mixin.bridge.min.js",
   "scripts": {
     "start": "omni dev",
     "dev": "omni dev",
@@ -40,7 +41,7 @@
       "npm run lint:prettier_fix"
     ]
   },
-  "keywords": [],
+  "keywords": ["mixin", "reborn", "bridge", "jsbridge", "sdk"],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -84,6 +85,7 @@
     "nyc": "15.0.0",
     "prettier": "~2.1.2",
     "rollup": "~2.34.1",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript": "~1.0.1",
     "rollup-plugin-typescript2": "~0.26.0",
     "ts-loader": "6.2.1",

@@ -6,7 +6,6 @@
 .vscode
 build
 src
-umd
 *test*
 node_modules
 .omni_cache

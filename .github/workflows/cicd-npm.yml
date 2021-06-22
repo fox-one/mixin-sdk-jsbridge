@@ -1,12 +1,12 @@
-name: Docs CICD
+name: Npm CICD
 on: 
   push:
     branches:
       - master
 
     paths:
-      - 'packages/sdk/docs/**'
       - 'packages/sdk/src/**'
+      - 'packages/sdk/package.json'
 
 jobs:
   build-deploy:
@@ -36,15 +36,13 @@ jobs:
     - run: yarn --frozen-lockfile --non-interactive
       working-directory: packages/sdk
 
-    - run: yarn build:doc
+    - run: yarn build
 
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
+    - name: Deploy Npm
+      uses: JS-DevTools/npm-publish@v1
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: packages/sdk/dist
-        user_name: 'github-actions[bot]'
-        user_email: 'github-actions[bot]@users.noreply.github.com'
+        token: ${{ secrets.NPM_TOKEN }}
+        tag: 'latest'
 
 
 

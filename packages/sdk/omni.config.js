@@ -1,5 +1,5 @@
 'use strict';
-
+const fs = require('fs');
 const path = require('path');
 const rollup = require('./rollup.config');
 
@@ -58,7 +58,7 @@ module.exports = {
     git: 'git@github.com:fox-one/mixin-sdk-jsbridge.git',
 
     // 发布的npm仓库地址 (npm depository url)
-    npm: 'https://registry.npmjs.org/', 
+    // npm: 'https://registry.npmjs.org/', 
 
     preflight: {
       // test: true, // 发布前是否进行单元测试 (whether or not process unit-test)
@@ -80,9 +80,27 @@ module.exports = {
     // 是否创建单元测试文件 (whether or not generate unit test frame)
     test: true,
 
-    // [是否生成ReadMe文件, 创建md 或 mdx文件] ([whether or not README.md, generate mdx or md file])
-    readme: [true, 'md']
+    // 是否生成README.md (whether or not generate README.md)
+    readme: true
   },
 
-  plugins: []
+  plugins: [
+    {
+      name: 'github-action-npm',
+      stage: 'release',
+      handler: function (config, options) {
+        const filePath = path.resolve(__dirname, '../../.github/workflows/cicd-npm.yml');
+        if (!fs.existsSync(filePath)) return Promise.resolve();
+        return new Promise((resolve) => {
+          const tag = options.tag;
+          fs.readFile(filePath, function (err, data) {
+            if (err) throw err;
+            const newData = data.toString().replace(/tag:(\s\S)*\w*('|"){1}/g, `tag: '${tag}'`);
+            fs.writeFileSync(filePath, newData, 'utf-8');
+            resolve();
+          })
+        })
+      }
+    }
+  ]
 };

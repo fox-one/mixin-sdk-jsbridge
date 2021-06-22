@@ -5,6 +5,7 @@ const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const { babel } = require('@rollup/plugin-babel');
 const json = require('@rollup/plugin-json');
+const { terser } = require('rollup-plugin-terser');
 
 module.exports = function (config) {
   const extensions = ['.ts', '.js'];
@@ -25,9 +26,9 @@ module.exports = function (config) {
   config.push({
     input: 'src/index.ts',
     output: {
-      file: `umd/mixin.bridge.sdk.js`,
+      file: `umd/mixin.bridge.min.js`,
       format: 'umd',
-      name: '$MixinBridge',
+      name: '$MXBridge',
       exports: 'named',
       compact: true
     },
@@ -50,7 +51,8 @@ module.exports = function (config) {
         babelHelpers: 'runtime',
         extensions
       }),
-      json()
+      json(),
+      terser()
     ]
   });
 
