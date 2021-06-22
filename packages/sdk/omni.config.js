@@ -49,7 +49,7 @@ module.exports = {
 
   release: {
     // 发布之前是否自动构建项目 (auto build project before release process)
-    autoBuild: true,
+    autoBuild: false,
 
     // 发布到npm仓库时，根据当前版本号自动设置 tag (auto set tag according to the current version)
     autoTag: true,
