@@ -43,7 +43,7 @@ jobs:
       with:
         token: ${{ secrets.NPM_TOKEN }}
         package: ./packages/sdk/package.json
-        tag: 'prerelease'
+        tag: 'latest'
 
 
 

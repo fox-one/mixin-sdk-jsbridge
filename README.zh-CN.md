@@ -32,6 +32,36 @@ bridge.getContext();
 // ……
 ```
 
+### CDN
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello MXBridge</title>
+  </head>
+  <body>
+    <button onclick="goLogin()">login</button>
+  </body>
+  <script src="https://unpkg.com/@foxone/mixin-sdk-jsbridge@latest/umd/mixin.bridge.min.js"></script>
+  <script>
+    function goLogin () {
+      const { Bridge } = $MXBridge;
+      const bridge = new Bridge({
+        client_id: '86cf39ad-4e63-46c6-a6db-90cea8d05c1d'
+      });
+      bridge.login({
+        phone: true,
+        assets: true
+      })
+    }
+  </script>
+</html>
+```
+
 ### 开发
 对于调试或维护，可以将项目 clone 到本地，然后启动项目：
 
