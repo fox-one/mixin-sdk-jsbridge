@@ -17,6 +17,7 @@ docs
 .eslintignore
 .eslintrc.js
 .gitignore
+.prettierignore
 *.config.js
 *.conf.js
 tsconfig.json
