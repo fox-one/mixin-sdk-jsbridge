@@ -1,6 +1,6 @@
 {
   "name": "@foxone/mixin-sdk-jsbridge",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "description": "Mixin-JSBridge SDK for FE developer",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -43,7 +43,7 @@
   },
   "keywords": ["mixin", "reborn", "bridge", "jsbridge", "sdk"],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "~7.10.0",
     "@babel/plugin-transform-runtime": "~7.10.0",
