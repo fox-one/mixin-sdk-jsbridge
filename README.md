@@ -1,5 +1,10 @@
 # @foxone/mixin-sdk-jsbridge
 
+[![NPM downloads](http://img.shields.io/npm/dm/%40omni-door%2Fcli.svg?style=flat-square)](https://www.npmjs.com/package/@fox-one/mixin-sdk-jsbridge)
+[![npm version](https://badge.fury.io/js/%40omni-door%2Fcli.svg)](https://badge.fury.io/js/%40omni-door%2Fcli)
+[![install size](https://packagephobia.now.sh/badge?p=%40omni-door%2Fcli)](https://packagephobia.now.sh/result?p=%40omni-door%2Fcli)
+[![license](http://img.shields.io/npm/l/%40omni-door%2Fcli.svg)](https://github.com/fox-one/mixin-sdk-jsbridge/blob/master/LICENSE)
+
 English | [简体中文](./README.zh-CN.md)
 
 ### Introduction
