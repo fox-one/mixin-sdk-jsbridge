@@ -1,5 +1,10 @@
 # @foxone/mixin-sdk-jsbridge
 
+[![NPM downloads](http://img.shields.io/npm/dm/%40foxone%2Fmixin-sdk-jsbridge.svg?style=flat-square)](https://www.npmjs.com/package/@foxone/mixin-sdk-jsbridge)
+[![npm version](https://badge.fury.io/js/%40foxone%2Fmixin-sdk-jsbridge.svg)](https://badge.fury.io/js/%40foxone%2Fmixin-sdk-jsbridge)
+[![install size](https://packagephobia.now.sh/badge?p=%40foxone%2Fmixin-sdk-jsbridge)](https://packagephobia.now.sh/result?p=%40foxone%2Fmixin-sdk-jsbridge)
+[![license](http://img.shields.io/npm/l/%40foxone%2Fmixin-sdk-jsbridge.svg)](https://github.com/fox-one/mixin-sdk-jsbridge/blob/master/LICENSE)
+
 [English](./README.md) | 简体中文
 
 ### 介绍
