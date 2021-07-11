@@ -42,7 +42,7 @@
     "@babel/core": "~7.12.10",
     "@babel/preset-env": "~7.12.11",
     "@babel/preset-typescript": "~7.12.7",
-    "@omni-door/cli": "^2.3.10",
+    "@omni-door/cli": "~2.3.11",
     "@types/vfile-message": "1.0.1",
     "@types/webpack-env": "1.16.0",
     "@typescript-eslint/eslint-plugin": "~4.13.0",

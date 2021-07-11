@@ -18,7 +18,7 @@
     "release:bot": "omni release -P ./packages/bot && node ./packages/bot/configs/release.js"
   },
   "devDependencies": {
-    "@omni-door/cli": "^2.4.9",
+    "@omni-door/cli": "~2.4.9",
     "lerna": "^4.0.0"
   }
 }

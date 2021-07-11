@@ -882,7 +882,7 @@
   dependencies:
     "@octokit/openapi-types" "^5.3.2"
 
-"@omni-door/cli@^2.4.9":
+"@omni-door/cli@~2.4.9":
   version "2.4.9"
   resolved "https://registry.npmjs.org/@omni-door/cli/-/cli-2.4.9.tgz#fb278d3f87fc8d54d1bbb4607176322c0f0cd0de"
   integrity sha512-gZXBfkveN7133KJUyNMgnB0XGg0mDD9TLsC2vXKItHVCzFinf2iJiy1WKYtINZR4EX6mykczqGoymz1ScXeJdw==
