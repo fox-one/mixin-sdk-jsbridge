@@ -51,6 +51,20 @@ export class Bridge {
   }
 
   /**
+   * get the code which be used to get access-token
+   */
+  public get code(): string | undefined {
+    return this.getCode();
+  }
+
+  /**
+   * get the code-verifier which be used to get access-token
+   */
+  public get codeVerifier(): string | null | undefined {
+    return store.get('$_mixin-code-verifier');
+  }
+
+  /**
    * get conversation id
    */
   public get conversationId(): string | undefined {
@@ -179,14 +193,13 @@ export class Bridge {
   }, persistence = true): Promise<string | null> {
     const { client_id: client_id_config } = this.config || {};
     const { code: code_params, code_verifier: code_verifier_params, client_id: client_id_params } = params || {};
-    const code_url = this.getCode();
 
     const client_id = client_id_params || client_id_config;
-    const code = code_params || code_url;
+    const code = code_params || this.getCode();
     const code_verifier = code_verifier_params || store.get('$_mixin-code-verifier');
 
     if (!client_id || !code_verifier || !code) {
-      this.logger('getToken').warn('The request parameters which contain client_id, access_code and code_verifier is not correct!');
+      this.logger('requestToken').warn('The request parameters which contain client_id, access_code and code_verifier is not correct!');
       return Promise.resolve(null);
     }
 
@@ -201,7 +214,10 @@ export class Bridge {
           if (persistence) store.set('$_mixin-token', token);
           resolve(token);
         })
-        .catch(err => this.handlerError(err, 'getToken', 'get token failed!'));
+        .catch(err => {
+          this.handlerError(err, 'requestToken', 'get token failed!');
+          reject(err);
+        });
     });
   }
 
