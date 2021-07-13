@@ -37,7 +37,7 @@ export class Bridge {
   }
 
   /**
-   * 获取当前 jsbridge 版本号
+   * get the jsbridge-sdk version
    */
   public get version(): string {
     let pkj;
@@ -51,14 +51,14 @@ export class Bridge {
   }
 
   /**
-   * 获取 conversation id
+   * get conversation id
    */
   public get conversationId(): string | undefined {
     return this.getContext()?.conversation_id ?? void 0;
   }
 
   /**
-   * 判断 Mixin 环境
+   * judgement whether or not in mixin or reborn app
    */
   public get isMixin(): boolean {
     const isIOS = env().isIOS;
@@ -68,8 +68,7 @@ export class Bridge {
   }
 
   /**
-   * 获取 app 上下文
-   * @returns 
+   * get mixin app context
    */
   public getContext() {
     if (!this.isMixin) {
@@ -95,7 +94,7 @@ export class Bridge {
   }
 
   /**
-   * 重载
+   * reload the theme according to theme-color
    */
   public reloadTheme() {
     if (!this.isMixin) {
@@ -111,9 +110,7 @@ export class Bridge {
   }
 
   /**
-   * 打开播放列表
-   * @param src 
-   * @returns 
+   * play audio by mixin native player
    */
   public playlist(src: string[]) {
     if (!this.isMixin) {
@@ -129,17 +126,15 @@ export class Bridge {
   }
 
   /**
-   * 获取 access token
+   * get access token
    */
   public get token() {
     return this._token ?? store.get('$_mixin-token');
   }
 
   /**
-   * 跳转到授权登陆页
-   * @param auth
-   * @param params 
-   * @returns 
+   * go login page
+   * @type {{ phone?: boolean | number; profile?: boolean | number; contacts?: boolean | number; assets?: boolean | number; snapshots?: boolean | number; messages?: boolean | number; }} AUTH
    */
   public login(auth: AUTH, params?: {
     oauth_url?: string;
@@ -161,8 +156,8 @@ export class Bridge {
   }
 
   /**
-   * 登出
-   * @param reload 是否重载页面
+   * do logout
+   * @param reload whether reload the page
    */
   public logout(reload = true) {
     store.clear('$_mixin-token');
@@ -172,9 +167,9 @@ export class Bridge {
   }
 
   /**
-   * 根据 code 换取 access token
-   * @param params 
-   * @param persistence 
+   * request access-token by code
+   * @param params request params
+   * @param persistence whether persist the code
    * @returns 
    */
   public requestToken(params?: {
@@ -210,6 +205,9 @@ export class Bridge {
     });
   }
 
+  /**
+   * get user infomations by request https://api.mixin.one/me API
+   */
   public getUserInfo(token: string = this.token ?? ''): Promise<Record<string, any> | null> {
     if (!token) {
       this.logger('getUserInfo').warn('The access_token is invalid!');
@@ -246,10 +244,18 @@ export class Bridge {
     });
   }
 
+  /**
+   * evoke payment checkout by generate pay scheme-url
+   * @type {{recipient: string; asset: string; amount: string; trace?: string; memo?: string | Record<string, string>;}} PARAMS_PAYMENT
+   */
   public payment(params: PARAMS_PAYMENT): string | undefined {
     return scheme.pay(params);
   }
 
+  /**
+   * evoke transfer checkout by generate pay scheme-url
+   * @param recipient recipient id
+   */
   public transfer(recipient: string): string | undefined {
     return scheme.transfer(recipient);
   }
