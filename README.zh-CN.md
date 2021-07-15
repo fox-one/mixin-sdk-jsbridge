@@ -21,7 +21,7 @@
 ### NPM
 
 ```shell
-npm install @foxone/mixin-sdk-jsbridge
+npm install -S @foxone/mixin-sdk-jsbridge
 # 或者
 yarn add @foxone/mixin-sdk-jsbridge
 ```

@@ -20,7 +20,7 @@ For more details, please read the [Documentation](https://fox-one.github.io/mixi
 
 ### NPM
 ```shell
-npm install @foxone/mixin-sdk-jsbridge
+npm install -S @foxone/mixin-sdk-jsbridge
 # or
 yarn add @foxone/mixin-sdk-jsbridge
 ```
