@@ -82,6 +82,13 @@ export class Bridge {
   }
 
   /**
+ * get access token
+ */
+  public get token() {
+    return this._token ?? store.get('$_mixin-token');
+  }
+
+  /**
    * get mixin app context
    */
   public getContext() {
@@ -140,21 +147,15 @@ export class Bridge {
   }
 
   /**
-   * get access token
-   */
-  public get token() {
-    return this._token ?? store.get('$_mixin-token');
-  }
-
-  /**
    * go login page
-   * @type {{ phone?: boolean | number; profile?: boolean | number; contacts?: boolean | number; assets?: boolean | number; snapshots?: boolean | number; messages?: boolean | number; }} AUTH
+   * @type {{ phone?: boolean | number; profile?: boolean | number; contacts?: boolean | number; assets?: boolean | number; snapshots?: boolean | number; messages?: boolean | number; code_challenge?: boolean; }} AUTH
    */
   public login(auth: AUTH, params?: {
     oauth_url?: string;
     client_id?: string;
     redirect_url?: string;
     state?: string;
+    code_challenge?: boolean;
   }) {
     const { client_id } = this.config || {};
     const cid = params?.client_id || client_id;

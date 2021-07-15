@@ -47,9 +47,10 @@ export function getAccessCode(params: {
   redirect_url?: string;
   state?: string;
   auth?: AUTH;
+  code_challenge?: boolean;
 }) {
   // eslint-disable-next-line prefer-const
-  let { client_id, oauth_url = 'https://mixin-oauth.firesbox.com', redirect_url = window.location.href, state, auth = {} } = params;
+  let { client_id, oauth_url = 'https://mixin-oauth.firesbox.com', redirect_url = window.location.href, state, auth = {}, code_challenge = true } = params;
   const randomCode = generateRandomString(32);
   const randomArr = strToUnitArray(randomCode);
   let challenge;
@@ -72,7 +73,7 @@ export function getAccessCode(params: {
   client_id = client_id ? `&client_id=${client_id}` : '';
   redirect_url = redirect_url ? `&redirect_url=${encodeURIComponent(redirect_url)}` : '';
   SCOPESTR = SCOPESTR ? `&scope=${SCOPESTR}` : '';
-  challenge = challenge ? `&code_challenge=${challenge}` : '';
+  challenge = (code_challenge && challenge) ? `&code_challenge=${challenge}` : '';
 
   let url = `${oauth_url}/?response_type=code${client_id}${redirect_url}${SCOPESTR}${challenge}`;
   if (state) {
