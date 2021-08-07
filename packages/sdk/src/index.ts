@@ -4,7 +4,7 @@ import { getAccessCode, getAccessToken } from './token';
 import scheme from './scheme';
 import { getLogger, parseError, env, request, store } from '@utils/index';
 /** import types */
-import type { PARAMS_PAYMENT } from './scheme';
+import type { CATEGORY_SHARE, PARAMS_SHARE_CARD, PARAMS_SHARE_LIVE, PARAMS_POPUP_BOT, PARAMS_PAYMENT } from './scheme';
 import type { AUTH } from './token';
 
 interface Config {
@@ -275,6 +275,58 @@ export class Bridge {
    */
   public transfer(recipient: string): string | undefined {
     return scheme.transfer(recipient);
+  }
+
+  /**
+   * evoke share action by generate share scheme-url
+   * @param category 'text' | 'image' | 'contact' | 'app_card' | 'live' | 'post'
+   * @param params string | PARAMS_SHARE_CARD | PARAMS_SHARE_LIVE
+   */
+  public share(category: 'text', txt: string): string | void;
+  public share(category: 'image', url: string): string | void;
+  public share(category: 'contact', user_id: string): string | void;
+  public share(category: 'post', content: string): string | void;
+  public share(category: 'app_card', params: PARAMS_SHARE_CARD): string | void;
+  public share(category: 'live', params: PARAMS_SHARE_LIVE): string | void;
+  public share(category: CATEGORY_SHARE, params: any): string | void {
+    let shareAction;
+    switch (category) {
+      case 'text':
+        shareAction = scheme.shareText;
+        break;
+      case 'post':
+        shareAction = scheme.sharePost;
+        break;
+      case 'live':
+        shareAction = scheme.shareLive;
+        break;
+      case 'image':
+        shareAction = scheme.shareImage;
+        break;
+      case 'app_card':
+        shareAction = scheme.shareCard;
+        break;
+      case 'contact':
+        shareAction = scheme.shareContact;
+        break;
+    }
+    return shareAction(params);
+  }
+
+  /**
+   * evoke user or bot's popup by generate scheme-url
+   * @param type 'user' | 'bot'
+   * @param params string | PARAMS_POPUP_BOT
+   */
+  public popup(type: 'user', params: string): string | undefined;
+  public popup(type: 'bot', params: PARAMS_POPUP_BOT): string | undefined;
+  public popup(type: 'user' | 'bot', params: any): string | undefined {
+    switch(type) {
+      case 'user':
+        return scheme.popupUser(params);
+      case 'bot':
+        return scheme.popupBot(params);
+    }
   }
 
   private getCode() {
