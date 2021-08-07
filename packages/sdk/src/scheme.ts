@@ -52,7 +52,7 @@ const SCHEME = {
   },
   send: function (params: {
     category: CATEGORY_SHARE;
-    data: Record<string, string | number> | string;
+    data: Record<string, any> | string;
   }) {
     const data = encodeURIComponent(base64.fromByteArray(strToUnitArray(typeof params.data === 'string' ? params.data : JSON.stringify(params.data))!));
     const _params = this.getQuery({ ...params, data });

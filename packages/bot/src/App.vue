@@ -99,7 +99,9 @@ export default defineComponent({
         'reloadTheme',
         'playlist',
         'payment',
-        'transfer'
+        'transfer',
+        'share',
+        'popup'
       ],
       playlists: [
         'https://dev-courses-storage.firesbox.com/7000103418/replay/82480598-1d75-40d9-9317-d4850c980eb6.mp3',
@@ -145,28 +147,45 @@ export default defineComponent({
       });
     },
     callBridge: async function () {
-      if (this.currentBridge) {
-        const params =
-          this.currentBridge === 'playlist'
-            ? this.playlists
-            : this.currentBridge === 'payment'
-            ? this.payment
-            : this.currentBridge === 'transfer'
-            ? this.payment.recipient
-            : void 0;
-
-        const res = await bridge[this.currentBridge]?.(params);
-        let txt =
-          this.currentBridge === 'getUserInfo' && !this.userName
-            ? 'Please login first!'
-            : '';
-        if (res && typeof res !== 'string') {
-          Object.keys(res).forEach(v => {
-            txt += `${v}: ${res[v]}; \n\n`;
+      let res;
+      switch (this.currentBridge) {
+        case 'playlist':
+          res = await bridge[this.currentBridge]?.(this.playlists);
+          break;
+        case 'payment':
+          res = await bridge[this.currentBridge]?.(this.payment);
+          break;
+        case 'transfer':
+          res = await bridge[this.currentBridge]?.(this.payment.recipient);
+          break;
+        case 'share':
+          res = await bridge[this.currentBridge]?.('app_card', {
+            action: 'https://fox-one.github.io/mixin-sdk-jsbridge-bot/#/',
+            app_id: '86cf39ad-4e63-46c6-a6db-90cea8d05c1d',
+            title: 'Mixin-JSBridge',
+            description: 'The Bot For Mixin-JSBridge Debugging'
           });
-        }
-        this.result = txt || res;
+          break;
+        case 'popup':
+          res = await bridge[this.currentBridge]?.(
+            'user',
+            this.payment.recipient
+          );
+          break;
+        default:
+          res = await bridge[this.currentBridge]?.();
       }
+
+      let txt =
+        this.currentBridge === 'getUserInfo' && !this.userName
+          ? 'Please login first!'
+          : '';
+      if (res && typeof res !== 'string') {
+        Object.keys(res).forEach(v => {
+          txt += `${v}: ${res[v]}; \n\n`;
+        });
+      }
+      this.result = txt || res;
     },
     goLogout() {
       bridge.logout();
