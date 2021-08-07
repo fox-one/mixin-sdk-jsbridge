@@ -1,6 +1,6 @@
 {
   "name": "@foxone/mixin-sdk-jsbridge",
-  "version": "0.3.0-3",
+  "version": "0.3.0-4",
   "description": "Mixin-JSBridge SDK for FE developer",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -41,7 +41,13 @@
       "npm run lint:prettier_fix"
     ]
   },
-  "keywords": ["mixin", "reborn", "bridge", "jsbridge", "sdk"],
+  "keywords": [
+    "mixin",
+    "reborn",
+    "bridge",
+    "jsbridge",
+    "sdk"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
@@ -100,6 +106,7 @@
     "ajax-maker": "~0.0.20",
     "base64-js": "^1.5.1",
     "crypto-js": "^4.0.0",
+    "js-base64": "~3.6.1",
     "peeler-js": "~0.4.2"
   },
   "repository": {

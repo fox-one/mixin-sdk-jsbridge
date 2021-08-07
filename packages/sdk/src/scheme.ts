@@ -1,9 +1,8 @@
-import base64 from 'base64-js';
+import base64 from 'js-base64';
 import {
   uuid,
   isObject,
-  getLogger,
-  strToUnitArray
+  getLogger
 } from '@utils/index';
 
 const logger = getLogger('scheme');
@@ -20,6 +19,12 @@ const SCHEME = {
       window.location.href = url;
     }
     return url;
+  },
+  emojiFilter: function (str: string) {
+    return str.replace(
+      /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F\ude80-\udeff]|[\u2600-\u2B55]/g,
+      '',
+    );
   },
   getQuery: function (query: Record<string, any>) {
     if (!query) {
@@ -51,7 +56,7 @@ const SCHEME = {
     category: CATEGORY_SHARE;
     data: Record<string, any> | string;
   }) {
-    const data = encodeURIComponent(base64.fromByteArray(strToUnitArray(typeof params.data === 'string' ? params.data : JSON.stringify(params.data))!));
+    const data = encodeURIComponent(base64.encode(typeof params.data === 'string' ? params.data : JSON.stringify(params.data))!);
     const _params = this.getQuery({ ...params, data });
     const _url = `${this.prefix}://send${_params}`;
 
@@ -117,10 +122,10 @@ export default {
 
       if (params.memo) {
         if (isObject(params.memo)) {
-          JSON.stringify(params.memo);
+          params.memo = JSON.stringify(params.memo);
         }
 
-        params.memo = base64.fromByteArray(strToUnitArray(params.memo as string)!);
+        params.memo = base64.encode(params.memo);
         if (params.memo.length > 140) {
           logger('pay').warn('The memo max length is 140!');
         }
@@ -152,7 +157,7 @@ export default {
     try {
       return SCHEME.send({
         category: 'text',
-        data: txt
+        data: SCHEME.emojiFilter(txt)
       });
     } catch (err) {
       logger('shareText').error(err);
@@ -195,6 +200,8 @@ export default {
     }
 
     try {
+      if (data.title) data.title = SCHEME.emojiFilter(data.title);
+      if (data.description) data.description = SCHEME.emojiFilter(data.description);
       return SCHEME.send({
         category: 'app_card',
         data
@@ -229,7 +236,7 @@ export default {
     try {
       return SCHEME.send({
         category: 'post',
-        data: content
+        data: SCHEME.emojiFilter(content)
       });
     } catch (err) {
       logger('sharePost').error(err);
