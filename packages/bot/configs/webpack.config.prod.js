@@ -8,17 +8,21 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HTMLInlineCSSWebpackPlugin = require("html-inline-css-webpack-plugin").default;
+const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin')
+  .default;
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-const commonConfig = require(path.resolve(__dirname, 'webpack.config.common.js'));
+const commonConfig = require(path.resolve(
+  __dirname,
+  'webpack.config.common.js'
+));
 const { build } = require(path.resolve(__dirname, 'omni.config.js'));
 const {
   srcDir = path.resolve(__dirname, '../src/'),
   outDir = path.resolve(__dirname, '../lib/'),
   hash
 } = build || {};
-const publicPath = '';
+const publicPath = 'https://fox-one.github.io/mixin-sdk-jsbridge-bot/#/';
 
 module.exports = merge(commonConfig, {
   // 需要 source-map 请开启

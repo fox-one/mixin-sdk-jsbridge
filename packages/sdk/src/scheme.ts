@@ -9,13 +9,16 @@ import {
 const logger = getLogger('scheme');
 const SCHEME = {
   prefix: 'mixin',
-  loadScheme: function (url: string) {
+  loadScheme: function (url: string, open?: boolean) {
     if (!url) {
       logger('loadScheme').error('The URL cannot be a falsy value!');
       return;
     }
-    window.location.href = url;
-
+    if (open) {
+      window.open(url);
+    } else {
+      window.location.href = url;
+    }
     return url;
   },
   emojiFilter: function (str: string) {
@@ -59,7 +62,7 @@ const SCHEME = {
     const _url = `${this.prefix}://send${_params}`;
 
     logger('send').log(_url);
-    return this.loadScheme(_url);
+    return this.loadScheme(_url, true);
   },
   users: function (user_id: string) {
     const _url = `${this.prefix}://users/${user_id}`;
