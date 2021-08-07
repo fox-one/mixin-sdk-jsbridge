@@ -21,12 +21,6 @@ const SCHEME = {
     }
     return url;
   },
-  emojiFilter: function (str: string) {
-    return str.replace(
-      /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F\ude80-\udeff]|[\u2600-\u2B55]/g,
-      '',
-    );
-  },
   getQuery: function (query: Record<string, any>) {
     if (!query) {
       return '';
@@ -158,7 +152,7 @@ export default {
     try {
       return SCHEME.send({
         category: 'text',
-        data: SCHEME.emojiFilter(txt)
+        data: txt
       });
     } catch (err) {
       logger('shareText').error(err);
@@ -201,8 +195,6 @@ export default {
     }
 
     try {
-      if (data.title) data.title = SCHEME.emojiFilter(data.title);
-      if (data.description) data.description = SCHEME.emojiFilter(data.description);
       return SCHEME.send({
         category: 'app_card',
         data
@@ -237,7 +229,7 @@ export default {
     try {
       return SCHEME.send({
         category: 'post',
-        data: SCHEME.emojiFilter(content)
+        data: content
       });
     } catch (err) {
       logger('sharePost').error(err);

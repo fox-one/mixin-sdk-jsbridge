@@ -1,6 +1,6 @@
 {
   "name": "@foxone/mixin-sdk-jsbridge",
-  "version": "0.3.0-2",
+  "version": "0.3.0-3",
   "description": "Mixin-JSBridge SDK for FE developer",
   "main": "lib/index.js",
   "module": "es/index.js",

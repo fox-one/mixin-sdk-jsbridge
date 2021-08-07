@@ -282,13 +282,13 @@ export class Bridge {
    * @param category 'text' | 'image' | 'contact' | 'app_card' | 'live' | 'post'
    * @param params string | PARAMS_SHARE_CARD | PARAMS_SHARE_LIVE
    */
-  public share(category: 'text', txt: string): string | void;
-  public share(category: 'image', url: string): string | void;
-  public share(category: 'contact', user_id: string): string | void;
-  public share(category: 'post', content: string): string | void;
-  public share(category: 'app_card', params: PARAMS_SHARE_CARD): string | void;
-  public share(category: 'live', params: PARAMS_SHARE_LIVE): string | void;
-  public share(category: CATEGORY_SHARE, params: any): string | void {
+  public share(category: 'text', txt: string): string | undefined;
+  public share(category: 'image', url: string): string | undefined;
+  public share(category: 'contact', user_id: string): string | undefined;
+  public share(category: 'post', content: string): string | undefined;
+  public share(category: 'app_card', params: PARAMS_SHARE_CARD): string | undefined;
+  public share(category: 'live', params: PARAMS_SHARE_LIVE): string | undefined;
+  public share(category: CATEGORY_SHARE, params: any): string | undefined {
     let shareAction;
     switch (category) {
       case 'text':
