@@ -1,4 +1,4 @@
-import base64 from 'js-base64';
+import { Base64 } from 'js-base64';
 import {
   uuid,
   isObject,
@@ -56,7 +56,7 @@ const SCHEME = {
     category: CATEGORY_SHARE;
     data: Record<string, any> | string;
   }) {
-    const data = encodeURIComponent(base64.encode(typeof params.data === 'string' ? params.data : JSON.stringify(params.data))!);
+    const data = encodeURIComponent(Base64.encode(typeof params.data === 'string' ? params.data : JSON.stringify(params.data))!);
     const _params = this.getQuery({ ...params, data });
     const _url = `${this.prefix}://send${_params}`;
 
@@ -125,7 +125,7 @@ export default {
           params.memo = JSON.stringify(params.memo);
         }
 
-        params.memo = base64.encode(params.memo);
+        params.memo = Base64.encode(params.memo);
         if (params.memo.length > 140) {
           logger('pay').warn('The memo max length is 140!');
         }
