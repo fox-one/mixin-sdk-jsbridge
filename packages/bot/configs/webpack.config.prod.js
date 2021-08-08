@@ -22,7 +22,7 @@ const {
   outDir = path.resolve(__dirname, '../lib/'),
   hash
 } = build || {};
-const publicPath = 'https://fox-one.github.io/mixin-sdk-jsbridge-bot/#/';
+const publicPath = '';
 
 module.exports = merge(commonConfig, {
   // 需要 source-map 请开启
