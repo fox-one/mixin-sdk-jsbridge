@@ -101,7 +101,8 @@ export default defineComponent({
         'payment',
         'transfer',
         'share',
-        'popup'
+        'popup-user',
+        'popup-bot'
       ],
       playlists: [
         'https://dev-courses-storage.firesbox.com/7000103418/replay/82480598-1d75-40d9-9317-d4850c980eb6.mp3',
@@ -112,6 +113,7 @@ export default defineComponent({
         asset: '965e5c6e-434c-3fa9-b780-c50f43cd955c',
         amount: 1
       },
+      app_id: '86cf39ad-4e63-46c6-a6db-90cea8d05c1d',
       currentBridge: '',
       bridgeVersion: bridge.version,
       isMixin: bridge.isMixin,
@@ -150,27 +152,31 @@ export default defineComponent({
       let res;
       switch (this.currentBridge) {
         case 'playlist':
-          res = await bridge[this.currentBridge]?.(this.playlists);
+          res = await bridge.playlist?.(this.playlists);
           break;
         case 'payment':
-          res = await bridge[this.currentBridge]?.(this.payment);
+          res = bridge.payment?.(this.payment);
           break;
         case 'transfer':
-          res = await bridge[this.currentBridge]?.(this.payment.recipient);
+          res = bridge.transfer?.(this.payment.recipient);
           break;
         case 'share':
-          res = await bridge[this.currentBridge]?.('app_card', {
+          res = bridge.share?.('app_card', {
             action: 'https://fox-one.github.io/mixin-sdk-jsbridge-bot/#/',
-            app_id: '86cf39ad-4e63-46c6-a6db-90cea8d05c1d',
+            app_id: this.app_id,
+            icon_url: 'https://www.fox.one/logo.png',
             title: 'Mixin-JSBridge',
             description: 'The Bot For Mixin-JSBridge Debugging'
           });
           break;
-        case 'popup':
-          res = await bridge[this.currentBridge]?.(
-            'user',
-            this.payment.recipient
-          );
+        case 'popup-user':
+          res = bridge.popup?.('user', this.payment.recipient);
+          break;
+        case 'popup-bot':
+          res = bridge.popup?.('bot', {
+            app_id: this.app_id,
+            action: 'open'
+          });
           break;
         default:
           res = await bridge[this.currentBridge]?.();
