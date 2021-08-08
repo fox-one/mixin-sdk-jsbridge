@@ -77,7 +77,7 @@ export type CATEGORY_SHARE = 'text' | 'image' | 'contact' | 'app_card' | 'live' 
 export type PARAMS_SHARE_CARD = {
   action: string;
   app_id: string;
-  icon_url?: string;
+  icon_url: string;
   title?: string;
   description?: string;
 };
