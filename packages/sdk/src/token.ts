@@ -1,7 +1,7 @@
-import base64 from 'base64-js';
+import { Base64 } from 'js-base64';
 import EncBase64 from 'crypto-js/enc-base64';
 import sha256 from 'crypto-js/sha256';
-import { request, strToUnitArray, store } from '@utils/index';
+import { request, store } from '@utils/index';
 
 
 export type AUTH = {
@@ -52,13 +52,9 @@ export function getAccessCode(params: {
   // eslint-disable-next-line prefer-const
   let { client_id, oauth_url = 'https://mixin-oauth.firesbox.com', redirect_url = window.location.href, state, auth = {}, code_challenge = true } = params;
   const randomCode = generateRandomString(32);
-  const randomArr = strToUnitArray(randomCode);
-  let challenge;
-  if (randomArr) {
-    const verifier = base64URLEncode(base64.fromByteArray(randomArr));
-    challenge = base64URLEncode(sha256(randomCode).toString(EncBase64));
-    verifier && store.set('$_mixin-code-verifier', verifier);
-  }
+  const verifier = base64URLEncode(Base64.encode(randomCode));
+  let challenge = base64URLEncode(sha256(randomCode).toString(EncBase64));
+  verifier && store.set('$_mixin-code-verifier', verifier);
 
   let SCOPESTR = '';
   Object.keys(auth).forEach(scope => {
