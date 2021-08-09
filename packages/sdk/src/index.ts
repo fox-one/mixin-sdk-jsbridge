@@ -314,11 +314,11 @@ export class Bridge {
   }
 
   /**
-   * evoke user or bot's popup by generate scheme-url
+   * evoke user or bot's pop-up by generate scheme-url
    * @param type 'user' | 'bot'
-   * @param params string | PARAMS_POPUP_BOT
+   * @param params user_id | PARAMS_POPUP_BOT
    */
-  public popup(type: 'user', params: string): string | undefined;
+  public popup(type: 'user', user_id: string): string | undefined;
   public popup(type: 'bot', params: PARAMS_POPUP_BOT): string | undefined;
   public popup(type: 'user' | 'bot', params: any): string | undefined {
     switch(type) {
