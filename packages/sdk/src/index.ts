@@ -2,13 +2,16 @@ import { parseUrl } from 'peeler-js/es/parseUrl';
 import messager from './messager';
 import { getAccessCode, getAccessToken } from './token';
 import scheme from './scheme';
-import { getLogger, parseError, env, request, store } from '@utils/index';
+import { logger, getLogger, parseError, env, request, store } from '@utils/index';
 /** import types */
 import type { CATEGORY_SHARE, PARAMS_SHARE_CARD, PARAMS_SHARE_LIVE, PARAMS_POPUP_BOT, PARAMS_PAYMENT } from './scheme';
 import type { AUTH } from './token';
+import type { TlogLevelStr } from 'peeler-js/es/logger';
 
 interface Config {
   client_id?: string;
+  debug?: boolean;
+  logLevel?: TlogLevelStr;
 }
 export class Bridge {
   private config?: Config;
@@ -17,6 +20,10 @@ export class Bridge {
   private logger: ReturnType<typeof getLogger>;
 
   public constructor(config?: Config) {
+    const { debug, logLevel } = config || {};
+    if (debug !== void 0) logger.setDebug(debug);
+    if (logLevel !== void 0) logger.setLevel(logLevel);
+
     this.config = config;
     this._token = void 0;
     this._userInfo = void 0;

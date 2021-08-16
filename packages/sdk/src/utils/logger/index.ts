@@ -1,6 +1,6 @@
 import { Logger } from 'peeler-js/es/logger';
 
-const logger = new Logger({
+export const logger = new Logger({
   debug: true,
   logLevel: 'detail',
   logPrefix: getPrefix()
