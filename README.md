@@ -29,9 +29,7 @@ yarn add @foxone/mixin-sdk-jsbridge
 ```typescript
 import Bridge from '@foxone/mixin-sdk-jsbridge';
 
-const bridge = new Bridge({
-  client_id: 'your mixin bot id'
-});
+const bridge = new Bridge();
 
 bridge.getContext();
 
@@ -62,7 +60,7 @@ bridge.getContext();
       bridge.login({
         phone: true,
         assets: true
-      })
+      });
     }
   </script>
 </html>
