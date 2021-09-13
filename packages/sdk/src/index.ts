@@ -50,7 +50,7 @@ export class Bridge {
     let pkj;
     try {
       pkj = require('../package.json');
-    } catch (err: any) {
+    } catch (err) {
       this.logger('version').info(err);
     }
 
@@ -109,7 +109,7 @@ export class Bridge {
       if (typeof ctx === 'string') {
         try {
           ctx = JSON.parse(ctx);
-        } catch (err: any) {
+        } catch (err) {
           this.logger('getContext').info(err);
         }
       }
@@ -245,7 +245,7 @@ export class Bridge {
         this.logger('getUserInfo').log('through cache!');
         return Promise.resolve(userInfo);
       }
-    } catch (err: any) {
+    } catch (err) {
       this.logger('getUserInfo').info(err);
     }
 
