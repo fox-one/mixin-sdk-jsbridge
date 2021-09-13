@@ -13,7 +13,7 @@ type CONTEXT = {
 interface MESSAGERS {
   getContext: () => CONTEXT;
   playlist: (audios: string[]) => any;
-  reloadTheme: () => void;
+  reloadTheme: (args?: string) => void;
 }
 declare global {
   interface Window {

@@ -50,7 +50,7 @@ export class Bridge {
     let pkj;
     try {
       pkj = require('../package.json');
-    } catch (err) {
+    } catch (err: any) {
       this.logger('version').info(err);
     }
 
@@ -109,8 +109,8 @@ export class Bridge {
       if (typeof ctx === 'string') {
         try {
           ctx = JSON.parse(ctx);
-        } catch (e) {
-          this.logger('getContext').info(e);
+        } catch (err: any) {
+          this.logger('getContext').info(err);
         }
       }
       if (ctx) ctx.platform = ctx?.platform || (env().isIOS ? 'iOS' : 'Android');
@@ -131,7 +131,7 @@ export class Bridge {
     }
 
     try {
-      messager('reloadTheme')();
+      messager('reloadTheme')(env().isIOS ? '' : void 0);
     } catch (err) {
       this.handlerError(err, 'reloadTheme');
     }
@@ -245,7 +245,7 @@ export class Bridge {
         this.logger('getUserInfo').log('through cache!');
         return Promise.resolve(userInfo);
       }
-    } catch (err) {
+    } catch (err: any) {
       this.logger('getUserInfo').info(err);
     }
 
