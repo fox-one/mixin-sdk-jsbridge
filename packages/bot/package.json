@@ -1,6 +1,6 @@
 {
   "name": "mixin-jsbridge-bot",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "",
   "scripts": {
     "start": "omni dev",
