@@ -14,6 +14,7 @@ interface MESSAGERS {
   getContext: () => CONTEXT;
   playlist: (audios: string[]) => any;
   reloadTheme: (args?: string) => void;
+  showToast: (msg: string) => void;
 }
 declare global {
   interface Window {
@@ -28,6 +29,7 @@ declare global {
       getContext?: MESSAGERS['getContext'];
       playlist?: MESSAGERS['playlist'];
       reloadTheme?: MESSAGERS['reloadTheme'];
+      showToast?: MESSAGERS['showToast'];
     };
   }
 }
@@ -39,7 +41,7 @@ export function messager<T extends keyof MESSAGERS>(type: T) {
     envInfo.isIOS
       ? type === 'getContext'
         ? () => JSON.parse(prompt('MixinContext.getContext()') as any) as CONTEXT
-        : window?.webkit?.messageHandlers?.[type as Exclude<T, 'getContext'>]?.postMessage.bind(window?.webkit?.messageHandlers?.[type as Exclude<T, 'getContext'>]) as MESSAGERS[Exclude<T, 'getContext'>]
+        : window?.webkit?.messageHandlers?.[type as Exclude<T, 'getContext' | 'showToast'>]?.postMessage.bind(window?.webkit?.messageHandlers?.[type as Exclude<T, 'getContext' | 'showToast'>]) as MESSAGERS[Exclude<T, 'getContext'>]
       : window?.MixinContext?.[type]?.bind(window?.MixinContext) as MESSAGERS[T];
 
   return handler ?? (() => logger().warn(`The messager "${type}" is not support yet!`));

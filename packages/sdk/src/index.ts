@@ -131,9 +131,27 @@ export class Bridge {
     }
 
     try {
-      messager('reloadTheme')(env().isIOS ? '' : void 0);
+      const reloadTheme = messager('reloadTheme');
+      env().isIOS ? reloadTheme('') : reloadTheme();
     } catch (err) {
       this.handlerError(err, 'reloadTheme');
+    }
+  }
+
+  /**
+   * call native message window
+   * Android Only
+   */
+  public showToast(msg: string) {
+    if (!this.isMixin) {
+      this.logger('showToast').log('Please call in reborn or mixin app!');
+      return;
+    }
+
+    try {
+      messager('showToast')(msg);
+    } catch (err) {
+      this.handlerError(err, 'showToast');
     }
   }
 

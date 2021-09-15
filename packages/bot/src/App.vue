@@ -97,6 +97,7 @@ export default defineComponent({
         'getUserInfo',
         'getContext',
         'reloadTheme',
+        'showToast',
         'playlist',
         'payment',
         'transfer',
@@ -177,6 +178,9 @@ export default defineComponent({
             app_id: this.app_id,
             action: 'open'
           });
+          break;
+        case 'showToast':
+          res = bridge.showToast?.('Please give me a github-star!');
           break;
         default:
           res = await bridge[this.currentBridge]?.();
