@@ -40,5 +40,6 @@
     "**/.editorconfig": true,
     "**/.eslintignore": true,
     "**/.prettierignore": true
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

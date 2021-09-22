@@ -4,7 +4,17 @@ import { getAccessCode, getAccessToken } from './token';
 import scheme from './scheme';
 import { logger, getLogger, parseError, env, request, store } from '@utils/index';
 /** import types */
-import type { CATEGORY_SHARE, PARAMS_SHARE_CARD, PARAMS_SHARE_LIVE, PARAMS_POPUP_BOT, PARAMS_PAYMENT } from './scheme';
+import type {
+  CATEGORY_SHARE,
+  PARAMS_SHARE_CARD,
+  PARAMS_SHARE_LIVE,
+  PARAMS_POPUP_BOT,
+  PARAMS_PAYMENT,
+  PARAMS_SNAPSHOTS,
+  PARAMS_WITHDRAWAL,
+  PARAMS_ADDRESS_ADD,
+  PARAMS_ADDRESS_DELETE
+} from './scheme';
 import type { AUTH } from './token';
 import type { TlogLevelStr } from 'peeler-js/es/logger';
 
@@ -173,7 +183,7 @@ export class Bridge {
 
   /**
    * go login page
-   * @type {{ phone?: boolean | number; profile?: boolean | number; contacts?: boolean | number; assets?: boolean | number; snapshots?: boolean | number; messages?: boolean | number; code_challenge?: boolean; }} AUTH
+   * @type { phone?: boolean | number; profile?: boolean | number; contacts?: boolean | number; assets?: boolean | number; snapshots?: boolean | number; messages?: boolean | number; code_challenge?: boolean; } AUTH
    */
   public login(auth: AUTH, params?: {
     oauth_url?: string;
@@ -288,9 +298,9 @@ export class Bridge {
 
   /**
    * evoke payment checkout by generate pay scheme-url
-   * @type {{recipient: string; asset: string; amount: string; trace?: string; memo?: string | Record<string, string>;}} PARAMS_PAYMENT
+   * @type { recipient: string; asset: string; amount: string; trace?: string; memo?: string | Record<string, string>; } PARAMS_PAYMENT
    */
-  public payment(params: PARAMS_PAYMENT): string | undefined {
+  public payment(params: PARAMS_PAYMENT): { url?: string, params: PARAMS_PAYMENT } | undefined {
     return scheme.pay(params);
   }
 
@@ -300,6 +310,38 @@ export class Bridge {
    */
   public transfer(recipient: string): string | undefined {
     return scheme.transfer(recipient);
+  }
+
+  /**
+   * evoke transfer detail by generate snapshots scheme-url
+   * @type { trace_id?: string; snapshot_id?: string; } PARAMS_SNAPSHOTS
+   */
+  public snapshot(params: PARAMS_SNAPSHOTS): string | undefined {
+    return scheme.snapshot(params);
+  }
+
+  /**
+   * evoke withdrawal of an asset by generate withdrawal scheme-url
+   * @type { address: string; asset: string; amount: string; trace?: string; memo?: string | Record<string, string>; } PARAMS_WITHDRAWAL
+   */
+  public withdrawal(params: PARAMS_WITHDRAWAL): { url?: string, params: PARAMS_WITHDRAWAL } | undefined {
+    return scheme.withdrawal(params);
+  }
+
+  /**
+   * evoke withdrawal-address action by generate address scheme-url
+   * @param type 'add' | 'del'
+   * @param params PARAMS_ADDRESS_ADD | PARAMS_ADDRESS_DELETE
+   */
+  public address(type: 'add', params: PARAMS_ADDRESS_ADD): string | undefined;
+  public address(type: 'del', params: PARAMS_ADDRESS_DELETE): string | undefined;
+  public address(type: 'add' | 'del', params: any): string | undefined {
+    switch(type) {
+      case 'add':
+        return scheme.addWithdrawalAddress(params);
+      case 'del':
+        return scheme.delWithdrawalAddress(params);
+    }
   }
 
   /**
@@ -335,7 +377,7 @@ export class Bridge {
         shareAction = scheme.shareContact;
         break;
     }
-    return shareAction(params);
+    return shareAction?.(params);
   }
 
   /**
@@ -352,6 +394,14 @@ export class Bridge {
       case 'bot':
         return scheme.popupBot(params);
     }
+  }
+
+  /**
+   * evoke conversation by generate conversations scheme-url
+   * @param recipient conversation id
+   */
+  public conversation(conversation_id: string): string | undefined {
+    return scheme.conversation(conversation_id);
   }
 
   private getCode() {

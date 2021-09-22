@@ -20,5 +20,8 @@
   "devDependencies": {
     "@omni-door/cli": "~2.4.9",
     "lerna": "^4.0.0"
+  },
+  "dependencies": {
+    "typescript": "~3.9.10"
   }
 }

@@ -46,6 +46,31 @@ const SCHEME = {
     logger('transfer').log(_url);
     return this.loadScheme(_url);
   },
+  snapshots: function (params: PARAMS_SNAPSHOTS) {
+    const { trace_id, snapshot_id } = params;
+    if (!trace_id && !snapshot_id) {
+      logger('snapshots').error('Must contain "trace_id" or "snapshot_id"!');
+      return;
+    }
+    const _url = `${this.prefix}://snapshots${trace_id ? `?trace=${trace_id}` : `/${snapshot_id}`}`;
+
+    logger('snapshots').log(_url);
+    return this.loadScheme(_url);
+  },
+  withdrawal: function (params: Record<string, string>) {
+    const _params = this.getQuery(params);
+    const _url = `${this.prefix}://withdrawal${_params}`;
+
+    logger('withdrawal').log(_url);
+    return this.loadScheme(_url);
+  },
+  address: function (params: Record<string, string>) {
+    const _params = this.getQuery(params);
+    const _url = `${this.prefix}://address${_params}`;
+
+    logger('address').log(_url);
+    return this.loadScheme(_url);
+  },
   send: function (params: {
     category: CATEGORY_SHARE;
     data: Record<string, any> | string;
@@ -69,10 +94,21 @@ const SCHEME = {
 
     logger('apps').log(_url);
     return this.loadScheme(_url);
+  },
+  conversations: function (conversation_id: string) {
+    const _url = `${this.prefix}://conversations/${conversation_id}`;
+
+    logger('conversations').log(_url);
+    return this.loadScheme(_url);
   }
 };
 
 export type CATEGORY_SHARE = 'text' | 'image' | 'contact' | 'app_card' | 'live' | 'post';
+
+export type PARAMS_SNAPSHOTS = {
+  trace_id?: string;
+  snapshot_id?: string;
+};
 
 export type PARAMS_SHARE_CARD = {
   action: string;
@@ -103,6 +139,26 @@ export type PARAMS_PAYMENT = {
   memo?: string | Record<string, string>;
 };
 
+export type PARAMS_WITHDRAWAL = {
+  address: string;
+  asset: string;
+  amount: string;
+  trace?: string;
+  memo?: string | Record<string, string>;
+};
+
+export type PARAMS_ADDRESS_ADD = {
+  asset: string;
+  label: string;
+  destination: string;
+  tag?: string;
+};
+
+export type PARAMS_ADDRESS_DELETE = {
+  asset: string;
+  address: string;
+};
+
 export default {
   prefix: SCHEME.prefix,
   pay: function (params: PARAMS_PAYMENT) {
@@ -125,7 +181,10 @@ export default {
         }
       }
 
-      return SCHEME.pay(params as Record<string, string>);
+      return {
+        url: SCHEME.pay(params as Record<string, string>),
+        params
+      };
     } catch (err) {
       logger('pay').error(err);
     }
@@ -140,6 +199,60 @@ export default {
       return SCHEME.transfer(recipient);
     } catch (err) {
       logger('transfer').error(err);
+    }
+  },
+  snapshot: function (params: PARAMS_SNAPSHOTS) {
+    try {
+      return SCHEME.snapshots(params);
+    } catch (err) {
+      logger('snapshot').error(err);
+    }
+  },
+  withdrawal: function (params: PARAMS_WITHDRAWAL) {
+    try {
+      if (!params.trace) params.trace = uuid();
+
+      if (params.memo) {
+        if (isObject(params.memo)) {
+          params.memo = JSON.stringify(params.memo);
+        }
+
+        params.memo = Base64.encode(params.memo);
+        if (params.memo.length > 140) {
+          logger('withdrawal').warn('The memo max length is 140!');
+        }
+      }
+
+      return {
+        url: SCHEME.withdrawal(params as Record<string, string>),
+        params
+      };
+    } catch (err) {
+      logger('withdrawal').error(err);
+    }
+  },
+  addWithdrawalAddress: function (params: PARAMS_ADDRESS_ADD) {
+    if (!params.asset || !params.label || !params.destination) {
+      logger('addWithdrawalAddress').error('The "asset", "label" and "destination" is required!');
+      return;
+    }
+
+    try {
+      return SCHEME.address(params as Record<string, string>);
+    } catch (err) {
+      logger('addWithdrawalAddress').error(err);
+    }
+  },
+  delWithdrawalAddress: function (params: PARAMS_ADDRESS_DELETE) {
+    if (!params.asset || !params.address) {
+      logger('delWithdrawalAddress').error('The "asset" and "address" is required!');
+      return;
+    }
+
+    try {
+      return SCHEME.address({ ...params, action: 'delete' } as Record<string, string>);
+    } catch (err) {
+      logger('delWithdrawalAddress').error(err);
     }
   },
   shareText: function (txt: string) {
@@ -257,6 +370,18 @@ export default {
       return SCHEME.apps(app_id, rest);
     } catch (err) {
       logger('popupBot').error(err);
+    }
+  },
+  conversation: function (conversation_id: string) {
+    if (!conversation_id) {
+      logger('conversation').error('The "conversation_id" is required!');
+      return;
+    }
+
+    try {
+      return SCHEME.conversations(conversation_id);
+    } catch (err) {
+      logger('conversation').error(err);
     }
   }
 };
