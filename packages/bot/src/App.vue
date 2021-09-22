@@ -103,7 +103,12 @@ export default defineComponent({
         'transfer',
         'share',
         'popup-user',
-        'popup-bot'
+        'popup-bot',
+        'snapshot',
+        'addAddress',
+        'delAddress',
+        'withdrawal',
+        'conversation'
       ],
       playlists: [
         'https://dev-courses-storage.firesbox.com/7000103418/replay/82480598-1d75-40d9-9317-d4850c980eb6.mp3',
@@ -182,6 +187,35 @@ export default defineComponent({
         case 'showToast':
           res = bridge.showToast?.('Please give me a github-star!');
           break;
+        case 'snapshot':
+          res = bridge.snapshot({
+            snapshot_id: '620b01bb-91be-45d9-9e0f-dc067310d079'
+          });
+          break;
+        case 'withdrawal':
+          res = bridge.withdrawal({
+            address: '1CkFRshv9zX5B4W4wf9kz6MkxFs8AcD2sR',
+            asset: 'c6d0c728-2624-429b-8e0d-d9d19b6592fa',
+            amount: '0.001'
+          });
+          break;
+        case 'addAddress':
+          res = bridge.address('add', {
+            asset: 'c6d0c728-2624-429b-8e0d-d9d19b6592fa',
+            label: 'BigONE wallet - BTC',
+            destination: '1CkFRshv9zX5B4W4wf9kz6MkxFs8AcD2sR',
+            tag: 'BTC'
+          });
+          break;
+        case 'delAddress':
+          res = bridge.address('del', {
+            asset: 'c6d0c728-2624-429b-8e0d-d9d19b6592fa',
+            address: '1CkFRshv9zX5B4W4wf9kz6MkxFs8AcD2sR'
+          });
+          break;
+        case 'conversation':
+          res = bridge.conversation('b749a8a6-079e-3fb5-9b36-94bb57061f7f');
+          break;
         default:
           res = await bridge[this.currentBridge]?.();
       }
@@ -190,10 +224,19 @@ export default defineComponent({
         this.currentBridge === 'getUserInfo' && !this.userName
           ? 'Please login first!'
           : '';
-      if (res && typeof res !== 'string') {
-        Object.keys(res).forEach(v => {
-          txt += `${v}: ${res[v]}; \n\n`;
+
+      const recursion = function (data, text) {
+        Object.keys(data).forEach(v => {
+          if (typeof data[v] === 'string') {
+            text += `${v}: ${data[v]}; \n\n`;
+          } else {
+            text = recursion(data[v], text);
+          }
         });
+        return text;
+      };
+      if (res && typeof res !== 'string') {
+        txt = recursion(res, '');
       }
       this.result = txt || res;
     },
