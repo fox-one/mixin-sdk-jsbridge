@@ -7,7 +7,7 @@
 
 - [配置项](/zh-CN/2)
 
-- [API](/zh-CN/3)
+- [接口文档](/zh-CN/3)
 
 - [机器人](https://fox-one.github.io/mixin-sdk-jsbridge-bot/#/)
 
