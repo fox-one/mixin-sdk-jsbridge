@@ -1,6 +1,6 @@
 {
   "name": "mixin-jsbridge-bot",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "",
   "scripts": {
     "start": "omni dev",
@@ -31,7 +31,7 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@foxone/mixin-sdk-jsbridge": "~0.4.0",
+    "@foxone/mixin-sdk-jsbridge": "~0.4.1",
     "core-js": "^3.6.4",
     "element-plus": "^1.0.2-beta.35",
     "regenerator-runtime": "^0.13.5",
