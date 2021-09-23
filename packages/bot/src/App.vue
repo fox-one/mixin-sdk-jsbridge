@@ -95,7 +95,7 @@ import { defineComponent } from 'vue';
 import Bridge from '@foxone/mixin-sdk-jsbridge';
 
 // eslint-disable-next-line no-undef
-const pkj = require('../../sdk/package.json');
+const pkj = require('../package.json');
 
 const bridge = new Bridge({
   client_id: '86cf39ad-4e63-46c6-a6db-90cea8d05c1d'
@@ -137,9 +137,12 @@ export default defineComponent({
       app_id: '86cf39ad-4e63-46c6-a6db-90cea8d05c1d',
       currentBridge: '',
       isSchema: false,
-      appVersion: bridge.version,
+      appVersion: bridge.version ?? '-',
       isMixin: bridge.isMixin,
-      bridgeVersion: pkj?.version,
+      bridgeVersion:
+        pkj?.dependencies?.['@foxone/mixin-sdk-jsbridge'].match(
+          /\d.\d.\d/g
+        )?.[0] ?? '-',
       result: ''
     };
   },
