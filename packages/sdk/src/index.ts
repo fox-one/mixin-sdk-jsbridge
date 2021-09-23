@@ -54,17 +54,17 @@ export class Bridge {
   }
 
   /**
-   * get the jsbridge-sdk version
+   * get the app version
    */
   public get version(): string {
-    let pkj;
+    let app;
     try {
-      pkj = require('../package.json');
+      app = this.getContext();
     } catch (err) {
       this.logger('version').info(err);
     }
 
-    return pkj?.version ?? 'unknown';
+    return app?.app_version ?? 'unknown';
   }
 
   /**

@@ -25,7 +25,10 @@
         </el-button>
       </template>
       <div class="header-right">
-        <span class="right__version"> version: {{ bridgeVersion }} </span>
+        <span class="right__version"> App Version: {{ appVersion }} </span>
+        <span class="right__version">
+          Bridge Version: {{ bridgeVersion }}
+        </span>
         <span class="right__mixin"> inMixin: {{ isMixin }} </span>
       </div>
     </el-header>
@@ -91,6 +94,9 @@
 import { defineComponent } from 'vue';
 import Bridge from '@foxone/mixin-sdk-jsbridge';
 
+// eslint-disable-next-line no-undef
+const pkj = require('../../sdk/package.json');
+
 const bridge = new Bridge({
   client_id: '86cf39ad-4e63-46c6-a6db-90cea8d05c1d'
 });
@@ -131,8 +137,9 @@ export default defineComponent({
       app_id: '86cf39ad-4e63-46c6-a6db-90cea8d05c1d',
       currentBridge: '',
       isSchema: false,
-      bridgeVersion: bridge.version,
+      appVersion: bridge.version,
       isMixin: bridge.isMixin,
+      bridgeVersion: pkj?.version,
       result: ''
     };
   },
