@@ -56,7 +56,7 @@ export class Bridge {
   /**
    * get the app version
    */
-  public get version(): string {
+  public get version(): string | undefined {
     let app;
     try {
       app = this.getContext();
@@ -64,7 +64,7 @@ export class Bridge {
       this.logger('version').info(err);
     }
 
-    return app?.app_version ?? 'unknown';
+    return app?.app_version;
   }
 
   /**
