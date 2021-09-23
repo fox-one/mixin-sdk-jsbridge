@@ -5,7 +5,9 @@
 ## Nav
 - [Quick Start](/1)
 
-- [API](/2)
+- [Options](/2)
+
+- [API](/3)
 
 - [bot](https://fox-one.github.io/mixin-sdk-jsbridge-bot/#/)
 

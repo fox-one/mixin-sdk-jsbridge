@@ -5,7 +5,9 @@
 ## 导航
 - [快速开始](/zh-CN/1)
 
-- [API](/zh-CN/2)
+- [配置项](/zh-CN/2)
+
+- [API](/zh-CN/3)
 
 - [机器人](https://fox-one.github.io/mixin-sdk-jsbridge-bot/#/)
 

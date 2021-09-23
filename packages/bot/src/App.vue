@@ -60,6 +60,15 @@
         >
           {{ currentBridge ? 'Click Me' : 'Select Bridge' }}
         </el-button>
+        <el-button
+          class="main-operation-btn main-operation-btn-schema"
+          :type="isSchema ? 'warning' : 'info'"
+          round
+          :disabled="!isSchema"
+          @click="rumSchema"
+        >
+          {{ 'Run Schema' }}
+        </el-button>
       </div>
     </el-main>
 
@@ -121,10 +130,16 @@ export default defineComponent({
       },
       app_id: '86cf39ad-4e63-46c6-a6db-90cea8d05c1d',
       currentBridge: '',
+      isSchema: false,
       bridgeVersion: bridge.version,
       isMixin: bridge.isMixin,
       result: ''
     };
+  },
+  watch: {
+    result: function (val) {
+      this.isSchema = /^mixin:\/\//g.test(val);
+    }
   },
   async mounted() {
     let token = bridge.token;
@@ -135,7 +150,7 @@ export default defineComponent({
     if (token) {
       this.token = token;
       try {
-        const { avatar_url, full_name } = await bridge.getUserInfo();
+        const { avatar_url, full_name } = (await bridge.getUserInfo()) || {};
         this.avatarUrl = avatar_url;
         this.userName = full_name;
       } catch (err) {
@@ -214,7 +229,7 @@ export default defineComponent({
           });
           break;
         case 'conversation':
-          res = bridge.conversation('b749a8a6-079e-3fb5-9b36-94bb57061f7f');
+          res = bridge.conversation('51e0e886-fba7-3732-804f-2686e5bb459e');
           break;
         default:
           res = await bridge[this.currentBridge]?.();
@@ -239,6 +254,9 @@ export default defineComponent({
         txt = recursion(res, '');
       }
       this.result = txt || res;
+    },
+    rumSchema() {
+      window.location.href = this.result;
     },
     goLogout() {
       bridge.logout();
