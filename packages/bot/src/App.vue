@@ -109,6 +109,7 @@ export default defineComponent({
       avatarUrl: '',
       userName: '',
       bridgeOptions: [
+        'supportAPIs',
         'getUserInfo',
         'getContext',
         'reloadTheme',
@@ -141,7 +142,7 @@ export default defineComponent({
       isMixin: bridge.isMixin,
       bridgeVersion:
         pkj?.dependencies?.['@foxone/mixin-sdk-jsbridge'].match(
-          /\d.\d.\d/g
+          /\d.\d.\d\S*/g
         )?.[0] ?? '-',
       result: ''
     };
@@ -182,6 +183,9 @@ export default defineComponent({
     callBridge: async function () {
       let res;
       switch (this.currentBridge) {
+        case 'supportAPIs':
+          res = bridge.supportAPIs;
+          break;
         case 'playlist':
           res = await bridge.playlist?.(this.playlists);
           break;
@@ -252,10 +256,11 @@ export default defineComponent({
 
       const recursion = function (data, text) {
         Object.keys(data).forEach(v => {
-          if (typeof data[v] === 'string') {
-            text += `${v}: ${data[v]}; \n\n`;
-          } else {
+          const dataType = Object.prototype.toString.call(data[v]);
+          if (dataType.slice(8, dataType.length).toLowerCase() === 'object') {
             text = recursion(data[v], text);
+          } else {
+            text += `${v}: ${data[v]}; \n\n`;
           }
         });
         return text;
