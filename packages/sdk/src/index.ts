@@ -23,6 +23,33 @@ interface Config {
   debug?: boolean;
   logLevel?: TlogLevelStr;
 }
+
+const SUPPORT_APIS = {
+  address_add: false,
+  address_del: false,
+  conversation: false,
+  getContext: false,
+  getUserInfo: true,
+  login: true,
+  logout: true,
+  payment: false,
+  playlist: false,
+  popup_user: false,
+  popup_bot: false,
+  reloadTheme: false,
+  requestToken: true,
+  share_text: false,
+  share_image: false,
+  share_contact: false,
+  share_app_card: false,
+  share_live: false,
+  share_post: false,
+  showToast: false,
+  snapshot: false,
+  transfer: false,
+  withdrawal: false,
+};
+
 export class Bridge {
   private config?: Config;
   private _token?: string;
@@ -89,6 +116,75 @@ export class Bridge {
   }
 
   /**
+   * get API support info
+   */
+  public get supportAPIs (): typeof SUPPORT_APIS {
+    const res = { ...SUPPORT_APIS };
+
+    if (this.isMixin) {
+      const featVersion = {
+        mixin: {
+          address_add: 0,
+          address_del: 0,
+          conversation: 311,
+          getContext: 0,
+          getUserInfo: 0,
+          login: 0,
+          logout: 0,
+          payment: 0,
+          playlist: 300,
+          popup_user: 0,
+          popup_bot: 290,
+          reloadTheme: 0,
+          requestToken: 0,
+          share_text: 0,
+          share_image: 0,
+          share_contact: 0,
+          share_app_card: 0,
+          share_live: 0,
+          share_post: 0,
+          showToast: 0,
+          snapshot: 0,
+          transfer: 0,
+          withdrawal: 0
+        },
+        reborn: {
+          address_add: 0,
+          address_del: 0,
+          conversation: 1121,
+          getContext: 0,
+          getUserInfo: 0,
+          login: 0,
+          logout: 0,
+          payment: 0,
+          playlist: 1100,
+          popup_user: 0,
+          popup_bot: 1100,
+          reloadTheme: 0,
+          requestToken: 0,
+          share_text: 0,
+          share_image: 0,
+          share_contact: 0,
+          share_app_card: 0,
+          share_live: 0,
+          share_post: 0,
+          showToast: 0,
+          snapshot: 0,
+          transfer: 0,
+          withdrawal: 0
+        }
+      };
+      const verNum = +this.version!.split('.').join('');
+      const featList = featVersion[this.isReborn ? 'reborn' : 'mixin'];
+      Object.keys(featList).forEach(feat => {
+        res[feat as keyof typeof res] = verNum >= featList[feat as keyof typeof res];
+      });
+    }
+
+    return res;
+  }
+
+  /**
    * judgement whether or not in mixin or reborn app
    */
   public get isMixin(): boolean {
@@ -96,6 +192,13 @@ export class Bridge {
     return !!(isIOS
       ? window?.webkit?.messageHandlers?.MixinContext
       : window?.MixinContext && typeof window?.MixinContext?.getContext === 'function');
+  }
+
+  /**
+   * judgement whether or not in reborn app
+   */
+  public get isReborn(): boolean {
+    return /XUEXI/.test(navigator.userAgent);
   }
 
   /**
