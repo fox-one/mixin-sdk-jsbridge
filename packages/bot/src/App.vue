@@ -29,7 +29,8 @@
         <span class="right__version">
           Bridge Version: {{ bridgeVersion }}
         </span>
-        <span class="right__mixin"> inMixin: {{ isMixin }} </span>
+        <span class="right__mixin"> isReborn: {{ isReborn }} </span>
+        <span class="right__mixin"> inMixin: {{ isMixin && !isReborn }} </span>
       </div>
     </el-header>
 
@@ -140,6 +141,7 @@ export default defineComponent({
       isSchema: false,
       appVersion: bridge.version ?? '-',
       isMixin: bridge.isMixin,
+      isReborn: bridge.isReborn,
       bridgeVersion:
         pkj?.dependencies?.['@foxone/mixin-sdk-jsbridge'].match(
           /\d.\d.\d\S*/g
