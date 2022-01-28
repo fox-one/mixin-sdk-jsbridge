@@ -12,6 +12,7 @@ node_modules
 dist
 dist.zip
 docs
+umd
 
 # config files
 .eslintignore

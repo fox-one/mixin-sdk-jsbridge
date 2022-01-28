@@ -4,6 +4,6 @@ export default {
   mode: 'doc',
   publicPath: './',
   history: { type: 'hash' },
-  logo: 'https://www.fox.one/logo.png',
-  favicon: 'https://www.fox.one/logo.png'
+  logo: 'https://pando.im/favicon.png',
+  favicon: 'https://pando.im/favicon.png'
 };
