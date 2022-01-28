@@ -6,6 +6,9 @@ on:
 
     paths:
       - 'packages/sdk/docs/**'
+      - 'packages/sdk/*.md'
+      - '*.md'
+      - 'packages/sdk/.umirc.ts'
 
 jobs:
   build-deploy:
