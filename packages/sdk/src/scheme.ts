@@ -176,7 +176,7 @@ export default {
         }
 
         params.memo = Base64.encode(params.memo);
-        if (params.memo.length > 140) {
+        if (params.memo!.length > 140) {
           logger('pay').warn('The memo max length is 140!');
         }
       }
@@ -186,7 +186,7 @@ export default {
         params
       };
     } catch (err) {
-      logger('pay').error(err);
+      logger('pay').error(err as Error);
     }
   },
   transfer: function (recipient: string) {
@@ -198,14 +198,14 @@ export default {
     try {
       return SCHEME.transfer(recipient);
     } catch (err) {
-      logger('transfer').error(err);
+      logger('transfer').error(err as Error);
     }
   },
   snapshot: function (params: PARAMS_SNAPSHOTS) {
     try {
       return SCHEME.snapshots(params);
     } catch (err) {
-      logger('snapshot').error(err);
+      logger('snapshot').error(err as Error);
     }
   },
   withdrawal: function (params: PARAMS_WITHDRAWAL) {
@@ -218,7 +218,7 @@ export default {
         }
 
         params.memo = Base64.encode(params.memo);
-        if (params.memo.length > 140) {
+        if (params.memo!.length > 140) {
           logger('withdrawal').warn('The memo max length is 140!');
         }
       }
@@ -228,7 +228,7 @@ export default {
         params
       };
     } catch (err) {
-      logger('withdrawal').error(err);
+      logger('withdrawal').error(err as Error);
     }
   },
   addWithdrawalAddress: function (params: PARAMS_ADDRESS_ADD) {
@@ -240,7 +240,7 @@ export default {
     try {
       return SCHEME.address(params as Record<string, string>);
     } catch (err) {
-      logger('addWithdrawalAddress').error(err);
+      logger('addWithdrawalAddress').error(err as Error);
     }
   },
   delWithdrawalAddress: function (params: PARAMS_ADDRESS_DELETE) {
@@ -252,7 +252,7 @@ export default {
     try {
       return SCHEME.address({ ...params, action: 'delete' } as Record<string, string>);
     } catch (err) {
-      logger('delWithdrawalAddress').error(err);
+      logger('delWithdrawalAddress').error(err as Error);
     }
   },
   shareText: function (txt: string) {
@@ -267,7 +267,7 @@ export default {
         data: txt
       });
     } catch (err) {
-      logger('shareText').error(err);
+      logger('shareText').error(err as Error);
     }
   },
   shareImage: function (url: string) {
@@ -282,7 +282,7 @@ export default {
         data: { url }
       });
     } catch (err) {
-      logger('shareImage').error(err);
+      logger('shareImage').error(err as Error);
     }
   },
   shareContact: function (user_id: string) {
@@ -297,7 +297,7 @@ export default {
         data: { user_id }
       });
     } catch (err) {
-      logger('shareContact').error(err);
+      logger('shareContact').error(err as Error);
     }
   },
   shareCard: function (data: PARAMS_SHARE_CARD) {
@@ -312,7 +312,7 @@ export default {
         data
       });
     } catch (err) {
-      logger('shareCard').error(err);
+      logger('shareCard').error(err as Error);
     }
   },
   shareLive: function (data: PARAMS_SHARE_LIVE) {
@@ -329,7 +329,7 @@ export default {
         data
       });
     } catch (err) {
-      logger('shareLive').error(err);
+      logger('shareLive').error(err as Error);
     }
   },
   sharePost: function (content: string) {
@@ -344,7 +344,7 @@ export default {
         data: content
       });
     } catch (err) {
-      logger('sharePost').error(err);
+      logger('sharePost').error(err as Error);
     }
   },
   popupUser: function (user_id: string) {
@@ -356,7 +356,7 @@ export default {
     try {
       return SCHEME.users(user_id);
     } catch (err) {
-      logger('popupUser').error(err);
+      logger('popupUser').error(err as Error);
     }
   },
   popupBot: function (params: PARAMS_POPUP_BOT) {
@@ -369,7 +369,7 @@ export default {
     try {
       return SCHEME.apps(app_id, rest);
     } catch (err) {
-      logger('popupBot').error(err);
+      logger('popupBot').error(err as Error);
     }
   },
   conversation: function (conversation_id: string) {
@@ -381,7 +381,7 @@ export default {
     try {
       return SCHEME.conversations(conversation_id);
     } catch (err) {
-      logger('conversation').error(err);
+      logger('conversation').error(err as Error);
     }
   }
 };

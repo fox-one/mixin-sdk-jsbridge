@@ -25,7 +25,7 @@ export function binArrayToStr(
 
     return JSON.parse(str);
   } catch (err) {
-    logger().warn(err);
+    logger().warn(err as Error);
     return null;
   }
 }

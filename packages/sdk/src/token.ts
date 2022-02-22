@@ -73,7 +73,7 @@ export function getAccessCode(params: {
 
   let url = `${oauth_url}/?response_type=code${client_id}${redirect_url}${SCOPESTR}${challenge}`;
   if (state) {
-    const str = encodeURIComponent(JSON.stringify(state));
+    const str = encodeURIComponent(state);
     url += `&state=${str}`;
   }
   window.location.href = url;

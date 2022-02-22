@@ -88,7 +88,7 @@ export class Bridge {
     try {
       app = this.getContext();
     } catch (err) {
-      this.logger('version').info(err);
+      this.logger('version').info(err as Error);
     }
 
     return app?.app_version;
@@ -118,7 +118,7 @@ export class Bridge {
   /**
    * get API support info
    */
-  public get supportAPIs (): typeof SUPPORT_APIS {
+  public get supportAPIs(): typeof SUPPORT_APIS {
     const res = { ...SUPPORT_APIS };
 
     if (this.isMixin) {
@@ -223,7 +223,7 @@ export class Bridge {
         try {
           ctx = JSON.parse(ctx);
         } catch (err) {
-          this.logger('getContext').info(err);
+          this.logger('getContext').info(err as Error);
         }
       }
       if (ctx) ctx.platform = ctx?.platform || (env().isIOS ? 'iOS' : 'Android');
@@ -377,7 +377,7 @@ export class Bridge {
         return Promise.resolve(userInfo);
       }
     } catch (err) {
-      this.logger('getUserInfo').info(err);
+      this.logger('getUserInfo').info(err as Error);
     }
 
     this.logger('getUserInfo').log('http request!');
@@ -439,7 +439,7 @@ export class Bridge {
   public address(type: 'add', params: PARAMS_ADDRESS_ADD): string | undefined;
   public address(type: 'del', params: PARAMS_ADDRESS_DELETE): string | undefined;
   public address(type: 'add' | 'del', params: any): string | undefined {
-    switch(type) {
+    switch (type) {
       case 'add':
         return scheme.addWithdrawalAddress(params);
       case 'del':
@@ -491,7 +491,7 @@ export class Bridge {
   public popup(type: 'user', user_id: string): string | undefined;
   public popup(type: 'bot', params: PARAMS_POPUP_BOT): string | undefined;
   public popup(type: 'user' | 'bot', params: any): string | undefined {
-    switch(type) {
+    switch (type) {
       case 'user':
         return scheme.popupUser(params);
       case 'bot':

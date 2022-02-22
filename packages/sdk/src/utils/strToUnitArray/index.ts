@@ -14,7 +14,7 @@ export function strToUnitArray(str: string) {
     }
     return ret;
   } catch (err) {
-    logger().warn(err);
+    logger().warn(err as Error);
     return null;
   }
 }

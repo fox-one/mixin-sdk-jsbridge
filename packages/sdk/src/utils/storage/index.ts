@@ -20,7 +20,7 @@ export const store = {
       }
       return storage.set(key, val, storageType);
     } catch (err) {
-      logger().warn('set storage error', err);
+      logger().warn('set storage error', err as Error);
       return false;
     }
 
