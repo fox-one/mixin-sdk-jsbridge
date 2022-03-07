@@ -50,7 +50,7 @@ export function getAccessCode(params: {
   code_challenge?: boolean;
 }) {
   // eslint-disable-next-line prefer-const
-  let { client_id, oauth_url = 'https://mixin-oauth.firesbox.com', redirect_url = window.location.href, state, auth = {}, code_challenge = true } = params;
+  let { client_id, oauth_url = 'https://mixin.one/oauth/authorize', redirect_url = window.location.href, state, auth = {}, code_challenge = true } = params;
   const randomCode = generateRandomString(32);
   const verifier = base64URLEncode(Base64.encode(randomCode));
   let challenge = base64URLEncode(sha256(randomCode).toString(EncBase64));
